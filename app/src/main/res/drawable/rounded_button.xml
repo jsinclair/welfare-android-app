@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  res/drawable/rounded_button.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/rounded_button_disabled"
+        android:state_enabled="false" />
+    <item android:drawable="@drawable/rounded_button_enabled" />
+</selector>
