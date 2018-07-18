@@ -98,18 +98,16 @@ public class LoginTask extends Fragment {
             respond(true, getString(R.string.login_call_error), "");
         }
 
-        String URL = getString(R.string.kBaseUrl) + "authentication";
+        String URL = getString(R.string.kBaseUrl) + "authentication/";
 
         RequestQueueManager.getInstance().addToRequestQueue(
                 new JsonObjectRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("RESPOND", "r " + response );
+                        Log.i("LoginTask", "r " + response );
                         try {
                             JSONObject data = response.getJSONObject("data");
-                            String token = data.getString("user_token");
-                            String contact = data.getString("contact_name");
-                            String phone = data.getString("contact_number");
+                            String token = data.getString("token");
                             respond(false, "", token);
                         } catch (JSONException e) {
                             respond(true, getString(R.string.invalid_server_response), "");
@@ -129,15 +127,10 @@ public class LoginTask extends Fragment {
                         respond(true, message, "");
                     }
                 }){
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
 
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         HashMap<String, String> headers = new HashMap<>();
-                        headers.put("Content-Type", "application/json");
                         headers.put("Accept", "application/json");
                         return headers;
                     }
