@@ -9,12 +9,17 @@
         <item name="android:windowBackground">@color/colorBackground</item>
 
         <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="android:textViewStyle">@style/TextViewStyle</item>
     </style>
 
     <style name="ButtonStyle" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/rounded_button</item>
         <item name="android:textColor">@color/colorBackground</item>
         <item name="android:padding">@dimen/button_padding</item>
+    </style>
+
+    <style name="TextViewStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
