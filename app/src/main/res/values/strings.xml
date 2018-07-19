@@ -25,4 +25,12 @@
 
     <!-- Strings related to the home screen -->
     <string name="welcome">Welcome!</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="animals">Animals</string>
+    <string name="residences">Residences</string>
+    <string name="reminders">Reminders</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>
