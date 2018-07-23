@@ -2,6 +2,8 @@ package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.fragment.AnimalsFragment;
+import za.co.aws.welfare.fragment.RemindersFragment;
+import za.co.aws.welfare.fragment.ResidencesFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -24,6 +29,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Set default fragment
+        if (savedInstanceState == null) {
+            Fragment newFragment = new AnimalsFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.content_frame, newFragment);
+            ft.addToBackStack(null);
+            ft.commit();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -73,14 +87,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment fragment = null;
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_animals) {
             // Handle the camera action
-            Log.i(TAG, "onNavigationItemSelected: nav_camera");
-        } else if (id == R.id.nav_gallery) {
-            Log.i(TAG, "onNavigationItemSelected: nav_gallery");
-        } else if (id == R.id.nav_slideshow) {
-            Log.i(TAG, "onNavigationItemSelected: nav_slideshow");
+            Log.i(TAG, "onNavigationItemSelected: nav_animals");
+            fragment = new AnimalsFragment();
+        } else if (id == R.id.nav_residences) {
+            Log.i(TAG, "onNavigationItemSelected: nav_residences");
+            fragment = new ResidencesFragment();
+        } else if (id == R.id.nav_reminders) {
+            Log.i(TAG, "onNavigationItemSelected: nav_reminders");
+            fragment = new RemindersFragment();
+        }
+
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

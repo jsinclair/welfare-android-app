@@ -7,4 +7,8 @@
 
     <color name="disabledGrey">#939393</color>
     <color name="colorWhite">#ffffff</color>
+
+    <color name="navShadeStart">#303F9F</color>
+    <color name="navShadeMid">#3F51B5</color>
+    <color name="navShadeEnd">#71a4f7</color>
 </resources>
