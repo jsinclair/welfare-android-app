@@ -99,6 +99,13 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
         });
 
         mRememberMe = (CheckBox) findViewById(R.id.remember_me);
+
+        boolean remember = ((WelfareApplication) getApplicationContext()).getRememberMe();
+        if (remember) {
+            mEmailView.setText(((WelfareApplication) getApplicationContext()).getUsername());
+            mPasswordView.setText(((WelfareApplication) getApplicationContext()).getPassword());
+        }
+        mRememberMe.setChecked(remember);
     }
 
     /**
