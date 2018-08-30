@@ -180,7 +180,8 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
     }
 
     @Override
-    public void onLoginComplete(boolean error, String errorMessage, String token) {
+    public void onLoginComplete(boolean error, String errorMessage, String token, String fullName,
+                                String organisationName) {
 
         if (mRememberMe.isChecked()) {
             updateSharedPreferences();
@@ -192,7 +193,8 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
             AlertDialogFragment alert = AlertDialogFragment.newInstance(getString(R.string.app_name), errorMessage);
             Utils.showDialog(fm, alert, LOGIN_ALERT_TAG, true);
         } else {
-            //((TracerApplication)getApplication()).setLoginDetails(token, company, tel);
+            ((WelfareApplication)getApplication()).setLoginDetails(token, fullName, organisationName);
+
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
         }

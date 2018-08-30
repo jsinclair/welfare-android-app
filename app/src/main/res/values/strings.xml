@@ -23,6 +23,10 @@
     <string name="app_logo">Welfare Logo</string>
     <string name="login_call_error">Error while creating login request.</string>
 
+    <!-- Nav Bar strings -->
+    <string name="organisation_name">Organisation Name</string>
+    <string name="user_name">User Name</string>
+
     <!-- Strings related to the home screen -->
     <string name="welcome">Welcome!</string>
     <string name="sign_out">Sign Out</string>

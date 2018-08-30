@@ -12,8 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.fragment.AnimalsFragment;
 import za.co.aws.welfare.fragment.RemindersFragment;
 import za.co.aws.welfare.fragment.ResidencesFragment;
@@ -47,6 +50,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Set the full name and organisation name
+        View headerLayout = navigationView.getHeaderView(0);
+        ((TextView)headerLayout.findViewById(R.id.navUserName)).
+                setText(((WelfareApplication)this.getApplication()).getFullName());
+        ((TextView)headerLayout.findViewById(R.id.navOrganisationName)).
+                setText(((WelfareApplication)this.getApplication()).getOrganisationName());
     }
 
     @Override

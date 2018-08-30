@@ -37,7 +37,8 @@ public class LoginTask extends Fragment {
      * task's progress and results back to the Activity. Calling activity MUST implement this.
      */
     public interface LoginTaskCallbacks {
-        void onLoginComplete(boolean error, String errorMessage, String token);
+        void onLoginComplete(boolean error, String errorMessage, String token, String fullName,
+                             String organisationName);
     }
 
     /**
@@ -95,7 +96,7 @@ public class LoginTask extends Fragment {
             params.put("device", manufacturer + " " + model);
             params.put("uuid", uuid);
         } catch (JSONException e) {
-            respond(true, getString(R.string.login_call_error), "");
+            respond(true, getString(R.string.login_call_error), "", "", "");
         }
 
         String URL = getString(R.string.kBaseUrl) + "authentication/";
@@ -108,9 +109,11 @@ public class LoginTask extends Fragment {
                         try {
                             JSONObject data = response.getJSONObject("data");
                             String token = data.getString("token");
-                            respond(false, "", token);
+                            String fullName = data.getString("user_full_name");
+                            String organisationName = data.getString("organisation_name");
+                            respond(false, "", token, fullName, organisationName);
                         } catch (JSONException e) {
-                            respond(true, getString(R.string.invalid_server_response), "");
+                            respond(true, getString(R.string.invalid_server_response), "", "", "");
                         }
 
                     }
@@ -119,12 +122,12 @@ public class LoginTask extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         if (error instanceof NoConnectionError) {
                             String message = getString(R.string.connection_error);
-                            respond(true, message, "");
+                            respond(true, message, "", "", "");
                             return;
                         }
 
                         String message = Utils.generateErrorMessage(error, getString(R.string.invalid_server_response));
-                        respond(true, message, "");
+                        respond(true, message, "", "", "");
                     }
                 }){
 
@@ -138,9 +141,10 @@ public class LoginTask extends Fragment {
     }
 
     /** Convenience method to send back a response. Checks that the state is correct before sending.*/
-    private void respond(boolean isError, String message, @NonNull String token) {
+    private void respond(boolean isError, String message, @NonNull String token, String fullName,
+                         String organisationName) {
         if (isAdded() && mCallbacks != null) {
-            mCallbacks.onLoginComplete(isError, message, token);
+            mCallbacks.onLoginComplete(isError, message, token, fullName, organisationName);
         }
     }
 
