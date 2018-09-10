@@ -1,29 +1,15 @@
 package za.co.aws.welfare.notification;
 
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.utils.FirebaseTokenUpdater;
-import za.co.aws.welfare.utils.RequestQueueManager;
 
 /**
  * The service for catching and handling firebase messages.

@@ -1,42 +1,21 @@
 package za.co.aws.welfare.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.SystemClock;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,7 +30,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import za.co.aws.welfare.R;
@@ -60,11 +38,8 @@ import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.LoginTask;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 import za.co.aws.welfare.model.AnimalType;
-import za.co.aws.welfare.notification.NotificationPublisher;
 import za.co.aws.welfare.utils.FirebaseTokenUpdater;
 import za.co.aws.welfare.utils.Utils;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -264,14 +239,14 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
             progress.dismiss();
         }
 
-        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        /*Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, getNotification("Test Notification"));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long futureInMillis = SystemClock.elapsedRealtime() + 10000;
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);*/
 
     }
 
