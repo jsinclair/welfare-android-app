@@ -20,6 +20,7 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.fragment.AnimalsFragment;
 import za.co.aws.welfare.fragment.RemindersFragment;
 import za.co.aws.welfare.fragment.ResidencesFragment;
+import za.co.aws.welfare.model.UserPermissions;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -57,6 +58,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 setText(((WelfareApplication)this.getApplication()).getFullName());
         ((TextView)headerLayout.findViewById(R.id.navOrganisationName)).
                 setText(((WelfareApplication)this.getApplication()).getOrganisationName());
+
     }
 
     @Override

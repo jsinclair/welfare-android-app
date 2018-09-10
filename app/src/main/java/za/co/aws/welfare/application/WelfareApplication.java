@@ -1,10 +1,22 @@
 package za.co.aws.welfare.application;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.multidex.MultiDexApplication;
 
-public class WelfareApplication extends Application {
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import za.co.aws.welfare.R;
+import za.co.aws.welfare.model.AnimalType;
+import za.co.aws.welfare.model.UserPermissions;
+
+public class WelfareApplication extends MultiDexApplication {
 
     private final String PREF_FILE = "za.co.aws.welfare.PREFERENCE_FILE_KEY";
 
@@ -25,6 +37,12 @@ public class WelfareApplication extends Application {
 
     /** The key to use for the user's organisation name. */
     private final String PREF_FILE_ORGANISATION_NAME_EXT = ".organisationName";
+
+    /** The key to use for the user's permissions. */
+    private final String PREF_FILE_PERMISSIONS_EXT = ".permissions";
+
+    // Session storage variables
+    private List<AnimalType> mAnimalTypes;
 
     /**
      * Convenience method for getting the shared preference keys.
@@ -51,7 +69,46 @@ public class WelfareApplication extends Application {
         editor.putString(getSharedPreferenceKey(PREF_FILE_USERNAME_EXT), username);
         editor.putString(getSharedPreferenceKey(PREF_FILE_PASSWORD_EXT), password);
         editor.putBoolean(getSharedPreferenceKey(PREF_FILE_REMEMBER_ME_EXT), rememberMe);
+
         editor.apply();
+    }
+
+    /**
+     * Set the login data.
+     *
+     * @param permissions List containing keys for the user's permissions.
+     */
+    public void setPermissions(List<String> permissions) {
+        SharedPreferences sharedPrefs = getSharedPreferences(
+                PREF_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+
+        editor.remove(PREF_FILE_PERMISSIONS_EXT);
+
+        if (permissions != null) {
+            editor.putStringSet(getSharedPreferenceKey(PREF_FILE_PERMISSIONS_EXT), new HashSet<>(permissions));
+        }
+
+        editor.apply();
+    }
+
+    /**
+     * Returns whether or not the user has the requested permission.
+     *
+     * @param permission the UserPermission to check for.
+     * @return boolean for whether the current user has the permission or not.
+     */
+    public boolean hasPermission(UserPermissions permission) {
+        final SharedPreferences prefs = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+
+        boolean hasPermission = false;
+        if (prefs.contains(getSharedPreferenceKey(PREF_FILE_PERMISSIONS_EXT))) {
+            final Set<String> permissions = prefs.getStringSet(getSharedPreferenceKey(PREF_FILE_PERMISSIONS_EXT),
+                    new HashSet<String>());
+
+            hasPermission = permissions.contains(permission.name());
+        }
+        return hasPermission;
     }
 
     /**
@@ -112,5 +169,38 @@ public class WelfareApplication extends Application {
     public String getOrganisationName() {
         return getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE)
                 .getString(getSharedPreferenceKey(PREF_FILE_ORGANISATION_NAME_EXT), "");
+    }
+
+    // Accessors and mutators for utility lists
+    public List<AnimalType> getAnimalTypes() {
+        return mAnimalTypes;
+    }
+
+    public void setAnimalTypes(List<AnimalType> mAnimalTypes) {
+        this.mAnimalTypes = mAnimalTypes;
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(getString(R.string.channel_id), name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // Initialise the notification channel when the app starts up.
+        createNotificationChannel();
     }
 }

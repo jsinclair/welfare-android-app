@@ -3,14 +3,21 @@ package za.co.aws.welfare.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -24,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +42,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +59,9 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.LoginTask;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
+import za.co.aws.welfare.model.AnimalType;
+import za.co.aws.welfare.notification.NotificationPublisher;
+import za.co.aws.welfare.utils.FirebaseTokenUpdater;
 import za.co.aws.welfare.utils.Utils;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -106,6 +125,15 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
             mPasswordView.setText(((WelfareApplication) getApplicationContext()).getPassword());
         }
         mRememberMe.setChecked(remember);
+
+        checkGooglePlayServicesAvailable();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        checkGooglePlayServicesAvailable();
     }
 
     /**
@@ -180,8 +208,8 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
     }
 
     @Override
-    public void onLoginComplete(boolean error, String errorMessage, String token, String fullName,
-                                String organisationName) {
+    public void onLoginComplete(boolean error, String errorMessage, final String sessionToken, String fullName,
+                                String organisationName, List<AnimalType> animalTypes, List<String> permissions) {
 
         if (mRememberMe.isChecked()) {
             updateSharedPreferences();
@@ -193,7 +221,34 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
             AlertDialogFragment alert = AlertDialogFragment.newInstance(getString(R.string.app_name), errorMessage);
             Utils.showDialog(fm, alert, LOGIN_ALERT_TAG, true);
         } else {
-            ((WelfareApplication)getApplication()).setLoginDetails(token, fullName, organisationName);
+            // Set login details
+            ((WelfareApplication)getApplication()).setLoginDetails(sessionToken, fullName, organisationName);
+            ((WelfareApplication)getApplication()).setPermissions(permissions);
+
+            // Set utility lists
+            ((WelfareApplication)getApplication()).setAnimalTypes(animalTypes);
+
+            // Update the firebase token for the user
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w("LoginActivity", "getInstanceId failed", task.getException());
+                                return;
+                            }
+
+                            // Get new Instance ID token
+                            String token = task.getResult().getToken();
+
+                            // Initialise and run a FirebaseTokenUpdater
+                            new FirebaseTokenUpdater(LoginActivity.this.getApplicationContext(), token, sessionToken).start();
+
+                            // Log and toast
+                            Log.d("LoginActivity", token);
+                            Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
@@ -208,6 +263,16 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
         if (progress != null) {
             progress.dismiss();
         }
+
+        Intent notificationIntent = new Intent(this, NotificationPublisher.class);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, getNotification("Test Notification"));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        long futureInMillis = SystemClock.elapsedRealtime() + 10000;
+        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+
     }
 
     @Override
@@ -229,5 +294,22 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
                 mPasswordView.getText().toString(),
                 mRememberMe.isChecked());
     }
-}
 
+    private Notification getNotification(String content) {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
+                .setSmallIcon(R.drawable.dog)
+                .setContentTitle("Scheduled Notification")
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        return mBuilder.build();
+    }
+
+    private void checkGooglePlayServicesAvailable() {
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(getApplicationContext());
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            googleApiAvailability.makeGooglePlayServicesAvailable(this);
+        }
+    }
+}

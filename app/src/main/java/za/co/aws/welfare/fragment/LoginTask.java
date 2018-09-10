@@ -14,13 +14,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.Utils;
 
@@ -38,7 +42,7 @@ public class LoginTask extends Fragment {
      */
     public interface LoginTaskCallbacks {
         void onLoginComplete(boolean error, String errorMessage, String token, String fullName,
-                             String organisationName);
+                             String organisationName, List<AnimalType> animalTypes, List<String> permissions);
     }
 
     /**
@@ -96,7 +100,7 @@ public class LoginTask extends Fragment {
             params.put("device", manufacturer + " " + model);
             params.put("uuid", uuid);
         } catch (JSONException e) {
-            respond(true, getString(R.string.login_call_error), "", "", "");
+            respond(true, getString(R.string.login_call_error), "", "", "", null, null);
         }
 
         String URL = getString(R.string.kBaseUrl) + "authentication/";
@@ -111,9 +115,24 @@ public class LoginTask extends Fragment {
                             String token = data.getString("token");
                             String fullName = data.getString("user_full_name");
                             String organisationName = data.getString("organisation_name");
-                            respond(false, "", token, fullName, organisationName);
+
+                            // Build the animal types list
+                            JSONArray animalTypesJSONArray = data.getJSONArray("animal_types");
+                            List<AnimalType> animalTypes = new ArrayList<>();
+                            for (int i = 0; i < animalTypesJSONArray.length(); i++) {
+                                final JSONObject animalType = animalTypesJSONArray.getJSONObject(i);
+                                animalTypes.add(new AnimalType(animalType.getInt("id"), animalType.getString("description")));
+                            }
+
+                            JSONArray permissionsJSONArray = data.getJSONArray("user_permissions");
+                            List<String> permissions = new ArrayList<>();
+                            for (int i = 0; i < permissionsJSONArray.length(); i++) {
+                                permissions.add(permissionsJSONArray.getString(i));
+                            }
+
+                            respond(false, "", token, fullName, organisationName, animalTypes, permissions);
                         } catch (JSONException e) {
-                            respond(true, getString(R.string.invalid_server_response), "", "", "");
+                            respond(true, getString(R.string.invalid_server_response), "", "", "", null, null);
                         }
 
                     }
@@ -122,12 +141,12 @@ public class LoginTask extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         if (error instanceof NoConnectionError) {
                             String message = getString(R.string.connection_error);
-                            respond(true, message, "", "", "");
+                            respond(true, message, "", "", "", null, null);
                             return;
                         }
 
                         String message = Utils.generateErrorMessage(error, getString(R.string.invalid_server_response));
-                        respond(true, message, "", "", "");
+                        respond(true, message, "", "", "", null, null);
                     }
                 }){
 
@@ -142,9 +161,9 @@ public class LoginTask extends Fragment {
 
     /** Convenience method to send back a response. Checks that the state is correct before sending.*/
     private void respond(boolean isError, String message, @NonNull String token, String fullName,
-                         String organisationName) {
+                         String organisationName, List<AnimalType> animalTypes, List<String> permissions) {
         if (isAdded() && mCallbacks != null) {
-            mCallbacks.onLoginComplete(isError, message, token, fullName, organisationName);
+            mCallbacks.onLoginComplete(isError, message, token, fullName, organisationName, animalTypes, permissions);
         }
     }
 
