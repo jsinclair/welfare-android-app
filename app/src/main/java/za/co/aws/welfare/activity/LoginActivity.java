@@ -1,7 +1,9 @@
 package za.co.aws.welfare.activity;
 
 import android.app.Notification;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -34,12 +36,14 @@ import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.databinding.ActivityLoginBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.LoginTask;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.FirebaseTokenUpdater;
 import za.co.aws.welfare.utils.Utils;
+import za.co.aws.welfare.viewModel.LoginViewModel;
 
 /**
  * A login screen that offers login via email/password.
@@ -65,11 +69,18 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
     private EditText mPasswordView;
     private CheckBox mRememberMe;
 
+    private LoginViewModel mModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        // Set up the login form.
+
+        ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        mModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        binding.setViewModel(mModel);
+        binding.setLifecycleOwner(this);
+
+//        // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -93,13 +104,6 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
         });
 
         mRememberMe = (CheckBox) findViewById(R.id.remember_me);
-
-        boolean remember = ((WelfareApplication) getApplicationContext()).getRememberMe();
-        if (remember) {
-            mEmailView.setText(((WelfareApplication) getApplicationContext()).getUsername());
-            mPasswordView.setText(((WelfareApplication) getApplicationContext()).getPassword());
-        }
-        mRememberMe.setChecked(remember);
 
         checkGooglePlayServicesAvailable();
     }
