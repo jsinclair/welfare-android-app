@@ -1,19 +1,16 @@
 package za.co.aws.welfare.activity;
 
 import android.app.Notification;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,32 +20,21 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
-import java.util.List;
 
 import za.co.aws.welfare.R;
-import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.databinding.ActivityLoginBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
-import za.co.aws.welfare.fragment.LoginTask;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
-import za.co.aws.welfare.model.AnimalType;
-import za.co.aws.welfare.utils.FirebaseTokenUpdater;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.LoginViewModel;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoginTask.LoginTaskCallbacks {
+public class LoginActivity extends AppCompatActivity {
 
     /** Tag used for the alert dialog. */
     final private static String LOGIN_ALERT_TAG  = "LOGIN_ALERT_TAG";
@@ -105,13 +91,62 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
 
         mRememberMe = (CheckBox) findViewById(R.id.remember_me);
 
+        //TODO: MOVE?
         checkGooglePlayServicesAvailable();
+
+        mModel.getNetworkHandler().observe(this, new Observer<LoginViewModel.NetworkStatus>() {
+            @Override
+            public void onChanged(LoginViewModel.NetworkStatus networkStatus) {
+                handleNetworkStatus(networkStatus);
+            }
+        });
+
+        mModel.getEventHandler().observe(this, new Observer<Pair<LoginViewModel.Event, String>>() {
+            @Override
+            public void onChanged(Pair<LoginViewModel.Event, String> eventData) {
+                if (eventData != null) {
+                    handleEvent(eventData.first, eventData.second);
+                }
+            }
+        });
+    }
+
+    /** Handle once off events. */
+    private void handleNetworkStatus(LoginViewModel.NetworkStatus status) {
+        FragmentManager fm = getSupportFragmentManager();
+        ProgressDialogFragment progressDialog = (ProgressDialogFragment) fm.findFragmentByTag(LOGIN_PROGRESS_TAG);
+        switch (status) {
+            case IDLE:
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                break;
+            case LOGGING_IN:
+                ProgressDialogFragment progress = ProgressDialogFragment.newInstance(getString(R.string.signing_in));
+                Utils.showDialog(fm, progress, LOGIN_PROGRESS_TAG, false);
+                break;
+
+        }
+    }
+
+    /** Handle once off events. */
+    private void handleEvent(LoginViewModel.Event event, String message) {
+        switch (event) {
+            case LOG_IN_DONE:
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                break;
+            case LOG_IN_ERROR:
+                FragmentManager fm = getSupportFragmentManager();
+                AlertDialogFragment alert = AlertDialogFragment.newInstance(getString(R.string.app_name), message);
+                Utils.showDialog(fm, alert, LOGIN_ALERT_TAG, true);
+                break;
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         checkGooglePlayServicesAvailable();
     }
 
@@ -156,7 +191,7 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
             focusView.requestFocus();
         } else {
             // Begin the sign in attempt.
-            startLogin();
+            mModel.startLogin();
         }
     }
 
@@ -170,79 +205,7 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
         return password.length() > 4;
     }
 
-    /** Start the fragment to log the user in. */
-    private void startLogin() {
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment loginTask = fm.findFragmentByTag(LOGIN_TASK_TAG);
-        if (loginTask == null) {
-            //Show progress dialog.
-            ProgressDialogFragment progress = ProgressDialogFragment.newInstance(getString(R.string.signing_in));
-            Utils.showDialog(fm, progress, LOGIN_PROGRESS_TAG, false);
-
-            //Start task.
-            String uuid = Settings.Secure.getString(LoginActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
-            loginTask = LoginTask.newInstance(mEmailView.getText().toString().trim(), mPasswordView.getText().toString().trim(), uuid);
-            fm.beginTransaction().add(loginTask, LOGIN_TASK_TAG).commit();
-        }
-    }
-
-    @Override
-    public void onLoginComplete(boolean error, String errorMessage, final String sessionToken, String fullName,
-                                String organisationName, List<AnimalType> animalTypes, List<String> permissions) {
-
-        if (mRememberMe.isChecked()) {
-            updateSharedPreferences();
-        }
-
-        FragmentManager fm = getSupportFragmentManager();
-
-        if (error) {
-            AlertDialogFragment alert = AlertDialogFragment.newInstance(getString(R.string.app_name), errorMessage);
-            Utils.showDialog(fm, alert, LOGIN_ALERT_TAG, true);
-        } else {
-            // Set login details
-            ((WelfareApplication)getApplication()).setLoginDetails(sessionToken, fullName, organisationName);
-            ((WelfareApplication)getApplication()).setPermissions(permissions);
-
-            // Set utility lists
-            ((WelfareApplication)getApplication()).setAnimalTypes(animalTypes);
-
-            // Update the firebase token for the user
-            FirebaseInstanceId.getInstance().getInstanceId()
-                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                            if (!task.isSuccessful()) {
-                                Log.w("LoginActivity", "getInstanceId failed", task.getException());
-                                return;
-                            }
-
-                            // Get new Instance ID token
-                            String token = task.getResult().getToken();
-
-                            // Initialise and run a FirebaseTokenUpdater
-                            new FirebaseTokenUpdater(LoginActivity.this.getApplicationContext(), token, sessionToken).start();
-
-                            // Log and toast
-                            Log.d("LoginActivity", token);
-                            Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-        }
-
-        Fragment loginTask = fm.findFragmentByTag(LOGIN_TASK_TAG);
-        if (loginTask != null) {
-            fm.beginTransaction().remove(loginTask).commit();
-        }
-
-        DialogFragment progress = (DialogFragment) fm.findFragmentByTag(LOGIN_PROGRESS_TAG);
-        if (progress != null) {
-            progress.dismiss();
-        }
-
+    //TODO: Whats this?
         /*Intent notificationIntent = new Intent(this, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, getNotification("Test Notification"));
@@ -252,26 +215,13 @@ public class LoginActivity extends AppCompatActivity implements LoginTask.LoginT
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);*/
 
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (!mRememberMe.isChecked()) {
-            updateSharedPreferences();
+            mModel.updateSharedPreferences();
         }
-    }
-
-    /**
-     * Updates the shared preferences to remember username, password and remember state.
-     *
-     * Please note: this method does not check for login success! Only saves based on checkbox.
-     */
-    private void updateSharedPreferences() {
-        ((WelfareApplication) getApplicationContext()).setLoginData(
-                mEmailView.getText().toString(),
-                mPasswordView.getText().toString(),
-                mRememberMe.isChecked());
     }
 
     private Notification getNotification(String content) {
