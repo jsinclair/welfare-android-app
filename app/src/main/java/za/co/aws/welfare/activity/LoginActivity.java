@@ -39,9 +39,6 @@ public class LoginActivity extends AppCompatActivity {
     /** Tag used for the alert dialog. */
     final private static String LOGIN_ALERT_TAG  = "LOGIN_ALERT_TAG";
 
-    /** Tag used for the Login Task, used to do the API call to log the user into the app.*/
-    final private static String LOGIN_TASK_TAG  = "LOGIN_TASK_TAG";
-
     /** Tag used for the Progress indicator dialog. */
     final private static String LOGIN_PROGRESS_TAG  = "LOGIN_PROGRESS_TAG";
 

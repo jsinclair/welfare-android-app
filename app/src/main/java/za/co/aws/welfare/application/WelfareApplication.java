@@ -43,7 +43,7 @@ public class WelfareApplication extends MultiDexApplication {
     /** The key to use for the user's permissions. */
     private final String PREF_FILE_PERMISSIONS_EXT = ".permissions";
 
-    // Session storage variables
+    // Session storage variables TODO: STORE THIS IN A DATABASE RATHER
     private List<AnimalType> mAnimalTypes;
 
     /**
