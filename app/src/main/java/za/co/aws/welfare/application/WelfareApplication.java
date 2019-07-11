@@ -1,12 +1,14 @@
 package za.co.aws.welfare.application;
 
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.multidex.MultiDexApplication;
 import android.util.Log;
+
+import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.FirebaseApp;
 
@@ -18,7 +20,7 @@ import za.co.aws.welfare.R;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.model.UserPermissions;
 
-public class WelfareApplication extends MultiDexApplication {
+public class WelfareApplication extends Application {
 
     private final String PREF_FILE = "za.co.aws.welfare.PREFERENCE_FILE_KEY";
 

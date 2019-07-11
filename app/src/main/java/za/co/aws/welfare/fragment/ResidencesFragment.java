@@ -1,15 +1,16 @@
 package za.co.aws.welfare.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.viewModel.HomeViewModel;
@@ -34,7 +35,7 @@ public class ResidencesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                     searchView.setVisibility(View.VISIBLE);
-                    expandButton.setVisibility(View.GONE);
+                    expandButton.hide();
             }
         });
 
@@ -43,7 +44,7 @@ public class ResidencesFragment extends Fragment {
             public void onClick(View view) {
                 //TODO: START SEARCH HERE> ONLY Hide search menu on successful search!!
                 searchView.setVisibility(View.GONE);
-                expandButton.setVisibility(View.VISIBLE);
+                expandButton.show();
             }
         });
 
