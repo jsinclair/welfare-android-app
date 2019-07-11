@@ -1,5 +1,6 @@
 package za.co.aws.welfare.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.fragment.AnimalsFragment;
 import za.co.aws.welfare.fragment.RemindersFragment;
 import za.co.aws.welfare.fragment.ResidencesFragment;
+import za.co.aws.welfare.viewModel.HomeViewModel;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

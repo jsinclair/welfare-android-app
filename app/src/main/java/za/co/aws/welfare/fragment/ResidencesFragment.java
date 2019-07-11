@@ -1,5 +1,6 @@
 package za.co.aws.welfare.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,12 +12,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.viewModel.HomeViewModel;
 
 public class ResidencesFragment extends Fragment {
 
     private LinearLayout searchView;
     private FloatingActionButton expandButton;
     private Button searchButton;
+
+    private HomeViewModel mModel;
 
     @Nullable
     @Override
@@ -42,6 +46,7 @@ public class ResidencesFragment extends Fragment {
                 expandButton.setVisibility(View.VISIBLE);
             }
         });
+
         return v;
     }
 }
