@@ -1,6 +1,8 @@
 package za.co.aws.welfare.fragment;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -38,13 +40,21 @@ public class AlertDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+
         String title = getArguments().getString("title");
         String message = getArguments().getString("msg");
 
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        setCancelable(false);
-        getDialog().setCanceledOnTouchOutside(false);
+//        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//        setCancelable(false);
+//        getDialog().setCanceledOnTouchOutside(false);
         View v = inflater.inflate(R.layout.fragment_alert_dialog, container, false);
+
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(false);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
         TextView titleArea = v.findViewById(R.id.title);
         titleArea.setText(title);
