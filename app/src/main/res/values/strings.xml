@@ -45,6 +45,10 @@
     <!-- Strings related to the animals screen -->
 
     <!-- Strings related to the residences screen -->
+    <string name="search_address">Street Address</string>
+    <string name="search_shack">Shack ID</string>
+    <string name="search">Search</string>
+
 
     <!-- Strings related to the reminders screen -->
 
