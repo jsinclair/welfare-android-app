@@ -2,7 +2,9 @@ package za.co.aws.welfare.fragment;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,10 @@ import android.widget.LinearLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.databinding.ActivityLoginBinding;
+import za.co.aws.welfare.databinding.ResidencesBinding;
 import za.co.aws.welfare.viewModel.HomeViewModel;
+import za.co.aws.welfare.viewModel.LoginViewModel;
 
 public class ResidencesFragment extends Fragment {
 
@@ -26,6 +31,10 @@ public class ResidencesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        ResidencesBinding binding =  DataBindingUtil.inflate(inflater,
+                R.layout.residences, container, false);
+        View view = binding.getRoot();
 
         View v = inflater.inflate(R.layout.residences, container, false);
         searchView = v.findViewById(R.id.search_menu);
@@ -47,6 +56,13 @@ public class ResidencesFragment extends Fragment {
                 expandButton.show();
             }
         });
+
+        mModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+
+//        ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+//        mModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+//        binding.setViewModel(mModel);
+//        binding.setLifecycleOwner(this);
 
         return v;
     }
