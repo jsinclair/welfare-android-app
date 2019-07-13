@@ -48,6 +48,7 @@
     <string name="search_address">Street Address</string>
     <string name="search_shack">Shack ID</string>
     <string name="search">Search</string>
+    <string name="search_residence">Searching Residence</string>
 
 
     <!-- Strings related to the reminders screen -->
