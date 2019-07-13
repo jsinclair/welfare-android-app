@@ -9,6 +9,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.Menu;
@@ -23,15 +24,19 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.fragment.AnimalsFragment;
 import za.co.aws.welfare.fragment.RemindersFragment;
 import za.co.aws.welfare.fragment.ResidencesFragment;
+import za.co.aws.welfare.viewModel.HomeViewModel;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "HomeActivity";
+    private HomeViewModel mModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mModel = ViewModelProviders.of(this).get(HomeViewModel.class);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -34,9 +34,13 @@ public class ResidencesFragment extends Fragment {
 
         ResidencesBinding binding =  DataBindingUtil.inflate(inflater,
                 R.layout.residences, container, false);
-        View view = binding.getRoot();
 
-        View v = inflater.inflate(R.layout.residences, container, false);
+        HomeViewModel mModel = ViewModelProviders.of(getActivity()).get(HomeViewModel.class);
+        binding.setLifecycleOwner(getActivity());
+        binding.setViewModel(mModel);
+
+        View v = binding.getRoot();
+
         searchView = v.findViewById(R.id.search_menu);
         searchButton = v.findViewById(R.id.search_button);
         expandButton = v.findViewById(R.id.expand_button);

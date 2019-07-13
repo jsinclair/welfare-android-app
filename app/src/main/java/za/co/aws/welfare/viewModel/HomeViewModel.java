@@ -8,9 +8,12 @@ import androidx.lifecycle.MutableLiveData;
 public class HomeViewModel extends AndroidViewModel {
 
     /** Remember the user name. */
-    public MutableLiveData<String> mUsername;
+    public MutableLiveData<String> mResidenceAddressSearch;
 
     public HomeViewModel(Application application) {
         super(application);
+        mResidenceAddressSearch = new MutableLiveData<>();
+
+        mResidenceAddressSearch.setValue("TEST");
     }
 }
