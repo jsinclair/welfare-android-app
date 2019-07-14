@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -19,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ResidencesBinding;
 import za.co.aws.welfare.viewModel.HomeViewModel;
@@ -28,6 +30,7 @@ public class ResidencesFragment extends Fragment {
     private LinearLayout searchView;
     private FloatingActionButton expandButton;
     private Button searchButton;
+    private ListView results;
 
     private HomeViewModel mModel;
 
@@ -43,6 +46,8 @@ public class ResidencesFragment extends Fragment {
         binding.setViewModel(mModel);
 
         View v = binding.getRoot();
+
+        results = v.findViewById(R.id.result_residencess);
 
         searchView = v.findViewById(R.id.search_menu);
         searchButton = v.findViewById(R.id.search_button);
@@ -69,8 +74,11 @@ public class ResidencesFragment extends Fragment {
         mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
             @Override
             public void onChanged(LinkedList<ResidenceSearchData> residenceSearchData) {
+                //TODO: Handle errors
+                //TODO: Handle empty results.
                 if (residenceSearchData != null) {
                     Log.i(">>> SUCESS", residenceSearchData.size() + " ");
+                    results.setAdapter(new ResidenceSearchListAdapter(getContext(), R.layout.content_residence_search_entry, residenceSearchData));
                 }
             }
         });

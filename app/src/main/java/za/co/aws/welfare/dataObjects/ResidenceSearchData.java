@@ -17,4 +17,28 @@ public class ResidenceSearchData {
         this.mLon = mLon;
         this.mDistance = mDistance;
     }
+
+    public int getID() {
+        return mID;
+    }
+
+    public String getShackID() {
+        return mShackID;
+    }
+
+    public String getStreetAddress() {
+        return mStreetAddress;
+    }
+
+    public String getLat() {
+        return mLat;
+    }
+
+    public String getLon() {
+        return mLon;
+    }
+
+    public int getDistance() {
+        return mDistance;
+    }
 }

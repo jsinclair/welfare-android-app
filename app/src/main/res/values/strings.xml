@@ -49,6 +49,10 @@
     <string name="search_shack">Shack ID</string>
     <string name="search">Search</string>
     <string name="search_residence">Searching Residence</string>
+    <string name="street_address">Street Address:</string>
+    <string name="shack_id">Shack ID:</string>
+    <string name="latitude">Lat:</string>
+    <string name="longitude">Long:</string>
 
 
     <!-- Strings related to the reminders screen -->
