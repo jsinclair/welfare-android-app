@@ -1,35 +1,25 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
-import android.os.Build;
-import android.provider.Settings;
 import android.util.Log;
-import android.util.Pair;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
-import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 
@@ -69,15 +59,15 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void doResidenceSearch() {
         //TODO: LAT LONG PART?
-        //TODO: ZEE to continue here.
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
+
 
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();
         boolean hasShack = !(shackID == null || shackID.isEmpty());
         boolean hasStreet = !(streetAddress == null || streetAddress.isEmpty());
 
-        if (!hasShack && !hasStreet) {
+        if (false && !hasShack && !hasStreet) { //TODO: REMOVE FALSE
             //TODO: Send event
             mNetworkHandler.setValue(NetworkStatus.IDLE);
             return;
@@ -92,9 +82,12 @@ public class HomeViewModel extends AndroidViewModel {
             params.put("street_address", streetAddress);
         }
 
+        //TODO: REMOVE TEST CODE
+        params.put("lat", "-34.158124");
+        params.put("lon", "18.984279");
+
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/";
         String url = NetworkUtils.createURL(baseURL, params);
-
 
         RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
                 url, new JSONObject(),
