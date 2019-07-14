@@ -47,7 +47,7 @@
     <!-- Strings related to the residences screen -->
     <string name="search_address">Street Address</string>
     <string name="search_shack">Shack ID</string>
-    <string name="search">Search</string>
+
     <string name="search_residence">Searching Residence</string>
     <string name="street_address">Street Address:</string>
     <string name="shack_id">Shack ID:</string>
@@ -56,5 +56,9 @@
 
 
     <!-- Strings related to the reminders screen -->
+
+    <!--general-->
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

@@ -70,6 +70,14 @@ public class ResidencesFragment extends Fragment {
             }
         });
 
+        v.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setVisibility(View.GONE);
+                expandButton.show();
+            }
+        });
+
         //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
         mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
             @Override
