@@ -6,11 +6,10 @@
             type="za.co.aws.welfare.viewModel.HomeViewModel"/>
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
-
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.HomeActivity"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     app:layout_constraintLeft_toLeftOf="parent"
@@ -22,8 +21,18 @@
         android:id="@+id/expand_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_margin="@dimen/small_padding"
         android:src="@android:drawable/ic_menu_search"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_residence"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="@dimen/small_padding"
+        android:src="@drawable/baseline_add_location_white_18"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
@@ -79,6 +88,10 @@
             android:drawableStart="@android:drawable/ic_menu_search"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"/>
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="1dp" />
 
         <Button
             android:id="@+id/cancel_button"
