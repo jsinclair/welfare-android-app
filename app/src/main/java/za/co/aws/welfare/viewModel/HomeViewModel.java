@@ -14,6 +14,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
@@ -27,7 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.model.AnimalType;
+import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 
 public class HomeViewModel extends AndroidViewModel {
@@ -66,78 +69,65 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void doResidenceSearch() {
         //TODO: LAT LONG PART?
+        //TODO: ZEE to continue here.
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
-//        String uuid = Settings.Secure.getString(getApplication().getContentResolver(), Settings.Secure.ANDROID_ID);
-//        final String manufacturer = Build.MANUFACTURER;
-//        final String model = Build.MODEL;
-//        final String versionRelease = Build.VERSION.RELEASE;
-//
-//        JSONObject params = new JSONObject();
-//        try {
-//            params.put("username", mUsername.getValue());
-//            params.put("password", mPassword.getValue());
-//            params.put("os_version", versionRelease);
-//            params.put("device", manufacturer + " " + model);
-//            params.put("uuid", uuid);
-//        } catch (JSONException e) {
-//            mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.login_call_error)));
-//            mNetworkHandler.setValue(LoginViewModel.NetworkStatus.IDLE);
-//            return;
-//        }
-//
-//        String URL = getApplication().getString(R.string.kBaseUrl) + "authentication/";
-//
-//        RequestQueueManager.getInstance().addToRequestQueue(
-//                new JsonObjectRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.i("LoginTask", "r " + response );
-//                        try {
-//                            JSONObject data = response.getJSONObject("data");
-//                            String token = data.getString("token");
-//                            String fullName = data.getString("user_full_name");
-//                            String organisationName = data.getString("organisation_name");
-//
-//                            // Build the animal types list
-//                            JSONArray animalTypesJSONArray = data.getJSONArray("animal_types");
-//                            List<AnimalType> animalTypes = new ArrayList<>();
-//                            for (int i = 0; i < animalTypesJSONArray.length(); i++) {
-//                                final JSONObject animalType = animalTypesJSONArray.getJSONObject(i);
-//                                animalTypes.add(new AnimalType(animalType.getInt("id"), animalType.getString("description")));
-//                            }
-//
-//                            JSONArray permissionsJSONArray = data.getJSONArray("user_permissions");
-//                            List<String> permissions = new ArrayList<>();
-//                            for (int i = 0; i < permissionsJSONArray.length(); i++) {
-//                                permissions.add(permissionsJSONArray.getString(i));
-//                            }
-//                            handleLoginComplete(token, fullName, organisationName, animalTypes, permissions);
-//                        } catch (JSONException e) {
-//                            mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.invalid_server_response)));
-//                            mNetworkHandler.setValue(LoginViewModel.NetworkStatus.IDLE);
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        if (error instanceof NoConnectionError) {
-//                            mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.connection_error)));
-//                            mNetworkHandler.setValue(LoginViewModel.NetworkStatus.IDLE);
-//                            return;
-//                        }
-//                        mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.invalid_server_response)));
-//                        mNetworkHandler.setValue(LoginViewModel.NetworkStatus.IDLE);
-//                    }
-//                }){
-//
-//                    @Override
-//                    public Map<String, String> getHeaders() throws AuthFailureError {
-//                        HashMap<String, String> headers = new HashMap<>();
-//                        headers.put("Accept", "application/json");
-//                        return headers;
-//                    }
-//                }, getApplication());
+
+        String shackID = mShackIDSearch.getValue();
+        String streetAddress = mResidenceAddressSearch.getValue();
+        boolean hasShack = !(shackID == null || shackID.isEmpty());
+        boolean hasStreet = !(streetAddress == null || streetAddress.isEmpty());
+
+        if (!hasShack && !hasStreet) {
+            //TODO: Send event
+            mNetworkHandler.setValue(NetworkStatus.IDLE);
+            return;
+        }
+
+        Map<String, String> params = new HashMap<>();
+        if (hasShack) {
+            params.put("shack_id", shackID);
+        }
+
+        if (hasStreet) {
+            params.put("street_address", streetAddress);
+        }
+
+        String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/";
+        String url = NetworkUtils.createURL(baseURL, params);
+
+
+        RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
+                url, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("EDIT>>>>>>", response.toString());
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+//                        setupForEdit(response);
+//                        mNetworkHandler.setValue(NetworkAction.NONE);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mNetworkHandler.setValue(NetworkStatus.IDLE);
+//                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                    mEventHandler.setValue(new Pair<>(Event.NETWORK_ERROR, ""));
+//                } else {
+//                    mEventHandler.setValue(new Pair<>(Event.SERVER_ERROR, ""));
+//                }
+            }
+        })
+        {@Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", ((WelfareApplication)getApplication()).getToken());
+            return headers;
+        }
+        }, getApplication());
+
+
+
     }
 
 }
