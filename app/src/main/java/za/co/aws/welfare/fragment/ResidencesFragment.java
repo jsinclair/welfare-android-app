@@ -1,6 +1,7 @@
 package za.co.aws.welfare.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,15 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.LinkedList;
+
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ResidencesBinding;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 
@@ -57,6 +62,16 @@ public class ResidencesFragment extends Fragment {
 //                searchView.setVisibility(View.GONE);
 //                expandButton.show();
                 mModel.doResidenceSearch();
+            }
+        });
+
+        //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
+        mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
+            @Override
+            public void onChanged(LinkedList<ResidenceSearchData> residenceSearchData) {
+                if (residenceSearchData != null) {
+                    Log.i(">>> SUCESS", residenceSearchData.size() + " ");
+                }
             }
         });
 
