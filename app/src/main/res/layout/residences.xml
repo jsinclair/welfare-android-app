@@ -111,5 +111,36 @@
 
     </ListView>
 
+
+        <LinearLayout
+            android:id="@+id/empty_view"
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/search_menu"
+            android:padding="@dimen/general_padding">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/small_padding"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Nothing to see here"
+                android:layout_marginBottom="@dimen/small_padding"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Resident search had no results or an error occurred. Try again later."
+                android:layout_marginBottom="@dimen/small_padding"
+                android:gravity="center"/>
+        </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

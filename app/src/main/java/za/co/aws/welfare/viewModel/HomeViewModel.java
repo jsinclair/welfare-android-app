@@ -147,6 +147,7 @@ public class HomeViewModel extends AndroidViewModel {
                 } else {
                     mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
                 }
+                mResidenceSearchResults.setValue(null);
             }
         })
         {@Override

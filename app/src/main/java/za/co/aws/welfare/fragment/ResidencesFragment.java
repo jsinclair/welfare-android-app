@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -46,7 +48,7 @@ public class ResidencesFragment extends Fragment {
         binding.setLifecycleOwner(getActivity());
         binding.setViewModel(mModel);
 
-        View v = binding.getRoot();
+        final View v = binding.getRoot();
 
         results = v.findViewById(R.id.result_residencess);
 
@@ -90,8 +92,10 @@ public class ResidencesFragment extends Fragment {
         mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
             @Override
             public void onChanged(final LinkedList<ResidenceSearchData> residenceSearchData) {
-                //TODO: Handle empty results.
-                if (residenceSearchData != null) {
+                LinearLayout emptyView = v.findViewById(R.id.empty_view);
+                if (residenceSearchData != null && !residenceSearchData.isEmpty()) {
+                    emptyView.setVisibility(View.GONE);
+                    results.setVisibility(View.VISIBLE);
                     Log.i(">>> SUCESS", residenceSearchData.size() + " ");
                     results.setAdapter(new ResidenceSearchListAdapter(getContext(), R.layout.content_residence_search_entry, residenceSearchData));
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,6 +106,9 @@ public class ResidencesFragment extends Fragment {
                     });
                     searchView.setVisibility(View.GONE);
                     expandButton.show();
+                } else {
+                    emptyView.setVisibility(View.VISIBLE);
+                    results.setVisibility(View.GONE);
                 }
             }
         });
