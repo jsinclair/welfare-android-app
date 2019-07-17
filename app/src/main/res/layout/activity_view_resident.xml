@@ -21,6 +21,7 @@
                 android:padding="@dimen/general_padding">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/address_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/search_address"
@@ -31,11 +32,13 @@
                         android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
                         android:text="@={ viewModel.mAddress }"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/shack_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/search_shack"
@@ -46,11 +49,13 @@
                         android:id="@+id/shack_id"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
                         android:text="@={ viewModel.mShackID }"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/notes_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/notes"
@@ -61,6 +66,7 @@
                         android:id="@+id/notes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
                         android:text="@={ viewModel.mNotes }"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>

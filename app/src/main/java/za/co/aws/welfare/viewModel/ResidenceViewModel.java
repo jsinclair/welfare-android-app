@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 
 public class ResidenceViewModel extends AndroidViewModel {
 
+    //TODO: Use this for a new entry as wel!
+
     /** The network statuses. */
     public enum NetworkStatus {
         // No network action at the moment.
@@ -45,8 +47,38 @@ public class ResidenceViewModel extends AndroidViewModel {
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>(); //TODO
 
+        mAddress.setValue("TEST");
+        mEditMode.setValue(false);
         //todo: saved instance, then
         //TODO: DOwnload data!
+    }
+
+    // Should set to TRUE if editable.
+    public MutableLiveData<Boolean> getEditMode() {
+        return mEditMode;
+    }
+
+
+    public void toggleEditMode() {
+        Boolean currentEdit = mEditMode.getValue(); //set this as well when edit call was successful
+        if (currentEdit != null) {
+            mEditMode.setValue(!currentEdit);
+
+            if (!currentEdit) {
+                mAddressSave = mAddress.getValue();
+                mShackIDSave = mShackID.getValue();
+                mShackIDSave = mShackID.getValue();
+                mLatSave = mLat.getValue();
+                mLongSave = mLon.getValue();
+                mNotesSave = mNotes.getValue();
+            } else {
+                mAddress.setValue(mAddressSave);
+                mShackID.setValue(mShackIDSave);
+                mLat.setValue(mLatSave);
+                mLon.setValue(mLongSave);
+                mNotes.setValue(mNotesSave);//TODO: Ensure this only happens on a cancel. right now the save button still does this.
+            }
+        }
     }
 }
 //
