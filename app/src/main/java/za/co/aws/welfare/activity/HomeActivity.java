@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void navigate(Pair<HomeViewModel.Navigate, Integer> data) {
         switch (data.first) {
             case RESIDENCE:
-                Intent intent = new Intent(this, ViewResidentActivity.class);
+                Intent intent = new Intent(this, ResidentActivity.class);
                 //TODO: PUT ID IN PACK
                 startActivity(intent);
                 break;

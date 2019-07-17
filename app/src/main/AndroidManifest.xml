@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ViewResidentActivity"></activity>
+        <activity android:name=".activity.ResidentActivity"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"

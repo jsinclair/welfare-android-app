@@ -1,6 +1,5 @@
 package za.co.aws.welfare.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -24,8 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
-import za.co.aws.welfare.activity.LoginActivity;
-import za.co.aws.welfare.activity.ViewResidentActivity;
 import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ResidencesBinding;
