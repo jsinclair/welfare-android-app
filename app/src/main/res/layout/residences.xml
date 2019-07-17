@@ -19,8 +19,8 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/expand_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_padding"
         android:src="@android:drawable/ic_menu_search"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,8 +28,8 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_residence"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_padding"
         android:src="@drawable/baseline_add_location_white_18"
         app:layout_constraintBottom_toBottomOf="parent"

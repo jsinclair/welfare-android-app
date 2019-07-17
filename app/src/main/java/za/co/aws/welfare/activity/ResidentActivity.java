@@ -21,7 +21,6 @@ public class ResidentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_view_resident);
 
         ActivityViewResidentBinding binding =  DataBindingUtil.setContentView(this, R.layout.activity_view_resident);
         mModel = ViewModelProviders.of(this).get(ResidenceViewModel.class);
