@@ -31,7 +31,6 @@ import za.co.aws.welfare.fragment.RemindersFragment;
 import za.co.aws.welfare.fragment.ResidencesFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.HomeViewModel;
-import za.co.aws.welfare.viewModel.LoginViewModel;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -95,7 +94,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    /** Handle once off events. */
+    /** Handle once network events. */
     private void handleNetworkStatus(HomeViewModel.NetworkStatus status) {
         FragmentManager fm = getSupportFragmentManager();
         ProgressDialogFragment progressDialog = (ProgressDialogFragment) fm.findFragmentByTag(PROGRESS_DIALOG_TAG);
@@ -113,8 +112,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /** Handle one time events triggered from the model. */
     private void handleEvent(Pair<HomeViewModel.Event, String> eventData) {
-
         switch (eventData.first) {
             case SEARCH_RES_ERROR:
                 showAlert(getString(R.string.download_err), eventData.second);
@@ -125,6 +124,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Convenience method to show an alert dialog.
     private void showAlert(String title, String message) {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogFragment alert = AlertDialogFragment.newInstance(title, message);

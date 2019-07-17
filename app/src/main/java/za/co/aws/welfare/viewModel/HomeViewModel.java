@@ -30,6 +30,7 @@ import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 
+/** Handles the search fragments. */
 public class HomeViewModel extends AndroidViewModel {
 
     /** The network statuses. */
@@ -41,20 +42,33 @@ public class HomeViewModel extends AndroidViewModel {
         SEARCHING_RESIDENCE,
     }
 
+    /** Use this for one-time events. */
     public enum Event {
+        // If an error occurred while trying to search for residence.
         SEARCH_RES_ERROR,
+
+        // If the user did not provide search data
         SEARCH_RES_DATA_REQ,
     }
 
     /** Remember the last searched address entry. Allows us to show the last filter/result that
      * the user entered. SO for example, if they are doing a census in a particular road, the dont
-     * have to redo the search (and spend more data) every time. TODO: STORE RESULTS HERE TOO IN A MUTLD</>  */
+     * have to redo the search (and spend more data) every time. */
     public MutableLiveData<String> mResidenceAddressSearch;
+
+    /** Remember the last entry used for shack id. */ //todo: might change to only update on SEARCH pressed.
     public MutableLiveData<String> mShackIDSearch;
-    public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
+
+    /** Remember the last entry used for lat / lon. STILL TODO!*/
     public MutableLiveData<String> mLatLongSearch; //TODO!
 
+    /** Holds the results of the last search done. */
+    public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
+
+    /** Use this for indicating the network usage. Remember to always reset back to idle. */
     public MutableLiveData<NetworkStatus> mNetworkHandler;
+
+    /** Use this for one-time events. */
     public SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     public HomeViewModel(Application application) {
@@ -66,15 +80,17 @@ public class HomeViewModel extends AndroidViewModel {
         mResidenceSearchResults = new MutableLiveData<>();
     }
 
-
+    /** Use this to respond to network changes. */
     public LiveData<NetworkStatus> getNetworkHandler() {
         return mNetworkHandler;
     }
 
+    /** Use this to respond to one time events. */
     public LiveData<Pair<Event, String>> getEventHandler() {
         return mEventHandler;
     }
 
+    /** Use this to respond to search result changes. */
     public LiveData<LinkedList<ResidenceSearchData>> getResidentResults() {
         return mResidenceSearchResults;
     }
