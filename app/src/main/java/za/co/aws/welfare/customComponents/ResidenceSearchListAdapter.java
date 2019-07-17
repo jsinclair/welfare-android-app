@@ -24,6 +24,7 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
         TextView lat;
         TextView lon;
         TextView dist;
+        TextView animals;
         int ref;
     }
 
@@ -74,6 +75,7 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
             holder.shackID = convertView.findViewById(R.id.shack_id);
             holder.lat = convertView.findViewById(R.id.lat);
             holder.lon = convertView.findViewById(R.id.lon);
+            holder.animals = convertView.findViewById(R.id.animals);
 
             convertView.setTag(holder);
         } else {
@@ -84,6 +86,7 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
         holder.shackID.setText(i.getShackID());
         holder.lat.setText(i.getLat());
         holder.lon.setText(i.getLon());
+        holder.animals.setText(i.getAnimalNames());
         return convertView;
     }
 

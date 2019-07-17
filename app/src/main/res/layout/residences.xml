@@ -106,6 +106,7 @@
         android:id="@+id/result_residencess"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/general_padding"
         app:layout_constraintTop_toBottomOf="@id/search_menu">
 
     </ListView>

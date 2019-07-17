@@ -94,6 +94,8 @@ public class ResidencesFragment extends Fragment {
                 if (residenceSearchData != null) {
                     Log.i(">>> SUCESS", residenceSearchData.size() + " ");
                     results.setAdapter(new ResidenceSearchListAdapter(getContext(), R.layout.content_residence_search_entry, residenceSearchData));
+                    searchView.setVisibility(View.GONE);
+                    expandButton.show();
                 }
             }
         });

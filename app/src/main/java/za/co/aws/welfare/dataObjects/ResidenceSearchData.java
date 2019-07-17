@@ -7,15 +7,17 @@ public class ResidenceSearchData {
     private String mShackID;
     private String mStreetAddress;
     private String mLat, mLon;
+    private String mAnimalNames;
     private int mDistance;
 
-    public ResidenceSearchData(int mID, String mShackID, String mStreetAddress, String mLat, String mLon, int mDistance) {
+    public ResidenceSearchData(int mID, String mShackID, String mStreetAddress, String mLat, String mLon, int mDistance, String animalNames) {
         this.mID = mID;
         this.mShackID = mShackID;
         this.mStreetAddress = mStreetAddress;
         this.mLat = mLat;
         this.mLon = mLon;
         this.mDistance = mDistance;
+        this.mAnimalNames = animalNames;
     }
 
     public int getID() {
@@ -40,5 +42,10 @@ public class ResidenceSearchData {
 
     public int getDistance() {
         return mDistance;
+    }
+
+
+    public String getAnimalNames() {
+        return mAnimalNames;
     }
 }
