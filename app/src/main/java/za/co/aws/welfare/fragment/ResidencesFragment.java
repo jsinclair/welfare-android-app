@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -88,18 +89,22 @@ public class ResidencesFragment extends Fragment {
         //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
         mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
             @Override
-            public void onChanged(LinkedList<ResidenceSearchData> residenceSearchData) {
-                //TODO: Handle errors
+            public void onChanged(final LinkedList<ResidenceSearchData> residenceSearchData) {
                 //TODO: Handle empty results.
                 if (residenceSearchData != null) {
                     Log.i(">>> SUCESS", residenceSearchData.size() + " ");
                     results.setAdapter(new ResidenceSearchListAdapter(getContext(), R.layout.content_residence_search_entry, residenceSearchData));
+                    results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Log.i(">>>>SEL", ((ResidenceSearchData) results.getAdapter().getItem(i)).getStreetAddress());
+                        }
+                    });
                     searchView.setVisibility(View.GONE);
                     expandButton.show();
                 }
             }
         });
-
         return v;
     }
 }

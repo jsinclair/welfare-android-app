@@ -1,8 +1,8 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
-import android.util.Log;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,13 +14,11 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -30,6 +28,7 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
+import za.co.aws.welfare.utils.SingleLiveEvent;
 
 public class HomeViewModel extends AndroidViewModel {
 
@@ -42,6 +41,10 @@ public class HomeViewModel extends AndroidViewModel {
         SEARCHING_RESIDENCE,
     }
 
+    public enum Event {
+        SEARCH_RES_ERROR
+    }
+
     /** Remember the last searched address entry. Allows us to show the last filter/result that
      * the user entered. SO for example, if they are doing a census in a particular road, the dont
      * have to redo the search (and spend more data) every time. TODO: STORE RESULTS HERE TOO IN A MUTLD</>  */
@@ -51,20 +54,24 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<String> mLatLongSearch; //TODO!
 
     public MutableLiveData<NetworkStatus> mNetworkHandler;
+    public SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     public HomeViewModel(Application application) {
         super(application);
         mResidenceAddressSearch = new MutableLiveData<>();
         mShackIDSearch = new MutableLiveData<>();
         mNetworkHandler = new MutableLiveData<>();
+        mEventHandler = new SingleLiveEvent<>();
         mResidenceSearchResults = new MutableLiveData<>();
-
-        mResidenceAddressSearch.setValue("TEST");
     }
 
 
     public LiveData<NetworkStatus> getNetworkHandler() {
         return mNetworkHandler;
+    }
+
+    public LiveData<Pair<Event, String>> getEventHandler() {
+        return mEventHandler;
     }
 
     public LiveData<LinkedList<ResidenceSearchData>> getResidentResults() {
@@ -74,7 +81,6 @@ public class HomeViewModel extends AndroidViewModel {
     public void doResidenceSearch() {
         //TODO: LAT LONG PART?
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
-
 
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();
@@ -108,7 +114,6 @@ public class HomeViewModel extends AndroidViewModel {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("EDIT>>>>>>", response.toString());
                         LinkedList<ResidenceSearchData> results = new LinkedList<>();
                         try {
                             JSONObject data = response.getJSONObject("data");
@@ -137,12 +142,11 @@ public class HomeViewModel extends AndroidViewModel {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mNetworkHandler.setValue(NetworkStatus.IDLE);
-                //TODO: SHOW ERROR>
-//                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                    mEventHandler.setValue(new Pair<>(Event.NETWORK_ERROR, ""));
-//                } else {
-//                    mEventHandler.setValue(new Pair<>(Event.SERVER_ERROR, ""));
-//                }
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.conn_error_res_search)));
+                } else {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
+                }
             }
         })
         {@Override
@@ -152,14 +156,6 @@ public class HomeViewModel extends AndroidViewModel {
             return headers;
         }
         }, getApplication());
-//
-
-
-        ///
-
-
-
-
     }
 
 }

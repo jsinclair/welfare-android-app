@@ -53,6 +53,8 @@
     <string name="shack_id">Shack ID:</string>
     <string name="latitude">Lat:</string>
     <string name="longitude">Long:</string>
+    <string name="conn_error_res_search">A connection error occurred while trying to retrieve Resident info. Please check your connection and try again.</string>
+    <string name="unknown_error_res_search">An unknown error occurred while trying to retrieve Resident info. Please try again later.</string>
 
 
     <!-- Strings related to the reminders screen -->
@@ -60,5 +62,6 @@
     <!--general-->
     <string name="search">Search</string>
     <string name="cancel">Cancel</string>
+    <string name="download_err">Download Error</string>
 
 </resources>

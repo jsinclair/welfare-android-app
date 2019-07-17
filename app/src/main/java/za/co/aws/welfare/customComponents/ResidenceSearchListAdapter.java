@@ -42,20 +42,15 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
         this.originalObjects = objects;
     }
 
-//    @Override
-//    public int getCount() {
-//        return displayObjects.size();
-//    }
-//todo
-//    @Override
-//    public PendingEvaluationObject getItem(int position) {
-//        return displayObjects.get(position);
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
+    @Override
+    public int getCount() {
+        return originalObjects.size();
+    }
+
+    @Override
+    public ResidenceSearchData getItem(int position) {
+        return originalObjects.get(position);
+    }
 
     @NonNull
     @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.util.Pair;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.AnimalsFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 import za.co.aws.welfare.fragment.RemindersFragment;
@@ -35,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public static final String TAG = "HomeActivity";
     public static final String PROGRESS_DIALOG_TAG = "PROGRESS_DIALOG_TAG";
+    public static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private HomeViewModel mModel;
 
     @Override
@@ -81,6 +84,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        mModel.getEventHandler().observe(this, new Observer<Pair<HomeViewModel.Event, String>>() {
+            @Override
+            public void onChanged(Pair<HomeViewModel.Event, String> eventData) {
+                if (eventData != null) {
+                    handleEvent(eventData);
+                }
+            }
+        });
+
     }
 
     /** Handle once off events. */
@@ -98,6 +110,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Utils.showDialog(fm, progress, PROGRESS_DIALOG_TAG, false);
                 break;
 
+        }
+    }
+
+    private void handleEvent(Pair<HomeViewModel.Event, String> eventData) {
+        switch (eventData.first) {
+            case SEARCH_RES_ERROR:
+                FragmentManager fm = getSupportFragmentManager();
+                AlertDialogFragment alert = AlertDialogFragment.newInstance(getString(R.string.download_err), eventData.second);
+                Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
+                break;
         }
     }
 
