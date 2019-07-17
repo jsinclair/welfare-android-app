@@ -47,10 +47,14 @@ public class ResidenceViewModel extends AndroidViewModel {
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>(); //TODO
 
-        mAddress.setValue("TEST");
         mEditMode.setValue(false);
         //todo: saved instance, then
-        //TODO: DOwnload data!
+
+        loadData();
+    }
+
+    private void loadData() {
+
     }
 
     // Should set to TRUE if editable.
@@ -58,10 +62,10 @@ public class ResidenceViewModel extends AndroidViewModel {
         return mEditMode;
     }
 
-    public void toggleEditMode() {
-        Boolean currentEdit = mEditMode.getValue(); //set this as well when edit call was successful
+    /** Either enable edit, or if its enabled already start the saving process. */
+    public void toggleSaveEdit() {
+        Boolean currentEdit = mEditMode.getValue();
         if (currentEdit != null) {
-            mEditMode.setValue(!currentEdit);
 
             if (!currentEdit) {
                 mAddressSave = mAddress.getValue();
@@ -70,14 +74,27 @@ public class ResidenceViewModel extends AndroidViewModel {
                 mLatSave = mLat.getValue();
                 mLongSave = mLon.getValue();
                 mNotesSave = mNotes.getValue();
+                mEditMode.setValue(true);
             } else {
-                mAddress.setValue(mAddressSave);
-                mShackID.setValue(mShackIDSave);
-                mLat.setValue(mLatSave);
-                mLon.setValue(mLongSave);
-                mNotes.setValue(mNotesSave);//TODO: Ensure this only happens on a cancel. right now the save button still does this.
+                // Do save actions to backend.
+                // set editable back to false once done
+                saveData();
             }
         }
+    }
+
+    /* Cancel the current edit and reset the values. */
+    public void cancelEdit() {
+        mEditMode.setValue(false);
+        mAddress.setValue(mAddressSave);
+        mShackID.setValue(mShackIDSave);
+        mLat.setValue(mLatSave);
+        mLon.setValue(mLongSave);
+        mNotes.setValue(mNotesSave);
+    }
+
+    private void saveData() {
+        mEditMode.setValue(false);
     }
 }
 //

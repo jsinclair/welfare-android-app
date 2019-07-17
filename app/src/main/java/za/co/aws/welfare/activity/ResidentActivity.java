@@ -52,18 +52,19 @@ public class ResidentActivity extends AppCompatActivity {
         mCancelEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mModel.cancelEdit();
             }
         });
         mEditButton = findViewById(R.id.edit);
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mModel.toggleEditMode();
+                mModel.toggleSaveEdit();
             }
         });
     }
 
+    /** Update the editable views and icons. */
     private void setEditable(boolean editable) {
         mAddress.setEnabled(editable);
         mShackID.setEnabled(editable);
