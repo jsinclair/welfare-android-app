@@ -1,5 +1,6 @@
 package za.co.aws.welfare.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.activity.LoginActivity;
+import za.co.aws.welfare.activity.ViewResidentActivity;
 import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ResidencesBinding;
@@ -102,6 +105,7 @@ public class ResidencesFragment extends Fragment {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             Log.i(">>>>SEL", ((ResidenceSearchData) results.getAdapter().getItem(i)).getStreetAddress());
+                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID()); //TODO
                         }
                     });
                     searchView.setVisibility(View.GONE);

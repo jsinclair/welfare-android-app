@@ -1,5 +1,6 @@
 package za.co.aws.welfare.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -32,6 +33,7 @@ import za.co.aws.welfare.fragment.ResidencesFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 
+/** Contains the 3 search fragments. */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "HomeActivity";
@@ -92,6 +94,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        mModel.getNavigationHandler().observe(this, new Observer<Pair<HomeViewModel.Navigate, Integer>>() {
+            @Override
+            public void onChanged(Pair<HomeViewModel.Navigate, Integer> eventData) {
+                navigate(eventData);
+            }
+        });
+
+    }
+
+    // Used to navigate to other activities
+    private void navigate(Pair<HomeViewModel.Navigate, Integer> data) {
+        switch (data.first) {
+            case RESIDENCE:
+                Intent intent = new Intent(this, ViewResidentActivity.class);
+                //TODO: PUT ID IN PACK
+                startActivity(intent);
+                break;
+            case ANIMAL:
+                break;
+        }
     }
 
     /** Handle once network events. */

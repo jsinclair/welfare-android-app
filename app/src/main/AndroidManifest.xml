@@ -11,10 +11,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activity.ViewResidentActivity"></activity>
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <activity
             android:name=".activity.SplashScreenActivity"
@@ -25,21 +28,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/app_name">
-        </activity>
-
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <receiver android:name=".notification.NotificationPublisher" />
 
-        <service android:name=".notification.WelfareFirebaseMessagingService"
+        <service
+            android:name=".notification.WelfareFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -51,7 +51,7 @@
             android:resource="@drawable/dog" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/channel_id"/>
+            android:value="@string/channel_id" />
     </application>
 
 </manifest>

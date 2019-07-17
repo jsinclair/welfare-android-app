@@ -51,6 +51,10 @@ public class HomeViewModel extends AndroidViewModel {
         SEARCH_RES_DATA_REQ,
     }
 
+    public enum Navigate {
+        RESIDENCE, ANIMAL
+    }
+
     /** Remember the last searched address entry. Allows us to show the last filter/result that
      * the user entered. SO for example, if they are doing a census in a particular road, the dont
      * have to redo the search (and spend more data) every time. */
@@ -71,12 +75,16 @@ public class HomeViewModel extends AndroidViewModel {
     /** Use this for one-time events. */
     public SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
+
+    public SingleLiveEvent<Pair<Navigate, Integer>> mNavigationHandler;
+
     public HomeViewModel(Application application) {
         super(application);
         mResidenceAddressSearch = new MutableLiveData<>();
         mShackIDSearch = new MutableLiveData<>();
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
+        mNavigationHandler = new SingleLiveEvent<>();
         mResidenceSearchResults = new MutableLiveData<>();
     }
 
@@ -88,6 +96,11 @@ public class HomeViewModel extends AndroidViewModel {
     /** Use this to respond to one time events. */
     public LiveData<Pair<Event, String>> getEventHandler() {
         return mEventHandler;
+    }
+
+    /** Use this to respond to one time events. */
+    public LiveData<Pair<Navigate, Integer>> getNavigationHandler() {
+        return mNavigationHandler;
     }
 
     /** Use this to respond to search result changes. */
@@ -173,6 +186,10 @@ public class HomeViewModel extends AndroidViewModel {
             return headers;
         }
         }, getApplication());
+    }
+
+    public void triggerViewResident(int id) {
+        mNavigationHandler.setValue(new Pair<>(Navigate.RESIDENCE, id));
     }
 
 }
