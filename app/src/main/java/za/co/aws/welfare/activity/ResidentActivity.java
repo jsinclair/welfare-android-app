@@ -25,6 +25,7 @@ public class ResidentActivity extends AppCompatActivity {
     private TextInputLayout mNotes;
 
     private FloatingActionButton mEditButton;
+    private FloatingActionButton mCancelEditButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,13 @@ public class ResidentActivity extends AppCompatActivity {
         mAddress = findViewById(R.id.address_container);
         mShackID = findViewById(R.id.shack_container);
         mNotes = findViewById(R.id.notes_container);
+        mCancelEditButton = findViewById(R.id.cancel_edit);
+        mCancelEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         mEditButton = findViewById(R.id.edit);
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,8 +69,10 @@ public class ResidentActivity extends AppCompatActivity {
         mShackID.setEnabled(editable);
         mNotes.setEnabled(editable);
         if (editable) {
+            mCancelEditButton.show();
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
         } else {
+            mCancelEditButton.hide();
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
         }
     }

@@ -58,7 +58,6 @@ public class ResidenceViewModel extends AndroidViewModel {
         return mEditMode;
     }
 
-
     public void toggleEditMode() {
         Boolean currentEdit = mEditMode.getValue(); //set this as well when edit call was successful
         if (currentEdit != null) {
