@@ -114,13 +114,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleEvent(Pair<HomeViewModel.Event, String> eventData) {
+
         switch (eventData.first) {
             case SEARCH_RES_ERROR:
-                FragmentManager fm = getSupportFragmentManager();
-                AlertDialogFragment alert = AlertDialogFragment.newInstance(getString(R.string.download_err), eventData.second);
-                Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
+                showAlert(getString(R.string.download_err), eventData.second);
+                break;
+            case SEARCH_RES_DATA_REQ:
+                showAlert(getString(R.string.data_required), eventData.second);
                 break;
         }
+    }
+
+    private void showAlert(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogFragment alert = AlertDialogFragment.newInstance(title, message);
+        Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
     }
 
     @Override

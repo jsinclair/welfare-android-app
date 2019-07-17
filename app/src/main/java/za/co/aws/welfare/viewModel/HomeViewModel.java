@@ -42,7 +42,8 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public enum Event {
-        SEARCH_RES_ERROR
+        SEARCH_RES_ERROR,
+        SEARCH_RES_DATA_REQ,
     }
 
     /** Remember the last searched address entry. Allows us to show the last filter/result that
@@ -80,18 +81,17 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void doResidenceSearch() {
         //TODO: LAT LONG PART?
-        mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
-
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();
         boolean hasShack = !(shackID == null || shackID.isEmpty());
         boolean hasStreet = !(streetAddress == null || streetAddress.isEmpty());
 
-        if (false && !hasShack && !hasStreet) { //TODO: REMOVE FALSE
-            //TODO: Send event
-            mNetworkHandler.setValue(NetworkStatus.IDLE);
+        if (false && !hasShack && !hasStreet) { //TODO: REMOVE FALSE & add lat/lon check too
+            mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_DATA_REQ, getApplication().getString(R.string.res_search_data_required)));
             return;
         }
+
+        mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
 
         Map<String, String> params = new HashMap<>();
         if (hasShack) {
@@ -132,7 +132,7 @@ public class HomeViewModel extends AndroidViewModel {
                                 }
                             }
                         } catch (JSONException e) {
-                            //TODO: SHOW ERRR
+                            mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.internal_error_res_search)));
                         }
                         mResidenceSearchResults.setValue(results);
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
