@@ -13,7 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import za.co.aws.welfare.fragment.ProgressDialogFragment;
+
 public class Utils {
+
+    private static final String PROGRESS_TAG = "PROGRESS_TAG";
 
     /** Show the given dialog, if it doesn't exist already. */
     public static void showDialog(FragmentManager fm, DialogFragment dialog, String tag, boolean allowStateLoss) {
@@ -31,6 +35,32 @@ public class Utils {
             } else {
                 Log.i("SHOW DIALOG", "DIALOG ALREADY EXISTS");
             }
+        }
+    }
+
+    public static ProgressDialogFragment getProgressDialog(FragmentManager fm) {
+        return (ProgressDialogFragment) fm.findFragmentByTag(PROGRESS_TAG);
+    }
+
+    /** Convenience method to create or update the progress dialog. */
+    public static void updateProgress(FragmentManager fm, ProgressDialogFragment progressDialog, String message) {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialogFragment.newInstance(message);
+            Utils.showDialogAllowingStateLoss(fm, progressDialog, PROGRESS_TAG);
+        } else {
+            progressDialog.updateText(message);
+        }
+    }
+
+    /** Used to display dialogs when async, helps prevent crashes. */
+    public static void showDialogAllowingStateLoss(FragmentManager fragmentManager, DialogFragment dialogFragment, String tag) {
+        try {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.add(dialogFragment, tag);
+            ft.commitAllowingStateLoss();
+            fragmentManager.executePendingTransactions();
+        } catch (IllegalStateException e) {
+            Log.w("ILLEGAL STATE", "DIALOG MIGHT NOT SHOW");
         }
     }
 

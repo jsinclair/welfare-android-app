@@ -45,6 +45,8 @@
     <!-- Strings related to the animals screen -->
 
     <!-- Strings related to the residences screen -->
+    <string name="retrieving_res_data">Retrieving Residence...</string>
+    <string name="updating_res_data">Updating Residence...</string>
     <string name="search_address">Street Address</string>
     <string name="search_shack">Shack ID</string>
     <string name="search_res_animals">Animals:</string>

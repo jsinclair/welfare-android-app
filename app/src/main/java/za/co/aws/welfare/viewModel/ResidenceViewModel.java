@@ -46,6 +46,8 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         // Busy retrieving data for this residence.
         RETRIEVING_DATA,
+
+        // Busy updating residence.
         UPDATING_DATA,
     }
 
@@ -172,6 +174,10 @@ public class ResidenceViewModel extends AndroidViewModel {
         return mEditMode;
     }
 
+    public MutableLiveData<NetworkStatus> getNetworkHandler() {
+        return mNetworkHandler;
+    }
+
     // Should set to TRUE if editable.
     public MutableLiveData<List<ResidentAnimalDetail>> getAnimalList() {
         return mAnimalList;
@@ -269,6 +275,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                         Toast.makeText(getApplication(), getApplication().getString(R.string.update_successful),
                                 Toast.LENGTH_LONG).show();
                         mEditMode.setValue(false);
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
                     }
                 }, new Response.ErrorListener() {
                     @Override

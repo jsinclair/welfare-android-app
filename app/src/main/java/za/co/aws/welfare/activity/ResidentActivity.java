@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -19,6 +20,8 @@ import java.util.List;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
+import za.co.aws.welfare.fragment.ProgressDialogFragment;
+import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allows the user to view and, if they have permission, edit a residence. */
@@ -86,7 +89,36 @@ public class ResidentActivity extends AppCompatActivity {
                 setupAnimalViews(residentAnimalDetails);
             }
         });
+
+        mModel.getNetworkHandler().observe(this, new Observer<ResidenceViewModel.NetworkStatus>() {
+            @Override
+            public void onChanged(ResidenceViewModel.NetworkStatus networkStatus) {
+                if (networkStatus != null) {
+                    handleNetworkStatus(networkStatus);
+                }
+            }
+        });
+
         mModel.setup(isNew, resID);
+    }
+
+    //TODO: UPDATE OTHER NETWORK HANDLERS
+    private void handleNetworkStatus(ResidenceViewModel.NetworkStatus status) {
+        FragmentManager fm = getSupportFragmentManager();
+        ProgressDialogFragment progressDialog = Utils.getProgressDialog(fm);
+        switch (status) {
+            case IDLE:
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                break;
+            case RETRIEVING_DATA:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.retrieving_res_data));
+                break;
+            case UPDATING_DATA:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.updating_res_data));
+                break;
+        }
     }
 
     /** Update the editable views and icons. */
