@@ -13,16 +13,19 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
+import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 
@@ -50,12 +53,12 @@ public class ResidenceViewModel extends AndroidViewModel {
     public MutableLiveData<String> mLat;
     public MutableLiveData<String> mLon;
     public MutableLiveData<String> mNotes;
-    public MutableLiveData<String> mAnimalList; //TODO: will be objects
+    public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList; //TODO: show on UI
 
     public MutableLiveData<NetworkStatus> mNetworkHandler;
 
-    private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave; //Use these to store
-    //// values on edit, so that values may be reset on cancel edit
+    // These store the values to revert to if the user 'cancels' an edit.
+    private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave;
 
     public ResidenceViewModel(Application app) {
         super(app);
@@ -67,7 +70,7 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLat = new MutableLiveData<>(); //TODO
         mLon = new MutableLiveData<>(); //TODO
         mNotes = new MutableLiveData<>();
-        mAnimalList = new MutableLiveData<>(); //TODO
+        mAnimalList = new MutableLiveData<>();
         //todo: saved instance!
     }
 
@@ -102,16 +105,24 @@ public class ResidenceViewModel extends AndroidViewModel {
                                 JSONObject data = response.getJSONObject("data");
                                 if (data != null) {
                                     JSONObject res = data.getJSONObject("residence_details");
-
-
-                                        int id = res.getInt("id");
-                                        String shackID = res.optString("shack_id");
-                                        String streetAddress = res.optString("street_address");
-                                        String lat = res.optString("latitude");
-                                        String lon = res.optString("longitude");
-                                        String notes = res.optString("notes");
-//                                        int dist = entry.optInt("distance", 0); TODO
-//                                        String animals = entry.optString("animals");
+                                    int id = res.getInt("id");
+                                    String shackID = res.optString("shack_id");
+                                    String streetAddress = res.optString("street_address");
+                                    String lat = res.optString("latitude");
+                                    String lon = res.optString("longitude");
+                                    String notes = res.optString("notes");
+                                    JSONArray animals = res.optJSONArray("animals");
+                                    List<ResidentAnimalDetail> animalList = new LinkedList<>();
+                                    if (animals != null && animals.length() != 0) {
+                                        for (int i= 0; i < animals.length(); i++) {
+                                            JSONObject aniEntry = animals.getJSONObject(i);
+                                            int aniID = aniEntry.optInt("id", -1);
+                                            String aniName = aniEntry.optString("name");
+                                            String aniWelfareNum = aniEntry.optString("welfare_number");
+                                            animalList.add(new ResidentAnimalDetail(aniID, aniName, aniWelfareNum));
+                                        }
+                                    }
+                                    mAnimalList.setValue(animalList);
                                     residenceID = id;
                                     mShackID.setValue(shackID);
                                     mAddress.setValue(streetAddress);
@@ -186,13 +197,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     private void saveData() {
+        //TODO: Backend call.
         mEditMode.setValue(false);
     }
 }
-//
-//	"residence_id":5, to be null or missing on ADD
-//            "shack_id":"56",
-//            "street_address":"1 test street",
-//            "latitude":55.5555,
-//            "longitude":55.5555,
-//            "notes":"test notes"
