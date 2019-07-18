@@ -1,6 +1,7 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -24,7 +25,6 @@ import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
-import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
@@ -33,6 +33,7 @@ import za.co.aws.welfare.utils.RequestQueueManager;
 public class ResidenceViewModel extends AndroidViewModel {
 
     //TODO: Use this for a new entry as wel!
+    //TODO: Add a delete res option. Decide what should happen with animals
     //TODO: :On add animal, new fragment should be aware that we are not editing an animal but adding one!
     //TODO: On edit, have an add animal button available!!!
     //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
@@ -45,6 +46,7 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         // Busy retrieving data for this residence.
         RETRIEVING_DATA,
+        UPDATING_DATA,
     }
 
     /** Remember the user name. */
@@ -106,7 +108,6 @@ public class ResidenceViewModel extends AndroidViewModel {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            LinkedList<ResidenceSearchData> results = new LinkedList<>();
                             try {
                                 JSONObject data = response.getJSONObject("data");
                                 if (data != null) {
@@ -209,10 +210,81 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     private void saveData() {
-        //TODO: Backend call.
+
+        String address = mAddress.getValue();
+        String shackID = mShackID.getValue();
+        String lat = mLat.getValue();
+        String lon = mLon.getValue();
+        String notes = mNotes.getValue();
+
+
+        if (isNew) {
+            //TODO: VALIDATE??
+        } else {
+            boolean hasChanged = ((address != null && !address.equals(mAddressSave))
+                    || (shackID != null && !shackID.equals(mShackIDSave))
+                    || (notes !=null && !notes.equals(mNotesSave))
+                    || (lat != null && !lon.equals(mLongSave))
+                    || (lat != null && !lat.equals(mLatSave)));
+            if (hasChanged) {
+               doUpdate(residenceID, address, shackID, lat, lon, notes);
+            } else {
+                Toast.makeText(getApplication(), getApplication().getString(R.string.no_change),
+                        Toast.LENGTH_LONG).show();
+                mEditMode.setValue(false);
+            }
+        }
         //TODO IF isnew, set editble false and isnew false on success.
-        mEditMode.setValue(false);
+
     }
 
+    /** Send the update to the backend and handle the result. */
+    private void doUpdate(int id, String address, String shack, String lat, String lon, String notes) {
+        mNetworkHandler.setValue(NetworkStatus.UPDATING_DATA);
 
+        JSONObject params = new JSONObject();
+        try {
+            if (!isNew) {
+                params.put("residence_id", id);
+            }
+            params.put("shack_id", shack);
+            params.put("street_address", address);
+            params.put("latitude", lat);
+            params.put("longitude", lon);
+            params.put("notes", notes);
+        } catch (JSONException e) {
+            //TODO
+//            mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.login_call_error)));
+            mNetworkHandler.setValue(NetworkStatus.IDLE);
+            return;
+        }
+
+        String URL = getApplication().getString(R.string.kBaseUrl) + "residences/update/";
+
+        RequestQueueManager.getInstance().addToRequestQueue(
+                new JsonObjectRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                       //TODO:
+                        Toast.makeText(getApplication(), getApplication().getString(R.string.update_successful),
+                                Toast.LENGTH_LONG).show();
+                        mEditMode.setValue(false);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //TODO Check for TIMEOUT and check for feedback message.
+//                        mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.invalid_server_response)));
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+                        // On error, we stay on edit mode so that the user can decide what to do next.
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                        return headers;
+                    }
+                }, getApplication());
+    }
 }

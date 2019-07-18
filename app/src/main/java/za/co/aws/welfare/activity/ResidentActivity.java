@@ -23,11 +23,9 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allows the user to view and, if they have permission, edit a residence. */
 public class ResidentActivity extends AppCompatActivity {
-
+//TODO: NETWORK HANDLER AND EVENT HANDLER YO!
     private ResidenceViewModel mModel;
-
     private FlexboxLayout mAnimalDisplay;
-
     private TextInputLayout mAddress;
     private TextInputLayout mShackID;
     private TextInputLayout mNotes;
@@ -105,6 +103,7 @@ public class ResidentActivity extends AppCompatActivity {
         }
     }
 
+    /** Generate the animal list and setup click listeners. */
     private void setupAnimalViews(List<ResidentAnimalDetail> list) {
         //TODO: Show welfare number!
         //TODO: navigate to animal view

@@ -67,5 +67,7 @@
     <string name="download_err">Download Error</string>
     <string name="data_required">Data Required</string>
     <string name="notes">Notes</string>
+    <string name="no_change">No Data Changed</string>
+    <string name="update_successful">Changes submitted successfully!</string>
 
 </resources>
