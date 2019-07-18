@@ -94,13 +94,11 @@ public class ResidencesFragment extends Fragment {
                 if (residenceSearchData != null && !residenceSearchData.isEmpty()) {
                     emptyView.setVisibility(View.GONE);
                     results.setVisibility(View.VISIBLE);
-                    Log.i(">>> SUCESS", residenceSearchData.size() + " ");
                     results.setAdapter(new ResidenceSearchListAdapter(getContext(), R.layout.content_residence_search_entry, residenceSearchData));
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Log.i(">>>>SEL", ((ResidenceSearchData) results.getAdapter().getItem(i)).getStreetAddress());
-                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID()); //TODO
+                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID());
                         }
                     });
                     searchView.setVisibility(View.GONE);

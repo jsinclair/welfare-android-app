@@ -31,10 +31,22 @@ public class ResidentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle details = getIntent().getExtras();
+        boolean isNew = true;
+        int resID = -1;
+        if (details != null) {
+           isNew = details.getBoolean("RequestNewEntry", true);
+           if (!isNew) {
+               resID = details.getInt("ResidentID", -1);
+           }
+        }
+
         ActivityViewResidentBinding binding =  DataBindingUtil.setContentView(this, R.layout.activity_view_resident);
         mModel = ViewModelProviders.of(this).get(ResidenceViewModel.class);
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
+
+        mModel.setup(isNew, resID);
 
         mModel.getEditMode().observe(this, new Observer<Boolean>() {
             @Override

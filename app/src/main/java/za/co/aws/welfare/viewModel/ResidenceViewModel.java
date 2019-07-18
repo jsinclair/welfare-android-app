@@ -5,9 +5,31 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
+import za.co.aws.welfare.R;
+import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
+import za.co.aws.welfare.utils.NetworkUtils;
+import za.co.aws.welfare.utils.RequestQueueManager;
+
 public class ResidenceViewModel extends AndroidViewModel {
 
     //TODO: Use this for a new entry as wel!
+    //TODO: :On add animal, new fragment should be aware that we are not editing an animal but adding one!
 
     /** The network statuses. */
     public enum NetworkStatus {
@@ -46,15 +68,85 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLon = new MutableLiveData<>(); //TODO
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>(); //TODO
-
-        mEditMode.setValue(false);
-        //todo: saved instance, then
-
-        loadData();
+        //todo: saved instance!
     }
 
-    private void loadData() {
+    // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
+    public void setup(boolean isNew, int resID) {
+        //TODO: On edit if isnew, should we have special actions?
+        // On edit if isnew, cancel button sould finish the activity.
+        mEditMode.setValue(isNew);
+        if (!isNew) {
+            loadData(resID);
+        }
 
+    }
+
+    private void loadData(int resID) {
+        if(resID >= 0) {
+            mNetworkHandler.setValue(NetworkStatus.RETRIEVING_DATA);
+
+            Map<String, String> params = new HashMap<>();
+            params.put("residence_id", Integer.toString(resID));
+
+            String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/details";
+            String url = NetworkUtils.createURL(baseURL, params);
+
+            RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
+                    url, new JSONObject(),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            LinkedList<ResidenceSearchData> results = new LinkedList<>();
+                            try {
+                                JSONObject data = response.getJSONObject("data");
+                                if (data != null) {
+                                    JSONObject res = data.getJSONObject("residence_details");
+
+
+                                        int id = res.getInt("id");
+                                        String shackID = res.optString("shack_id");
+                                        String streetAddress = res.optString("street_address");
+                                        String lat = res.optString("latitude");
+                                        String lon = res.optString("longitude");
+                                        String notes = res.optString("notes");
+//                                        int dist = entry.optInt("distance", 0); TODO
+//                                        String animals = entry.optString("animals");
+                                    residenceID = id;
+                                    mShackID.setValue(shackID);
+                                    mAddress.setValue(streetAddress);
+                                    mLat.setValue(lat);
+                                    mLon.setValue(lon);
+                                    mNotes.setValue(notes);
+                                }
+                            } catch (JSONException e) {
+                                //TODO: HANDLE ERROR
+//                                mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.internal_error_res_search)));
+                            }
+                            mNetworkHandler.setValue(NetworkStatus.IDLE);
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mNetworkHandler.setValue(NetworkStatus.IDLE);
+                    //TODO:
+                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                        mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.conn_error_res_search)));
+//                    } else {
+//                        mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
+                    }
+//                    mResidenceSearchResults.setValue(null);
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                    return headers;
+                }
+            }, getApplication());
+        }
     }
 
     // Should set to TRUE if editable.
