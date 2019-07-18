@@ -49,6 +49,7 @@ public class ResidenceViewModel extends AndroidViewModel {
 
     /** Remember the user name. */
     private Integer residenceID; //TODO: on new this must not be used.
+    private boolean isNew; //TODO: USE!!
 
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
@@ -80,13 +81,13 @@ public class ResidenceViewModel extends AndroidViewModel {
 
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
     public void setup(boolean isNew, int resID) {
+        this.isNew = isNew;
         //TODO: On edit if isnew, should we have special actions?
         // On edit if isnew, cancel button sould finish the activity.
         mEditMode.setValue(isNew);
         if (!isNew) {
             loadData(resID);
         }
-
     }
 
     /** If this is an edit and not a new, load the existing data from the backend. */
@@ -204,10 +205,12 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLat.setValue(mLatSave);
         mLon.setValue(mLongSave);
         mNotes.setValue(mNotesSave);
+        //TODO: if isnew, finish activity.
     }
 
     private void saveData() {
         //TODO: Backend call.
+        //TODO IF isnew, set editble false and isnew false on success.
         mEditMode.setValue(false);
     }
 
