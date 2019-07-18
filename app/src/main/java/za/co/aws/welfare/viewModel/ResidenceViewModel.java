@@ -29,10 +29,14 @@ import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 
+/** Controls the resident view/edit interface.*/
 public class ResidenceViewModel extends AndroidViewModel {
 
     //TODO: Use this for a new entry as wel!
     //TODO: :On add animal, new fragment should be aware that we are not editing an animal but adding one!
+    //TODO: On edit, have an add animal button available!!!
+    //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
+    //TODO: On back pressed, if in edit mode then just cancel edit?
 
     /** The network statuses. */
     public enum NetworkStatus {
@@ -85,6 +89,7 @@ public class ResidenceViewModel extends AndroidViewModel {
 
     }
 
+    /** If this is an edit and not a new, load the existing data from the backend. */
     private void loadData(int resID) {
         if(resID >= 0) {
             mNetworkHandler.setValue(NetworkStatus.RETRIEVING_DATA);
@@ -165,6 +170,11 @@ public class ResidenceViewModel extends AndroidViewModel {
         return mEditMode;
     }
 
+    // Should set to TRUE if editable.
+    public MutableLiveData<List<ResidentAnimalDetail>> getAnimalList() {
+        return mAnimalList;
+    }
+
     /** Either enable edit, or if its enabled already start the saving process. */
     public void toggleSaveEdit() {
         Boolean currentEdit = mEditMode.getValue();
@@ -200,4 +210,6 @@ public class ResidenceViewModel extends AndroidViewModel {
         //TODO: Backend call.
         mEditMode.setValue(false);
     }
+
+
 }

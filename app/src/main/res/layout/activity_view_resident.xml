@@ -76,6 +76,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/search_res_animals"/>
 
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/animal_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.google.android.flexbox.FlexboxLayout>
+
                 <!--animals here todo-->
 
             </LinearLayout>

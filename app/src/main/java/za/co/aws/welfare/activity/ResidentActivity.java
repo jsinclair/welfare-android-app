@@ -1,17 +1,23 @@
 package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.List;
+
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
@@ -19,6 +25,8 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
 public class ResidentActivity extends AppCompatActivity {
 
     private ResidenceViewModel mModel;
+
+    private FlexboxLayout mAnimalDisplay;
 
     private TextInputLayout mAddress;
     private TextInputLayout mShackID;
@@ -46,17 +54,7 @@ public class ResidentActivity extends AppCompatActivity {
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
 
-        mModel.setup(isNew, resID);
-
-        mModel.getEditMode().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean != null) {
-                    setEditable(aBoolean);
-                }
-            }
-        });
-
+        mAnimalDisplay = findViewById(R.id.animal_list);
         mAddress = findViewById(R.id.address_container);
         mShackID = findViewById(R.id.shack_container);
         mNotes = findViewById(R.id.notes_container);
@@ -74,6 +72,23 @@ public class ResidentActivity extends AppCompatActivity {
                 mModel.toggleSaveEdit();
             }
         });
+
+        mModel.getEditMode().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null) {
+                    setEditable(aBoolean);
+                }
+            }
+        });
+
+        mModel.getAnimalList().observe(this, new Observer<List<ResidentAnimalDetail>>() {
+            @Override
+            public void onChanged(List<ResidentAnimalDetail> residentAnimalDetails) {
+                setupAnimalViews(residentAnimalDetails);
+            }
+        });
+        mModel.setup(isNew, resID);
     }
 
     /** Update the editable views and icons. */
@@ -87,6 +102,23 @@ public class ResidentActivity extends AppCompatActivity {
         } else {
             mCancelEditButton.hide();
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
+        }
+    }
+
+    private void setupAnimalViews(List<ResidentAnimalDetail> list) {
+        //TODO: Show welfare number!
+        //TODO: navigate to animal view
+        for (ResidentAnimalDetail animal: list) {
+            Button aniButton = new Button(this);
+            aniButton.setText(animal.getName());
+            aniButton.setTag(animal);
+            aniButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("CLICKED", ((ResidentAnimalDetail)view.getTag()).getName());
+                }
+            });
+            mAnimalDisplay.addView(aniButton);
         }
     }
 }
