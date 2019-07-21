@@ -79,6 +79,13 @@ public class ResidentActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mModel.reloadData();
+            }
+        });
+
         mModel.getEditMode().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {

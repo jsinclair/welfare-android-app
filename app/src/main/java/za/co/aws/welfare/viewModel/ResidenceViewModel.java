@@ -111,9 +111,14 @@ public class ResidenceViewModel extends AndroidViewModel {
         }
     }
 
+    public void reloadData() {
+        loadData(residenceID);
+    }
+
     /** If this is an edit and not a new, load the existing data from the backend. */
-    private void loadData(int resID) {
+    public void loadData(int resID) {
         if(resID >= 0) {
+            residenceID = resID;
             mNetworkHandler.setValue(NetworkStatus.RETRIEVING_DATA);
 
             Map<String, String> params = new HashMap<>();
