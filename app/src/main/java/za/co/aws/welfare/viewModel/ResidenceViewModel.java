@@ -1,7 +1,6 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.util.Pair;
@@ -57,14 +56,14 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     public enum Event {
-        //TODO: On this error, show empty cat and retry button! retry button to loaddata again.
+        // When we fail to retrieve the data from the backend.
         RETRIEVAL_ERROR,
 
-
+        UPDATE_ERROR,
     }
 
     /** Remember the user name. */
-    private Integer residenceID; //TODO: on new this must not be used.
+    private Integer residenceID;
     private boolean isNew; //TODO: USE!!
     public MutableLiveData<Boolean> mErrorState;
 
@@ -111,12 +110,16 @@ public class ResidenceViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Use this to reload the data if there was an error. Could also be used if there has been a
+     * change (in pets for example).
+     */
     public void reloadData() {
         loadData(residenceID);
     }
 
     /** If this is an edit and not a new, load the existing data from the backend. */
-    public void loadData(int resID) {
+    private void loadData(int resID) {
         if(resID >= 0) {
             residenceID = resID;
             mNetworkHandler.setValue(NetworkStatus.RETRIEVING_DATA);
@@ -166,8 +169,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                                 mErrorState.setValue(false);
                                 // there is still data available or
                                 // there is a data issue. So cannot reload.
-                                //TODO: HANDLE ERROR
-//                                mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.internal_error_res_search)));
+                                mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.internal_error_res_search)));
                             }
                             mNetworkHandler.setValue(NetworkStatus.IDLE);
                         }
@@ -249,14 +251,13 @@ public class ResidenceViewModel extends AndroidViewModel {
         //TODO: if isnew, finish activity.
     }
 
+    /** Attempt to send the update / to the backend. */
     private void saveData() {
-
         String address = mAddress.getValue();
         String shackID = mShackID.getValue();
         String lat = mLat.getValue();
         String lon = mLon.getValue();
         String notes = mNotes.getValue();
-
 
         if (isNew) {
             //TODO: VALIDATE?? and test if this actually works.
@@ -295,8 +296,7 @@ public class ResidenceViewModel extends AndroidViewModel {
             params.put("longitude", lon);
             params.put("notes", notes);
         } catch (JSONException e) {
-            //TODO
-//            mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.login_call_error)));
+            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_internal_err)));
             mNetworkHandler.setValue(NetworkStatus.IDLE);
             return;
         }
@@ -307,7 +307,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                 new JsonObjectRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                       //TODO:
+                       //TODO: interpret the feedback.
                         Toast.makeText(getApplication(), getApplication().getString(R.string.update_successful),
                                 Toast.LENGTH_LONG).show();
                         mEditMode.setValue(false);
@@ -316,10 +316,13 @@ public class ResidenceViewModel extends AndroidViewModel {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //TODO Check for TIMEOUT and check for feedback message.
-//                        mEventHandler.setValue(new Pair<>(LoginViewModel.Event.LOG_IN_ERROR, getApplication().getString(R.string.invalid_server_response)));
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.res_update_conn_err)));
+                        } else {
+                            String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.res_update_unknown_err));
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, errorMSG));
+                        }
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
-                        // On error, we stay on edit mode so that the user can decide what to do next.
                     }
                 }){
                     @Override
