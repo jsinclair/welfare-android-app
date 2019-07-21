@@ -46,6 +46,10 @@
             android:visibility="gone"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/species"/>
             <Spinner
                 android:id="@+id/animal_type"
                 android:layout_width="match_parent"

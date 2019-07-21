@@ -82,6 +82,7 @@
     <string name="update_error_title">Error Updating Data</string>
     <string name="nothing_to_see">Nothing to see here</string>
     <string name="retry">Retry</string>
+    <string name="species">Species</string>
     <string name="update_successful">Changes submitted successfully!</string>
 
 </resources>

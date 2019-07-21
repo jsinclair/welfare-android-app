@@ -27,7 +27,7 @@ public class AnimalsFragment extends Fragment {
 
     //TODO: Populate selection list
     //TODO: Do actual seach
-    //TODO: populate list of pets. 
+    //TODO: populate list of pets.
 
     private LinearLayout searchView;
     private FloatingActionButton expandButton;
