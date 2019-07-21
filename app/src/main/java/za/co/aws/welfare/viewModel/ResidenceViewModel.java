@@ -35,7 +35,6 @@ import za.co.aws.welfare.utils.Utils;
 /** Controls the resident view/edit interface.*/
 public class ResidenceViewModel extends AndroidViewModel {
 
-    //TODO: Use this for a new entry as wel!
     //TODO: Add a delete res option. Decide what should happen with animals
     //TODO: :On add animal, new fragment should be aware that we are not editing an animal but adding one!
     //TODO: On edit, have an add animal button available!!!
@@ -59,12 +58,13 @@ public class ResidenceViewModel extends AndroidViewModel {
         // When we fail to retrieve the data from the backend.
         RETRIEVAL_ERROR,
 
+        // If an error occurred while trying to update the residence.
         UPDATE_ERROR,
     }
 
     /** Remember the user name. */
     private Integer residenceID;
-    private boolean isNew; //TODO: USE!!
+    private boolean isNew;
     public MutableLiveData<Boolean> mErrorState;
 
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.

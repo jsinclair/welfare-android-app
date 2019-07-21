@@ -28,17 +28,27 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allows the user to view and, if they have permission, edit a residence. */
 public class ResidentActivity extends AppCompatActivity {
+    //TODO: Allow user to ADD and REMOVE animal from residence (on edit)
 
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
 
-//TODO: NETWORK HANDLER AND EVENT HANDLER YO!
+    // The view model
     private ResidenceViewModel mModel;
+
+    // Contains all the animals. Allows the user to navigate to selected animal.
     private FlexboxLayout mAnimalDisplay;
+
+    // The address text input layout.
     private TextInputLayout mAddress;
+    // The shack text input layout.
     private TextInputLayout mShackID;
+    // The notes text input layout.
     private TextInputLayout mNotes;
 
+    // Allow the user to edit the view.
     private FloatingActionButton mEditButton;
+
+    // Allow the user to cancel the edit.
     private FloatingActionButton mCancelEditButton;
 
     @Override
@@ -161,6 +171,7 @@ public class ResidentActivity extends AppCompatActivity {
         }
     }
 
+    /** Handle once off events.*/
     private void handleEvent(Pair<ResidenceViewModel.Event, String> eventData) {
         switch (eventData.first) {
             case RETRIEVAL_ERROR:
