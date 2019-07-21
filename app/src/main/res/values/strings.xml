@@ -55,6 +55,8 @@
     <string name="search_shack_id">Shack ID:</string>
     <string name="search_latitude">Lat:</string>
     <string name="search_longitude">Long:</string>
+    <string name="res_download_err">An error occurred trying to retrieve data for this residence. Please try again.</string>
+    <string name="res_search_err_view">Resident search had no results or an error occurred. Try again later.</string>
     <string name="conn_error_res_search">A connection error occurred while trying to retrieve Resident info. Please check your connection and try again.</string>
     <string name="internal_error_res_search">An internal error occurred while trying to retrieve Resident info. Some information might be missing or incorrect.</string>
     <string name="res_search_data_required">Please provide at least one entry in the search fields to do a search.</string>
@@ -70,6 +72,9 @@
     <string name="data_required">Data Required</string>
     <string name="notes">Notes</string>
     <string name="no_change">No Data Changed</string>
+    <string name="fetch_error_title">Error Fetching Data</string>
+    <string name="nothing_to_see">Nothing to see here</string>
+    <string name="retry">Retry</string>
     <string name="update_successful">Changes submitted successfully!</string>
 
 </resources>

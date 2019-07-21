@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -20,12 +21,16 @@ import java.util.List;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
+import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allows the user to view and, if they have permission, edit a residence. */
 public class ResidentActivity extends AppCompatActivity {
+
+    private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+
 //TODO: NETWORK HANDLER AND EVENT HANDLER YO!
     private ResidenceViewModel mModel;
     private FlexboxLayout mAnimalDisplay;
@@ -99,6 +104,31 @@ public class ResidentActivity extends AppCompatActivity {
             }
         });
 
+        mModel.getEventHandler().observe(this, new Observer<Pair<ResidenceViewModel.Event, String>>() {
+            @Override
+            public void onChanged(Pair<ResidenceViewModel.Event, String> eventStringPair) {
+                if (eventStringPair != null && eventStringPair.first != null) {
+                    handleEvent(eventStringPair);
+                }
+            }
+        });
+
+        //TODO: RETRY
+        mModel.getHasDownloadError().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null && aBoolean) {
+                    findViewById(R.id.error_view).setVisibility(View.VISIBLE);
+                    findViewById(R.id.data_container).setVisibility(View.GONE);
+                    findViewById(R.id.edit).setVisibility(View.GONE);
+                } else {
+                    findViewById(R.id.error_view).setVisibility(View.GONE);
+                    findViewById(R.id.data_container).setVisibility(View.VISIBLE);
+                    findViewById(R.id.edit).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         mModel.setup(isNew, resID);
     }
 
@@ -117,6 +147,15 @@ public class ResidentActivity extends AppCompatActivity {
                 break;
             case UPDATING_DATA:
                 Utils.updateProgress(fm, progressDialog, getString(R.string.updating_res_data));
+                break;
+        }
+    }
+
+    private void handleEvent(Pair<ResidenceViewModel.Event, String> eventData) {
+        switch (eventData.first) {
+            case RETRIEVAL_ERROR:
+                showAlert(getString(R.string.fetch_error_title), eventData.second);
+                //TODOL SHOW ERROR STATE with retry button.
                 break;
         }
     }
@@ -151,5 +190,12 @@ public class ResidentActivity extends AppCompatActivity {
             });
             mAnimalDisplay.addView(aniButton);
         }
+    }
+
+    // Convenience method to show an alert dialog.
+    private void showAlert(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogFragment alert = AlertDialogFragment.newInstance(title, message);
+        Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
     }
 }

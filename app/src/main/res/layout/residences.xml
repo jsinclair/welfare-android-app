@@ -130,13 +130,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Nothing to see here"
+                android:text="@string/nothing_to_see"
                 android:layout_marginBottom="@dimen/small_padding"
                 android:gravity="center" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Resident search had no results or an error occurred. Try again later."
+                android:text="@string/res_search_err_view"
                 android:layout_marginBottom="@dimen/small_padding"
                 android:gravity="center"/>
         </LinearLayout>

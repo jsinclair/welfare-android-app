@@ -66,6 +66,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     /** Remember the user name. */
     private Integer residenceID; //TODO: on new this must not be used.
     private boolean isNew; //TODO: USE!!
+    public MutableLiveData<Boolean> mErrorState;
 
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
@@ -84,6 +85,7 @@ public class ResidenceViewModel extends AndroidViewModel {
 
     public ResidenceViewModel(Application app) {
         super(app);
+        mErrorState = new MutableLiveData<>();
         mAddress = new MutableLiveData<>();
         mNetworkHandler = new MutableLiveData<>();
         mEditMode = new MutableLiveData<>();
@@ -153,8 +155,12 @@ public class ResidenceViewModel extends AndroidViewModel {
                                     mLat.setValue(lat);
                                     mLon.setValue(lon);
                                     mNotes.setValue(notes);
+                                    mErrorState.setValue(false);
                                 }
                             } catch (JSONException e) {
+                                mErrorState.setValue(false);
+                                // there is still data available or
+                                // there is a data issue. So cannot reload.
                                 //TODO: HANDLE ERROR
 //                                mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.internal_error_res_search)));
                             }
@@ -164,17 +170,14 @@ public class ResidenceViewModel extends AndroidViewModel {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    mNetworkHandler.setValue(NetworkStatus.IDLE);
-                    //TODO:
                     if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                         mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.conn_error_res_search)));
                     } else {
                         String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_res_search));
-                        Log.i(">>>>>>>>", errorMSG);
-                        //TODO: RETRIEVE ERROR from error object
-//                        mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
+                        mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, errorMSG));
                     }
-//                    mResidenceSearchResults.setValue(null);
+                    mErrorState.setValue(true);
+                    mNetworkHandler.setValue(NetworkStatus.IDLE);
                 }
             }) {
                 @Override
@@ -194,6 +197,14 @@ public class ResidenceViewModel extends AndroidViewModel {
 
     public MutableLiveData<NetworkStatus> getNetworkHandler() {
         return mNetworkHandler;
+    }
+
+    public MutableLiveData<Pair<Event, String>> getEventHandler() {
+        return mEventHandler;
+    }
+
+    public MutableLiveData<Boolean> getHasDownloadError() {
+        return mErrorState;
     }
 
     // Should set to TRUE if editable.
