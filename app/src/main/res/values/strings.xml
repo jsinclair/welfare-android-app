@@ -43,6 +43,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Strings related to the animals screen -->
+    <string name="pet_search_err_view">Pet search had no results or an error occurred. Try again later.</string>
+    <string name="search_pet_name">Pet Name</string>
+    <string name="search_pet_welfare">Pet Welfare Number</string>
 
     <!-- Strings related to the residences screen -->
     <string name="retrieving_res_data">Retrieving Residence...</string>

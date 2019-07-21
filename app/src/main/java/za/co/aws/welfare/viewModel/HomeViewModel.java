@@ -69,6 +69,13 @@ public class HomeViewModel extends AndroidViewModel {
     /** Holds the results of the last search done. */
     public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
 
+
+    //////PETS
+    //TODO type
+    public MutableLiveData<String> mPetNameSearch;
+    public MutableLiveData<String> mPetWelfareSearch;
+
+
     /** Use this for indicating the network usage. Remember to always reset back to idle. */
     public MutableLiveData<NetworkStatus> mNetworkHandler;
 

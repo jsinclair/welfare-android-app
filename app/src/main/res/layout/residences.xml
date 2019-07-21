@@ -5,111 +5,111 @@
             name="viewModel"
             type="za.co.aws.welfare.viewModel.HomeViewModel"/>
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.HomeActivity"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:animateLayoutChanges="true">
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/expand_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/small_padding"
-        android:src="@android:drawable/ic_menu_search"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_residence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/small_padding"
-        android:src="@drawable/baseline_add_location_white_18"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/search_menu"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".activity.HomeActivity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/general_padding"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/light_bg"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:animateLayoutChanges="true">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/expand_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/search_address"
-            android:layout_marginBottom="@dimen/general_padding"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            android:layout_margin="@dimen/small_padding"
+            android:src="@android:drawable/ic_menu_search"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@={ viewModel.mResidenceAddressSearch }"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_residence"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/search_shack"
-            android:layout_marginBottom="@dimen/general_padding"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/shack"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_margin="@dimen/small_padding"
+            android:src="@drawable/baseline_add_location_white_18"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/search_menu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/search_button"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search"
-            android:drawableLeft="@android:drawable/ic_menu_search"
-            android:drawableStart="@android:drawable/ic_menu_search"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"/>
+            android:padding="@dimen/general_padding"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/light_bg"
+            android:visibility="gone"
+            android:orientation="vertical">
 
-            <Space
-                android:layout_width="5dp"
-                android:layout_height="1dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_address"
+                android:layout_marginBottom="@dimen/general_padding"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-        <Button
-            android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={ viewModel.mResidenceAddressSearch }"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_shack"
+                android:layout_marginBottom="@dimen/general_padding"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/shack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search"
+                    android:drawableLeft="@android:drawable/ic_menu_search"
+                    android:drawableStart="@android:drawable/ic_menu_search"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"/>
+
+                <Space
+                    android:layout_width="5dp"
+                    android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <ListView
-        android:id="@+id/result_residencess"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/general_padding"
-        app:layout_constraintTop_toBottomOf="@id/search_menu">
+        <ListView
+            android:id="@+id/result_residencess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/general_padding"
+            app:layout_constraintTop_toBottomOf="@id/search_menu">
 
-    </ListView>
+        </ListView>
 
 
         <LinearLayout
@@ -142,5 +142,5 @@
         </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
