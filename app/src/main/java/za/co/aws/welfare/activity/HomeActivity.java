@@ -113,6 +113,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     intent.putExtra("RequestNewEntry", false);
                     startActivity(intent);
                     break;
+                case ADD_RESIDENCE:
+                    Intent addIntent = new Intent(this, ResidentActivity.class);
+                    addIntent.putExtra("RequestNewEntry", true);
+                    startActivity(addIntent);
+                    break;
                 case ANIMAL:
                     break;
             }

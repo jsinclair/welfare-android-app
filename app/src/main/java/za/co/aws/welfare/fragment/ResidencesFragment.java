@@ -82,7 +82,7 @@ public class ResidencesFragment extends Fragment {
         v.findViewById(R.id.add_residence).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: open add fragment
+                mModel.triggerAddResident();
             }
         });
 

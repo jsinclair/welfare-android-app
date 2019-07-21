@@ -68,7 +68,11 @@ public class ResidentActivity extends AppCompatActivity {
         mCancelEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mModel.cancelEdit();
+                if (mModel.isNew()) {
+                    finish();
+                } else {
+                    mModel.cancelEdit();
+                }
             }
         });
         mEditButton = findViewById(R.id.edit);
@@ -120,7 +124,6 @@ public class ResidentActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: RETRY
         mModel.getHasDownloadError().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -162,7 +165,9 @@ public class ResidentActivity extends AppCompatActivity {
         switch (eventData.first) {
             case RETRIEVAL_ERROR:
                 showAlert(getString(R.string.fetch_error_title), eventData.second);
-                //TODOL SHOW ERROR STATE with retry button.
+                break;
+            case UPDATE_ERROR:
+                showAlert(getString(R.string.fetch_error_title), eventData.second);
                 break;
         }
     }

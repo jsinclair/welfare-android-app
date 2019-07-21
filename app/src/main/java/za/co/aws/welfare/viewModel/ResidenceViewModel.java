@@ -219,6 +219,11 @@ public class ResidenceViewModel extends AndroidViewModel {
         return mAnimalList;
     }
 
+    public boolean isNew () {
+        return isNew;
+    }
+
+
     /** Either enable edit, or if its enabled already start the saving process. */
     public void toggleSaveEdit() {
         Boolean currentEdit = mEditMode.getValue();
@@ -248,7 +253,6 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLat.setValue(mLatSave);
         mLon.setValue(mLongSave);
         mNotes.setValue(mNotesSave);
-        //TODO: if isnew, finish activity.
     }
 
     /** Attempt to send the update / to the backend. */
@@ -276,8 +280,6 @@ public class ResidenceViewModel extends AndroidViewModel {
                 mEditMode.setValue(false);
             }
         }
-        //TODO IF isnew, set editble false and isnew false on success.
-
     }
 
     /** Send the update to the backend and handle the result. */
@@ -307,10 +309,18 @@ public class ResidenceViewModel extends AndroidViewModel {
                 new JsonObjectRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                       //TODO: interpret the feedback.
-                        Toast.makeText(getApplication(), getApplication().getString(R.string.update_successful),
-                                Toast.LENGTH_LONG).show();
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            String msg = data.getString("message");
+
+                            Toast.makeText(getApplication(), msg,
+                                    Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_unknown_err)));
+                        }
                         mEditMode.setValue(false);
+                        isNew = false; //Set to not new value.
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
                     }
                 }, new Response.ErrorListener() {
