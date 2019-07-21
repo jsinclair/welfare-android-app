@@ -80,6 +80,8 @@ public class Utils {
                 StringBuilder returnMessage = new StringBuilder("");
                 int end = errorArray.length();
                 for (int i = 0; i < end; i++) {
+                    returnMessage.append(errorArray.getJSONObject(i).getString("title"));
+                    returnMessage.append(":");
                     returnMessage.append(errorArray.getJSONObject(i).getString("detail"));
                     if(i < end -1) {
                         returnMessage.append("\n");

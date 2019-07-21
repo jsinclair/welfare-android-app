@@ -8,15 +8,13 @@ public class ResidenceSearchData {
     private String mStreetAddress;
     private String mLat, mLon;
     private String mAnimalNames;
-    private int mDistance;
 
-    public ResidenceSearchData(int mID, String mShackID, String mStreetAddress, String mLat, String mLon, int mDistance, String animalNames) {
+    public ResidenceSearchData(int mID, String mShackID, String mStreetAddress, String mLat, String mLon, String animalNames) {
         this.mID = mID;
         this.mShackID = mShackID;
         this.mStreetAddress = mStreetAddress;
         this.mLat = mLat;
         this.mLon = mLon;
-        this.mDistance = mDistance;
         this.mAnimalNames = animalNames;
     }
 
@@ -39,11 +37,6 @@ public class ResidenceSearchData {
     public String getLon() {
         return mLon;
     }
-
-    public int getDistance() {
-        return mDistance;
-    }
-
 
     public String getAnimalNames() {
         return mAnimalNames;

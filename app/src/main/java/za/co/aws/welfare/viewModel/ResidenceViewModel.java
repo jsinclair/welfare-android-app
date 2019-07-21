@@ -1,8 +1,10 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
@@ -28,6 +30,8 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
+import za.co.aws.welfare.utils.SingleLiveEvent;
+import za.co.aws.welfare.utils.Utils;
 
 /** Controls the resident view/edit interface.*/
 public class ResidenceViewModel extends AndroidViewModel {
@@ -38,6 +42,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     //TODO: On edit, have an add animal button available!!!
     //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
     //TODO: On back pressed, if in edit mode then just cancel edit?
+    //TODO: SET TITLE
 
     /** The network statuses. */
     public enum NetworkStatus {
@@ -49,6 +54,13 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         // Busy updating residence.
         UPDATING_DATA,
+    }
+
+    public enum Event {
+        //TODO: On this error, show empty cat and retry button! retry button to loaddata again.
+        RETRIEVAL_ERROR,
+
+
     }
 
     /** Remember the user name. */
@@ -64,7 +76,8 @@ public class ResidenceViewModel extends AndroidViewModel {
     public MutableLiveData<String> mNotes;
     public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList; //TODO: show on UI
 
-    public MutableLiveData<NetworkStatus> mNetworkHandler;
+    private MutableLiveData<NetworkStatus> mNetworkHandler;
+    private SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     // These store the values to revert to if the user 'cancels' an edit.
     private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave;
@@ -80,6 +93,8 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLon = new MutableLiveData<>(); //TODO
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>();
+
+        mEventHandler = new SingleLiveEvent<>();
         //todo: saved instance!
     }
 
@@ -152,8 +167,11 @@ public class ResidenceViewModel extends AndroidViewModel {
                     mNetworkHandler.setValue(NetworkStatus.IDLE);
                     //TODO:
                     if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                        mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.conn_error_res_search)));
-//                    } else {
+                        mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.conn_error_res_search)));
+                    } else {
+                        String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_res_search));
+                        Log.i(">>>>>>>>", errorMSG);
+                        //TODO: RETRIEVE ERROR from error object
 //                        mEventHandler.setValue(new Pair<>(HomeViewModel.Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
                     }
 //                    mResidenceSearchResults.setValue(null);
@@ -225,7 +243,8 @@ public class ResidenceViewModel extends AndroidViewModel {
 
 
         if (isNew) {
-            //TODO: VALIDATE??
+            //TODO: VALIDATE?? and test if this actually works.
+            doUpdate(-1, address, shackID, lat, lon, notes);
         } else {
             boolean hasChanged = ((address != null && !address.equals(mAddressSave))
                     || (shackID != null && !shackID.equals(mShackIDSave))
@@ -248,6 +267,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     private void doUpdate(int id, String address, String shack, String lat, String lon, String notes) {
         mNetworkHandler.setValue(NetworkStatus.UPDATING_DATA);
 
+        //TODO: Are all these values allowed to be empty strings?
         JSONObject params = new JSONObject();
         try {
             if (!isNew) {

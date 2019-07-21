@@ -155,9 +155,8 @@ public class HomeViewModel extends AndroidViewModel {
                                     String streetAddress = entry.optString("street_address");
                                     String lat = entry.optString("latitude");
                                     String lon = entry.optString("longitude");
-                                    int dist = entry.optInt("distance", 0);
                                     String animals = entry.optString("animals");
-                                    results.add(new ResidenceSearchData(id, shackID, streetAddress, lat, lon, dist, animals));
+                                    results.add(new ResidenceSearchData(id, shackID, streetAddress, lat, lon, animals));
                                 }
                             }
                         } catch (JSONException e) {
