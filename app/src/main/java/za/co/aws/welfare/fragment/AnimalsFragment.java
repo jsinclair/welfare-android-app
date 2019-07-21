@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -17,10 +19,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.AnimalsBinding;
+import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 
 public class AnimalsFragment extends Fragment {
@@ -33,6 +37,7 @@ public class AnimalsFragment extends Fragment {
     private FloatingActionButton expandButton;
     private Button searchButton;
     private ListView results;
+    private Spinner mSpecies;
 
     private HomeViewModel mModel;
 
@@ -50,6 +55,17 @@ public class AnimalsFragment extends Fragment {
         final View v = binding.getRoot();
 
         results = v.findViewById(R.id.result_pets);
+        mSpecies = v.findViewById(R.id.species);
+
+        mModel.getSpeciesAvailable().observe(getViewLifecycleOwner(), new Observer<List<AnimalType>>() {
+            @Override
+            public void onChanged(List<AnimalType> animalTypes) {
+                ArrayAdapter<AnimalType> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, animalTypes);
+                mSpecies.setAdapter(adapter);
+//                spinner_country.setSelection(adapter.getPosition(myItem));
+            }
+        });
+
 
         searchView = v.findViewById(R.id.search_menu);
         searchButton = v.findViewById(R.id.search_button);

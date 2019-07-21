@@ -21,11 +21,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
+import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
@@ -74,6 +76,7 @@ public class HomeViewModel extends AndroidViewModel {
     //TODO type
     public MutableLiveData<String> mPetNameSearch;
     public MutableLiveData<String> mPetWelfareSearch;
+    public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
 
     /** Use this for indicating the network usage. Remember to always reset back to idle. */
@@ -81,8 +84,6 @@ public class HomeViewModel extends AndroidViewModel {
 
     /** Use this for one-time events. */
     public SingleLiveEvent<Pair<Event, String>> mEventHandler;
-
-
     public SingleLiveEvent<Pair<Navigate, Integer>> mNavigationHandler;
 
     public HomeViewModel(Application application) {
@@ -93,11 +94,16 @@ public class HomeViewModel extends AndroidViewModel {
         mEventHandler = new SingleLiveEvent<>();
         mNavigationHandler = new SingleLiveEvent<>();
         mResidenceSearchResults = new MutableLiveData<>();
+        mSpeciesAvailable = new MutableLiveData<>();
+        mSpeciesAvailable.setValue (((WelfareApplication) getApplication()).getAnimalTypes());
     }
 
     /** Use this to respond to network changes. */
     public LiveData<NetworkStatus> getNetworkHandler() {
         return mNetworkHandler;
+    }
+    public LiveData<List<AnimalType>> getSpeciesAvailable() {
+        return mSpeciesAvailable; //TODO: HAVE AN UNKNOW ENTRY 
     }
 
     /** Use this to respond to one time events. */
