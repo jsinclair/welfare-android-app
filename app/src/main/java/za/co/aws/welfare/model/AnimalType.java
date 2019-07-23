@@ -21,4 +21,19 @@ public class AnimalType {
     public String getDescription() {
         return mDescription;
     }
+
+    //to display object as a string in spinner
+    @Override
+    public String toString() {
+        return mDescription;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof AnimalType){
+            AnimalType c = (AnimalType )obj;
+            if(c.getDescription().equals(mDescription) && c.getId() == mId) return true;
+        }
+        return false;
+    }
 }

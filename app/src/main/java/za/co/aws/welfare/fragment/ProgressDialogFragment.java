@@ -20,6 +20,8 @@ import za.co.aws.welfare.R;
  */
 public class ProgressDialogFragment extends DialogFragment {
 
+    private TextView messageArea;
+
     /**
      * Create a new instance of the Dialog Fragment which will display a PROGRESS dialog. A progress
      * dialog is not cancelable.
@@ -44,11 +46,14 @@ public class ProgressDialogFragment extends DialogFragment {
         setCancelable(false);
         View v = inflater.inflate(R.layout.fragment_progress_dialog, container, false);
 
-        TextView messageArea = v.findViewById(R.id.message);
+        messageArea = v.findViewById(R.id.message);
         messageArea.setText(message);
 
         return v;
+    }
 
+    public void updateText(String text) {
+        messageArea.setText(text);
     }
 
     @Override

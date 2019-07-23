@@ -86,7 +86,6 @@ public class LoginViewModel extends AndroidViewModel {
         if (remember) {
             mUsername.setValue(((WelfareApplication) getApplication()).getUsername());
             mPassword.setValue(((WelfareApplication) getApplication()).getPassword());
-//            mEventHandler.setValue(new Pair<Event, String>(Event.DISABLE_EYE, ""));
         } else {
             mUsername.setValue("");
             mPassword.setValue("");

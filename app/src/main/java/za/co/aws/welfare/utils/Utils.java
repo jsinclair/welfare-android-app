@@ -13,7 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import za.co.aws.welfare.fragment.ProgressDialogFragment;
+
 public class Utils {
+
+    private static final String PROGRESS_TAG = "PROGRESS_TAG";
 
     /** Show the given dialog, if it doesn't exist already. */
     public static void showDialog(FragmentManager fm, DialogFragment dialog, String tag, boolean allowStateLoss) {
@@ -34,6 +38,32 @@ public class Utils {
         }
     }
 
+    public static ProgressDialogFragment getProgressDialog(FragmentManager fm) {
+        return (ProgressDialogFragment) fm.findFragmentByTag(PROGRESS_TAG);
+    }
+
+    /** Convenience method to create or update the progress dialog. */
+    public static void updateProgress(FragmentManager fm, ProgressDialogFragment progressDialog, String message) {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialogFragment.newInstance(message);
+            Utils.showDialogAllowingStateLoss(fm, progressDialog, PROGRESS_TAG);
+        } else {
+            progressDialog.updateText(message);
+        }
+    }
+
+    /** Used to display dialogs when async, helps prevent crashes. */
+    public static void showDialogAllowingStateLoss(FragmentManager fragmentManager, DialogFragment dialogFragment, String tag) {
+        try {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.add(dialogFragment, tag);
+            ft.commitAllowingStateLoss();
+            fragmentManager.executePendingTransactions();
+        } catch (IllegalStateException e) {
+            Log.w("ILLEGAL STATE", "DIALOG MIGHT NOT SHOW");
+        }
+    }
+
     /**
      * Using the volley error, retrieve the error message.
      * @param error the error that was returned.
@@ -50,6 +80,8 @@ public class Utils {
                 StringBuilder returnMessage = new StringBuilder("");
                 int end = errorArray.length();
                 for (int i = 0; i < end; i++) {
+                    returnMessage.append(errorArray.getJSONObject(i).getString("title"));
+                    returnMessage.append(":");
                     returnMessage.append(errorArray.getJSONObject(i).getString("detail"));
                     if(i < end -1) {
                         returnMessage.append("\n");

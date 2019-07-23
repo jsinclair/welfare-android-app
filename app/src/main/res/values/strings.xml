@@ -43,13 +43,51 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Strings related to the animals screen -->
+    <string name="pet_search_err_view">Pet search had no results or an error occurred. Try again later.</string>
+    <string name="search_pet_name">Pet Name</string>
+    <string name="search_pet_welfare">Pet Welfare Number</string>
+    <string name="unknown_error_pet_search">An unknown error occurred while trying to retrieve pet info. Please try again later.</string>
+
+    <string name="pet_update_conn_err">A connection error occurred while trying to update pet info. Please check your connection and try again.</string>
+    <string name="conn_error_pet_search">A connection error occurred while trying to retrieve pet info. Please check your connection and try again.</string>
+    <string name="internal_error_pet_search">An internal error occurred while trying to retrieve pet info. Some information might be missing or incorrect.</string>
 
     <!-- Strings related to the residences screen -->
+    <string name="retrieving_res_data">Retrieving Residence...</string>
+    <string name="updating_res_data">Updating Residence...</string>
     <string name="search_address">Street Address</string>
     <string name="search_shack">Shack ID</string>
-    <string name="search">Search</string>
+    <string name="search_res_animals">Animals:</string>
+    <string name="search_residence">Searching Residence</string>
+    <string name="search_street_address">Street Address:</string>
+    <string name="search_shack_id">Shack ID:</string>
+    <string name="search_latitude">Lat:</string>
+    <string name="search_longitude">Long:</string>
+    <string name="res_update_internal_err">An internal error occurred while trying to update residence. Please try again.</string>
+    <string name="res_update_unknown_err">An unknown error occurred while trying to update residence. Please try again.</string>
+    <string name="res_download_err">An error occurred trying to retrieve data for this residence. Please try again.</string>
+    <string name="res_search_err_view">Resident search had no results or an error occurred. Try again later.</string>
+    <string name="res_update_conn_err">A connection error occurred while trying to update resident info. Please check your connection and try again.</string>
+    <string name="conn_error_res_search">A connection error occurred while trying to retrieve Resident info. Please check your connection and try again.</string>
+    <string name="internal_error_res_search">An internal error occurred while trying to retrieve Resident info. Some information might be missing or incorrect.</string>
+    <string name="res_search_data_required">Please provide at least one entry in the search fields to do a search.</string>
+    <string name="unknown_error_res_search">An unknown error occurred while trying to retrieve Resident info. Please try again later.</string>
 
 
     <!-- Strings related to the reminders screen -->
+
+    <!--general-->
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="download_err">Download Error</string>
+    <string name="data_required">Data Required</string>
+    <string name="notes">Notes</string>
+    <string name="no_change">No Data Changed</string>
+    <string name="fetch_error_title">Error Fetching Data</string>
+    <string name="update_error_title">Error Updating Data</string>
+    <string name="nothing_to_see">Nothing to see here</string>
+    <string name="retry">Retry</string>
+    <string name="species">Species</string>
+    <string name="update_successful">Changes submitted successfully!</string>
 
 </resources>
