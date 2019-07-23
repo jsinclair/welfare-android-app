@@ -1,6 +1,7 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
@@ -42,6 +43,7 @@ public class HomeViewModel extends AndroidViewModel {
 
         // Waiting for residence feedback
         SEARCHING_RESIDENCE,
+        SEARCHING_PET,
     }
 
     /** Use this for one-time events. */
@@ -51,6 +53,9 @@ public class HomeViewModel extends AndroidViewModel {
 
         // If the user did not provide search data
         SEARCH_RES_DATA_REQ,
+        SEARCH_PET_DATA_REQ,
+
+        SEARCH_PET_ERROR,
     }
 
     public enum Navigate {
@@ -62,7 +67,7 @@ public class HomeViewModel extends AndroidViewModel {
      * have to redo the search (and spend more data) every time. */
     public MutableLiveData<String> mResidenceAddressSearch;
 
-    /** Remember the last entry used for shack id. */ //todo: might change to only update on SEARCH pressed.
+    /** Remember the last entry used for shack id. */ //todo: might change to only update on SEARCH pressed!
     public MutableLiveData<String> mShackIDSearch;
 
     /** Remember the last entry used for lat / lon. STILL TODO!*/
@@ -77,6 +82,7 @@ public class HomeViewModel extends AndroidViewModel {
     public MutableLiveData<String> mPetNameSearch;
     public MutableLiveData<String> mPetWelfareSearch;
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
+    public MutableLiveData<AnimalType> mSpeciesAvailableSearch;
 
 
     /** Use this for indicating the network usage. Remember to always reset back to idle. */
@@ -103,7 +109,7 @@ public class HomeViewModel extends AndroidViewModel {
         return mNetworkHandler;
     }
     public LiveData<List<AnimalType>> getSpeciesAvailable() {
-        return mSpeciesAvailable; //TODO: HAVE AN UNKNOW ENTRY 
+        return mSpeciesAvailable; //TODO: HAVE AN UNKNOW ENTRY
     }
 
     /** Use this to respond to one time events. */
@@ -189,6 +195,83 @@ public class HomeViewModel extends AndroidViewModel {
                     mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
                 }
                 mResidenceSearchResults.setValue(null);
+            }
+        })
+        {@Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
+            return headers;
+        }
+        }, getApplication());
+    }
+
+    public void doAnimalSearch() {
+        //TODO:
+
+        AnimalType animalType = mSpeciesAvailableSearch.getValue();
+        int animalTypeSelectedID = -1;
+        if (animalType != null) {
+            animalTypeSelectedID = animalType.getId();
+        }
+        String petName = mPetNameSearch.getValue();
+        String welfareID = mPetWelfareSearch.getValue();
+        boolean hasPetName = !(petName == null || petName.isEmpty());
+        boolean hasWelfareID = !(welfareID == null || welfareID.isEmpty());
+        boolean hasSpecies = (animalTypeSelectedID > 0);
+
+        if (!hasPetName && !hasWelfareID && ! hasSpecies) {
+            mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_DATA_REQ, getApplication().getString(R.string.res_search_data_required)));
+            return;
+        }
+
+        mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
+
+        Map<String, String> params = new HashMap<>();
+        if (hasPetName) {
+            params.put("name", petName);
+        }
+
+        if (hasSpecies) {
+            params.put("animal_type_id", Integer.toString(animalTypeSelectedID));
+        }
+
+        if (hasWelfareID) {
+            params.put("welfare_number", welfareID);
+        }
+
+        String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
+        String url = NetworkUtils.createURL(baseURL, params);
+
+        RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
+                url, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        LinkedList<ResidenceSearchData> results = new LinkedList<>();
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            if (data != null) {
+                                Log.i("DONE", data.toString());
+                                //TODO: CONTINUE
+                            }
+                        } catch (JSONException e) {
+                            mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.internal_error_pet_search)));
+                        }
+                        mResidenceSearchResults.setValue(results);
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mNetworkHandler.setValue(NetworkStatus.IDLE);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.conn_error_pet_search)));
+                } else {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.unknown_error_pet_search)));
+                }
+//                mPetSearchResults.setValue(null);//TODO
             }
         })
         {@Override

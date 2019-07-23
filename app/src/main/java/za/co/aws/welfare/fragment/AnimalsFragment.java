@@ -84,6 +84,7 @@ public class AnimalsFragment extends Fragment {
                 //TODO: START SEARCH HERE> ONLY Hide search menu on successful search!!
 //                searchView.setVisibility(View.GONE);
 //                expandButton.show();
+                mModel.doAnimalSearch();
                 ///TODO: Seac animals
             }
         });
