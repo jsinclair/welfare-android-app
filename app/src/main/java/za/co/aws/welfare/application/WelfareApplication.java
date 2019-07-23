@@ -1,11 +1,12 @@
 package za.co.aws.welfare.application;
 
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 
@@ -17,7 +18,7 @@ import za.co.aws.welfare.R;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.model.UserPermissions;
 
-public class WelfareApplication extends MultiDexApplication {
+public class WelfareApplication extends Application {
 
     private final String PREF_FILE = "za.co.aws.welfare.PREFERENCE_FILE_KEY";
 
@@ -42,7 +43,7 @@ public class WelfareApplication extends MultiDexApplication {
     /** The key to use for the user's permissions. */
     private final String PREF_FILE_PERMISSIONS_EXT = ".permissions";
 
-    // Session storage variables
+    // Session storage variables TODO: STORE THIS IN A DATABASE RATHER
     private List<AnimalType> mAnimalTypes;
 
     /**
@@ -201,8 +202,10 @@ public class WelfareApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        // Initialize fierbase
-        FirebaseApp.initializeApp(getApplicationContext());
+        Log.i("WelfareApplication", "onCreate");
+
+        // Initialise FireBase
+        FirebaseApp.initializeApp(this);
 
         // Initialise the notification channel when the app starts up.
         createNotificationChannel();
