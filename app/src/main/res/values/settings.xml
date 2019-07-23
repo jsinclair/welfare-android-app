@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kBaseUrl">http://192.168.1.145:8888/welfare-rest-api/</string>
+    <string name="kBaseUrl">http://192.168.1.113:8888/welfare-rest-api/</string>
 </resources>

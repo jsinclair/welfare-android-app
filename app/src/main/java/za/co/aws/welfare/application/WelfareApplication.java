@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 
+import com.google.firebase.FirebaseApp;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -198,6 +200,9 @@ public class WelfareApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // Initialize fierbase
+        FirebaseApp.initializeApp(getApplicationContext());
 
         // Initialise the notification channel when the app starts up.
         createNotificationChannel();
