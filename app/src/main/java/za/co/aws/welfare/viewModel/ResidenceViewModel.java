@@ -76,7 +76,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     public MutableLiveData<String> mLat;
     public MutableLiveData<String> mLon;
     public MutableLiveData<String> mNotes;
-    public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList; //TODO: show on UI
+    public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList;
 
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
@@ -92,8 +92,8 @@ public class ResidenceViewModel extends AndroidViewModel {
         mEditMode = new MutableLiveData<>();
 
         mShackID = new MutableLiveData<>();
-        mLat = new MutableLiveData<>(); //TODO
-        mLon = new MutableLiveData<>(); //TODO
+        mLat = new MutableLiveData<>();
+        mLon = new MutableLiveData<>();
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>();
 
@@ -104,8 +104,6 @@ public class ResidenceViewModel extends AndroidViewModel {
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
     public void setup(boolean isNew, int resID) {
         this.isNew = isNew;
-        //TODO: On edit if isnew, should we have special actions?
-        // On edit if isnew, cancel button sould finish the activity.
         mEditMode.setValue(isNew);
         if (!isNew) {
             loadData(resID);

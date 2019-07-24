@@ -134,10 +134,10 @@ public class HomeViewModel extends AndroidViewModel {
         boolean hasShack = !(shackID == null || shackID.isEmpty());
         boolean hasStreet = !(streetAddress == null || streetAddress.isEmpty());
 
-        if (false && !hasShack && !hasStreet) { //TODO: REMOVE FALSE & add lat/lon check too
-            mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_DATA_REQ, getApplication().getString(R.string.res_search_data_required)));
-            return;
-        }
+//        if (false && !hasShack && !hasStreet) { //TODO: REMOVE FALSE & add lat/lon check too
+//            mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_DATA_REQ, getApplication().getString(R.string.res_search_data_required)));
+//            return;
+//        }
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
 
@@ -149,10 +149,6 @@ public class HomeViewModel extends AndroidViewModel {
         if (hasStreet) {
             params.put("street_address", streetAddress);
         }
-
-        //TODO: REMOVE TEST CODE
-        params.put("lat", "-34.158124");
-        params.put("lon", "18.984279");
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/list/";
         String url = NetworkUtils.createURL(baseURL, params);
