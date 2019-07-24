@@ -302,7 +302,16 @@ public class ResidenceViewModel extends AndroidViewModel {
             params.put("latitude", lat == null ? "" : lat);
             params.put("longitude", lon == null ? "" : lon);
             params.put("notes", notes == null ? "" : notes);
-            //TODO:! PUT ANIMAL LIST HERE VERY IMPRTANT
+
+            List<ResidentAnimalDetail> animalList = mAnimalList.getValue();
+            if (animalList != null) {
+                JSONArray animalIDs = new JSONArray();
+                for (ResidentAnimalDetail det: animalList) {
+                    animalIDs.put(det.getID());
+                }
+                params.put("animals", animalIDs);
+            }
+
         } catch (JSONException e) {
             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_internal_err)));
             mNetworkHandler.setValue(NetworkStatus.IDLE);
