@@ -116,14 +116,22 @@
                         android:layout_height="wrap_content"
                         android:text="@string/search_res_animals"/>
 
+                    <!--This list allows the user to navigate to differnt animals if NOT in edit-->
                     <com.google.android.flexbox.FlexboxLayout
-                        android:id="@+id/animal_list"
+                        android:id="@+id/animal_nav_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                     </com.google.android.flexbox.FlexboxLayout>
 
-                    <!--animals here todo-->
+                    <!--THIS list will be visible in edit view to remove animals-->
+                    <ListView
+                        android:id="@+id/remove_animals_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
+
+                    </ListView>
 
                 </LinearLayout>
             </FrameLayout>

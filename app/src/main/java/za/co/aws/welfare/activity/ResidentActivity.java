@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
@@ -37,6 +38,7 @@ public class ResidentActivity extends AppCompatActivity {
 
     // Contains all the animals. Allows the user to navigate to selected animal.
     private FlexboxLayout mAnimalDisplay;
+    private ListView mAnimalEditList;
 
     // The address text input layout.
     private TextInputLayout mAddress;
@@ -70,7 +72,8 @@ public class ResidentActivity extends AppCompatActivity {
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
 
-        mAnimalDisplay = findViewById(R.id.animal_list);
+        mAnimalDisplay = findViewById(R.id.animal_nav_list);
+        mAnimalEditList = findViewById(R.id.remove_animals_list);
         mAddress = findViewById(R.id.address_container);
         mShackID = findViewById(R.id.shack_container);
         mNotes = findViewById(R.id.notes_container);
@@ -193,9 +196,13 @@ public class ResidentActivity extends AppCompatActivity {
         mNotes.setEnabled(editable);
         if (editable) {
             mCancelEditButton.show();
+            mAnimalEditList.setVisibility(View.VISIBLE);
+            mAnimalDisplay.setVisibility(View.GONE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
         } else {
             mCancelEditButton.hide();
+            mAnimalEditList.setVisibility(View.GONE);
+            mAnimalDisplay.setVisibility(View.VISIBLE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
         }
     }
@@ -215,6 +222,7 @@ public class ResidentActivity extends AppCompatActivity {
                 }
             });
             mAnimalDisplay.addView(aniButton);
+            //TODO: update animal edit list here too!
         }
     }
 

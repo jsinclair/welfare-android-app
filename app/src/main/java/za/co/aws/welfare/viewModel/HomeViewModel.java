@@ -128,7 +128,6 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public void doResidenceSearch() {
-        //TODO: LAT LONG PART?
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();
         boolean hasShack = !(shackID == null || shackID.isEmpty());
