@@ -60,6 +60,8 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         // If an error occurred while trying to update the residence.
         UPDATE_ERROR,
+
+        DATA_REQUIRED,
     }
 
     /** Remember the user name. */
@@ -263,14 +265,19 @@ public class ResidenceViewModel extends AndroidViewModel {
         String lon = mLon.getValue();
         String notes = mNotes.getValue();
 
+        // Ensure the user provides some form of address.
+        if ((address == null || address.isEmpty()) && (shackID == null || shackID.isEmpty())) {
+            mEventHandler.setValue(new Pair<Event, String>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
+            return;
+        }
+
         if (isNew) {
-            //TODO: VALIDATE?? and test if this actually works.
             doUpdate(-1, address, shackID, lat, lon, notes);
         } else {
             boolean hasChanged = ((address != null && !address.equals(mAddressSave))
                     || (shackID != null && !shackID.equals(mShackIDSave))
                     || (notes !=null && !notes.equals(mNotesSave))
-                    || (lat != null && !lon.equals(mLongSave))
+                    || (lon != null && !lon.equals(mLongSave))
                     || (lat != null && !lat.equals(mLatSave)));
             if (hasChanged) {
                doUpdate(residenceID, address, shackID, lat, lon, notes);
@@ -285,18 +292,17 @@ public class ResidenceViewModel extends AndroidViewModel {
     /** Send the update to the backend and handle the result. */
     private void doUpdate(int id, String address, String shack, String lat, String lon, String notes) {
         mNetworkHandler.setValue(NetworkStatus.UPDATING_DATA);
-
-        //TODO: Are all these values allowed to be empty strings?
         JSONObject params = new JSONObject();
         try {
             if (!isNew) {
                 params.put("residence_id", id);
             }
-            params.put("shack_id", shack);
-            params.put("street_address", address);
-            params.put("latitude", lat);
-            params.put("longitude", lon);
-            params.put("notes", notes);
+            params.put("shack_id", shack == null ? "" : shack);
+            params.put("street_address", address == null ? "" : address);
+            params.put("latitude", lat == null ? "" : lat);
+            params.put("longitude", lon == null ? "" : lon);
+            params.put("notes", notes == null ? "" : notes);
+            //TODO:! PUT ANIMAL LIST HERE VERY IMPRTANT
         } catch (JSONException e) {
             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_internal_err)));
             mNetworkHandler.setValue(NetworkStatus.IDLE);
