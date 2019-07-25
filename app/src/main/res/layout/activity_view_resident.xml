@@ -128,9 +128,10 @@
                     <ListView
                         android:id="@+id/remove_animals_list"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:divider="?attr/dividerHorizontal"
+                        android:layout_weight="1"
                         android:visibility="gone">
-
                     </ListView>
 
                 </LinearLayout>

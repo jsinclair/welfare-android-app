@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/small_padding">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/pet_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:id="@+id/pet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/pet_name_title"
+            android:layout_toRightOf="@+id/pet_name_title"/>
+        <TextView
+            android:id="@+id/welfare_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pet_name_title"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:id="@+id/welfare_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pet_name_title"
+            android:layout_toEndOf="@+id/welfare_title"
+            android:layout_toRightOf="@+id/welfare_title"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/red"
+        android:src="@drawable/baseline_remove_circle_outline_white_24"/>
+</LinearLayout>

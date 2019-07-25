@@ -12,4 +12,6 @@
     <color name="navShadeMid">#3F51B5</color>
     <color name="navShadeEnd">#71a4f7</color>
     <color name="light_bg">#aec9f5</color>
+
+    <color name="red">#FF0000</color>
 </resources>

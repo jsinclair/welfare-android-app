@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.List;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
@@ -222,6 +223,7 @@ public class ResidentActivity extends AppCompatActivity {
                 }
             });
             mAnimalDisplay.addView(aniButton);
+            mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, null));
             //TODO: update animal edit list here too!
         }
     }
