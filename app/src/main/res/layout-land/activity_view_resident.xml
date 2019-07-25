@@ -6,12 +6,23 @@
             name="viewModel"
             type="za.co.aws.welfare.viewModel.ResidenceViewModel"/>
     </data>
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/mid_line"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintGuide_percent="0.5"
+            android:orientation="vertical"/>
         <ScrollView
             android:id="@+id/scroller"
-            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/mid_line"
+            app:layout_constraintRight_toLeftOf="@+id/mid_line"
+            android:layout_width="0dp"
             android:layout_height="wrap_content">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -111,31 +122,41 @@
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/animals_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/search_res_animals"/>
-
-                    <!--This list allows the user to navigate to differnt animals if NOT in edit-->
-                    <com.google.android.flexbox.FlexboxLayout
-                        android:id="@+id/animal_nav_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </com.google.android.flexbox.FlexboxLayout>
-
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
+        <TextView
+            android:id="@+id/animals_title"
+            android:layout_width="0dp"
+            android:background="@android:color/white"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/mid_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/general_padding"
+            android:text="@string/search_res_animals"/>
+
+        <!--This list allows the user to navigate to differnt animals if NOT in edit-->
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/animal_nav_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/animals_title"
+            app:layout_constraintStart_toEndOf="@+id/mid_line"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        </com.google.android.flexbox.FlexboxLayout>
+
         <ListView
             android:id="@+id/remove_animals_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:divider="?attr/dividerHorizontal"
-            android:layout_below="@+id/scroller"
+            app:layout_constraintTop_toBottomOf="@id/animals_title"
+            app:layout_constraintStart_toEndOf="@+id/mid_line"
+            app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone">
         </ListView>
 
@@ -146,8 +167,8 @@
             android:src="@drawable/cancel"
             android:layout_gravity="bottom|end"
             android:visibility="gone"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/edit"
             android:layout_above="@+id/edit"
             android:layout_margin="@dimen/general_padding"/>
 
@@ -156,10 +177,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_edit_white_24"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="@dimen/general_padding"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
