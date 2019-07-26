@@ -86,7 +86,7 @@
     <!-- Strings related to the reminders screen -->
 
     <!--general-->
-    <string name="unknown">Unknown</string>
+    <string name="any">Any</string>
     <string name="search">Search</string>
     <string name="cancel">Cancel</string>
     <string name="name">Name:</string>
