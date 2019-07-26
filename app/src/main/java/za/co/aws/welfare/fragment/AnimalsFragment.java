@@ -77,7 +77,7 @@ public class AnimalsFragment extends Fragment {
                 expandButton.hide();
             }
         });
-
+        
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

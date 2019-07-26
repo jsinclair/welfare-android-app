@@ -27,6 +27,7 @@ import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.NetworkUtils;
@@ -75,6 +76,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     /** Holds the results of the last search done. */
     public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
+    public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResults;
 
 
     //////PETS
@@ -113,6 +115,7 @@ public class HomeViewModel extends AndroidViewModel {
         mSpeciesAvailable.setValue (((WelfareApplication) getApplication()).getAnimalTypes());
         mPetWelfareSearch = new MutableLiveData<>();
         mPetNameSearch = new MutableLiveData<>();
+        mPetSearchResults = new MutableLiveData<>();
     }
 
     /** Use this to respond to network changes. */
@@ -249,17 +252,25 @@ public class HomeViewModel extends AndroidViewModel {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        LinkedList<ResidenceSearchData> results = new LinkedList<>();
+                        LinkedList<PetSearchData> results = new LinkedList<>();
                         try {
                             JSONObject data = response.getJSONObject("data");
                             if (data != null) {
-                                Log.i("DONE", data.toString());
-                                //TODO: CONTINUE
+                                JSONArray resArr = data.getJSONArray("animals");
+                                for (int i = 0; i < resArr.length(); i++) {
+                                    JSONObject entry = resArr.getJSONObject(i);
+                                    int id = entry.getInt("animal_type_id");
+                                    int animalType = entry.getInt("an");
+                                    String name = entry.optString("name");
+                                    String dob = entry.optString("approximate_dob");
+                                    String welfareID = entry.optString("welfare_number");
+                                    results.add(new PetSearchData(id, animalType, name, dob, welfareID));
+                                }
                             }
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.internal_error_pet_search)));
                         }
-                        mResidenceSearchResults.setValue(results);
+                        mPetSearchResults.setValue(results);
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
                     }
                 }, new Response.ErrorListener() {
@@ -272,7 +283,7 @@ public class HomeViewModel extends AndroidViewModel {
                 } else {
                     mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.unknown_error_pet_search)));
                 }
-//                mPetSearchResults.setValue(null);//TODO
+                mPetSearchResults.setValue(null);
             }
         })
         {@Override
