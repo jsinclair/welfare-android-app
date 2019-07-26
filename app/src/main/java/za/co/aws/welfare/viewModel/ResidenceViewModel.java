@@ -61,6 +61,7 @@ public class ResidenceViewModel extends AndroidViewModel {
         // If an error occurred while trying to update the residence.
         UPDATE_ERROR,
 
+        // If the user has not provided enough data to update or create a residence.
         DATA_REQUIRED,
     }
 
