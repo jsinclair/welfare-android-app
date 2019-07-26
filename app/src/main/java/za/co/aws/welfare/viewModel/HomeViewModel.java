@@ -146,6 +146,11 @@ public class HomeViewModel extends AndroidViewModel {
         return mPetSearchResults;
     }
 
+    /** Use this to respond to search result changes. */
+    public LiveData<AnimalType> getAnimalTypeSelected() {
+        return mSpeciesAvailableSearch;
+    }
+
     public void doResidenceSearch() {
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();

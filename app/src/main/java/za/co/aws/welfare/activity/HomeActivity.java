@@ -155,6 +155,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case SEARCH_RES_DATA_REQ:
                 showAlert(getString(R.string.data_required), eventData.second);
                 break;
+            case SEARCH_PET_ERROR:
+                showAlert(getString(R.string.download_err), eventData.second);
+                break;
         }
     }
 

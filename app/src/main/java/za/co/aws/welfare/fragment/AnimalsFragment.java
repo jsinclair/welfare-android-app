@@ -25,16 +25,12 @@ import java.util.List;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
-import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.AnimalsBinding;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 
+/** Used to search for animals. */
 public class AnimalsFragment extends Fragment {
-
-    //TODO: Populate selection list
-    //TODO: Do actual seach
-    //TODO: populate list of pets.
 
     private LinearLayout searchView;
     private FloatingActionButton expandButton;
@@ -65,10 +61,26 @@ public class AnimalsFragment extends Fragment {
             public void onChanged(List<AnimalType> animalTypes) {
                 ArrayAdapter<AnimalType> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, animalTypes);
                 mSpecies.setAdapter(adapter);
-//                spinner_country.setSelection(adapter.getPosition(myItem));
+
+                AnimalType selected = mModel.getAnimalTypeSelected().getValue();
+                if (selected != null) {
+                    int spinnerPosition = adapter.getPosition(selected);
+                    mSpecies.setSelection(spinnerPosition);
+                }
             }
         });
 
+        mSpecies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mModel.mSpeciesAvailableSearch.setValue((AnimalType) adapterView.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         searchView = v.findViewById(R.id.search_menu);
         searchButton = v.findViewById(R.id.search_button);
@@ -84,11 +96,7 @@ public class AnimalsFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: START SEARCH HERE> ONLY Hide search menu on successful search!!
-//                searchView.setVisibility(View.GONE);
-//                expandButton.show();
                 mModel.doAnimalSearch();
-                ///TODO: Seac animals
             }
         });
 
