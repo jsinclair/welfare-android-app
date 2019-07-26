@@ -141,6 +141,11 @@ public class HomeViewModel extends AndroidViewModel {
         return mResidenceSearchResults;
     }
 
+    /** Use this to respond to search result changes. */
+    public LiveData<LinkedList<PetSearchData>> getPetSearchResults() {
+        return mPetSearchResults;
+    }
+
     public void doResidenceSearch() {
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();
@@ -260,14 +265,16 @@ public class HomeViewModel extends AndroidViewModel {
                                 for (int i = 0; i < resArr.length(); i++) {
                                     JSONObject entry = resArr.getJSONObject(i);
                                     int id = entry.getInt("animal_type_id");
-                                    int animalType = entry.getInt("an");
+                                    int animalType = entry.getInt("animal_type_id");
+                                    String animalTypeDesc = entry.optString("description");
                                     String name = entry.optString("name");
                                     String dob = entry.optString("approximate_dob");
                                     String welfareID = entry.optString("welfare_number");
-                                    results.add(new PetSearchData(id, animalType, name, dob, welfareID));
+                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, welfareID));
                                 }
                             }
                         } catch (JSONException e) {
+                            //TODO:
                             mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.internal_error_pet_search)));
                         }
                         mPetSearchResults.setValue(results);

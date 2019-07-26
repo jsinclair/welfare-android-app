@@ -47,6 +47,10 @@
     <string name="search_pet_name">Pet Name</string>
     <string name="search_pet_welfare">Pet Welfare Number</string>
     <string name="search_pets">Searching Pets...</string>
+    <string name="search_pet_name_res">Name:</string>
+    <string name="search_pet_welfare_res">Welfare No:</string>
+    <string name="search_pet_species_res">Species:</string>
+    <string name="search_pet_dob_res">DOB:</string>
     <string name="unknown_error_pet_search">An unknown error occurred while trying to retrieve pet info. Please try again later.</string>
 
     <string name="pet_update_conn_err">A connection error occurred while trying to update pet info. Please check your connection and try again.</string>

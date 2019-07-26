@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_pet_name_res"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/text_gap"
+            android:layout_marginRight="@dimen/text_gap"/>
+        <TextView
+            android:id="@+id/pet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_pet_species_res"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/text_gap"
+            android:layout_marginRight="@dimen/text_gap"/>
+        <TextView
+            android:id="@+id/pet_species"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_pet_dob_res"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/text_gap"
+            android:layout_marginRight="@dimen/text_gap"/>
+        <TextView
+            android:id="@+id/pet_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_pet_welfare_res"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/text_gap"
+            android:layout_marginRight="@dimen/text_gap"/>
+        <TextView
+            android:id="@+id/pet_welfare_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

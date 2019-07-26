@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -22,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.customComponents.PetSearchListAdapter;
+import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.AnimalsBinding;
 import za.co.aws.welfare.model.AnimalType;
@@ -77,7 +80,7 @@ public class AnimalsFragment extends Fragment {
                 expandButton.hide();
             }
         });
-        
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,26 +108,26 @@ public class AnimalsFragment extends Fragment {
         });
 
         //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
-        mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
+        mModel.getPetSearchResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<PetSearchData>>() {
             @Override
-            public void onChanged(final LinkedList<ResidenceSearchData> residenceSearchData) {
-//                LinearLayout emptyView = v.findViewById(R.id.empty_view);
-//                if (residenceSearchData != null && !residenceSearchData.isEmpty()) {
-//                    emptyView.setVisibility(View.GONE);
-//                    results.setVisibility(View.VISIBLE);
-//                    results.setAdapter(new ResidenceSearchListAdapter(getContext(), R.layout.content_residence_search_entry, residenceSearchData));
-//                    results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID());
-//                        }
-//                    });
-//                    searchView.setVisibility(View.GONE);
-//                    expandButton.show();
-//                } else {
-//                    emptyView.setVisibility(View.VISIBLE);
-//                    results.setVisibility(View.GONE);
-//                }
+            public void onChanged(final LinkedList<PetSearchData> petSearchData) {
+                LinearLayout emptyView = v.findViewById(R.id.empty_view);
+                if (petSearchData != null && !petSearchData.isEmpty()) {
+                    emptyView.setVisibility(View.GONE);
+                    results.setVisibility(View.VISIBLE);
+                    results.setAdapter(new PetSearchListAdapter(getContext(), R.layout.content_pet_search_entry, petSearchData));
+                    results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                           //TODO: GO TO PET ACTIVIYT
+                        }
+                    });
+                    searchView.setVisibility(View.GONE);
+                    expandButton.show();
+                } else {
+                    emptyView.setVisibility(View.VISIBLE);
+                    results.setVisibility(View.GONE);
+                }
             }
         });
         return v;
