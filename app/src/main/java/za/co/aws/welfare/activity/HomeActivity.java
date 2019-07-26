@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
-import za.co.aws.welfare.PetActivity;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
@@ -33,7 +32,6 @@ import za.co.aws.welfare.fragment.RemindersFragment;
 import za.co.aws.welfare.fragment.ResidencesFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.HomeViewModel;
-import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Contains the 3 search fragments. */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
