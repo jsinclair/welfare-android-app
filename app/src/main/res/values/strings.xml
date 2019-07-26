@@ -82,7 +82,7 @@
     <string name="internal_error_res_search">An internal error occurred while trying to retrieve Resident info. Some information might be missing or incorrect.</string>
     <string name="res_search_data_required">Please provide at least one entry in the search fields to do a search.</string>
     <string name="unknown_error_res_search">An unknown error occurred while trying to retrieve Resident info. Please try again later.</string>
-    
+
     <!-- Strings related to the reminders screen -->
 
     <!--general-->

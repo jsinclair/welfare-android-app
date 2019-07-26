@@ -25,6 +25,7 @@ import java.util.List;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.AnimalsBinding;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.viewModel.HomeViewModel;
@@ -127,7 +128,7 @@ public class AnimalsFragment extends Fragment {
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                           //TODO: GO TO PET ACTIVIYT
+                            mModel.triggerViewPet(((PetSearchData) results.getAdapter().getItem(i)).getID());
                         }
                     });
                     searchView.setVisibility(View.GONE);

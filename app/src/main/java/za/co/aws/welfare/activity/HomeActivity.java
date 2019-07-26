@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import za.co.aws.welfare.PetActivity;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
@@ -119,7 +120,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     addIntent.putExtra("RequestNewEntry", true);
                     startActivity(addIntent);
                     break;
-                case ANIMAL:
+                case PET:
+                    Intent petIntent = new Intent(this, PetActivity.class);
+                    petIntent.putExtra("petID", data.second);
+                    startActivity(petIntent);
                     break;
             }
         }
