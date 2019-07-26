@@ -67,6 +67,9 @@ public class ResidenceViewModel extends AndroidViewModel {
     /** Remember the user name. */
     private Integer residenceID;
     private boolean isNew;
+    private ResidentAnimalDetail mRemoveRequest;
+
+
     public MutableLiveData<Boolean> mErrorState;
 
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
@@ -83,6 +86,7 @@ public class ResidenceViewModel extends AndroidViewModel {
 
     // These store the values to revert to if the user 'cancels' an edit.
     private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave;
+    private List<ResidentAnimalDetail> mSavedAnimalList;
 
     public ResidenceViewModel(Application app) {
         super(app);
@@ -236,6 +240,10 @@ public class ResidenceViewModel extends AndroidViewModel {
                 mLatSave = mLat.getValue();
                 mLongSave = mLon.getValue();
                 mNotesSave = mNotes.getValue();
+                mSavedAnimalList = new LinkedList<>();
+                if (mAnimalList != null && mAnimalList.getValue() != null) {
+                    mSavedAnimalList.addAll(mAnimalList.getValue());
+                }
                 mEditMode.setValue(true);
             } else {
                 // Do save actions to backend.
@@ -253,6 +261,7 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLat.setValue(mLatSave);
         mLon.setValue(mLongSave);
         mNotes.setValue(mNotesSave);
+        mAnimalList.setValue(mSavedAnimalList);
     }
 
     /** Attempt to send the update / to the backend. */
@@ -277,6 +286,21 @@ public class ResidenceViewModel extends AndroidViewModel {
                     || (notes !=null && !notes.equals(mNotesSave))
                     || (lon != null && !lon.equals(mLongSave))
                     || (lat != null && !lat.equals(mLatSave)));
+
+            List<ResidentAnimalDetail> pets = mAnimalList.getValue();
+            if (!((mSavedAnimalList == null || mSavedAnimalList.isEmpty()) && (pets == null || pets.isEmpty()))) {
+                if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) {
+                    hasChanged = true;
+                } else {
+                    for (ResidentAnimalDetail pet : mSavedAnimalList) {
+                        if (!pets.contains(pet)) {
+                            hasChanged = true;
+                            break;
+                        }
+                    }
+                }
+            }//TODO: TEST TEST TEST
+
             if (hasChanged) {
                doUpdate(residenceID, address, shackID, lat, lon, notes);
             } else {
@@ -355,5 +379,19 @@ public class ResidenceViewModel extends AndroidViewModel {
                         return headers;
                     }
                 }, getApplication());
+    }
+
+    public void setRemoveRequest(ResidentAnimalDetail deleteRequest) {
+        this.mRemoveRequest = deleteRequest;
+    }
+
+    public void removePet() {
+        if (mRemoveRequest != null) {
+           List<ResidentAnimalDetail> list = mAnimalList.getValue();
+           if (list != null) {
+               list.remove(mRemoveRequest);
+           }
+           mAnimalList.setValue(list);
+        }
     }
 }

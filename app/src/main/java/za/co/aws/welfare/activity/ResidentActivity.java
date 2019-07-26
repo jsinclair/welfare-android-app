@@ -224,18 +224,28 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
                 @Override
                 public void onClick(View view) {
                     Log.i("CLICKED", ((ResidentAnimalDetail)view.getTag()).getName());
-                    DialogFragment exitDialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_title),
-                            getString(R.string.remove_pet_message, ((ResidentAnimalDetail)view.getTag()).getName()),
-                            getString(R.string.remove_pet_yes),
-                            getString(R.string.remove_pet_no), REMOVE_PET_CONFIRM);
-                    exitDialog.show(getSupportFragmentManager(), REMOVE_PET_CONFIRM);
-                    //TODO: WRONG SPOT
+
+                    //TODO: Nav topet
                 }
             });
 
             mAnimalDisplay.addView(aniButton);
-            mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, null));
+            mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestRemovePet((ResidentAnimalDetail)view.getTag());
+                }
+            }));
         }
+    }
+
+    private void requestRemovePet(ResidentAnimalDetail pet) {
+        mModel.setRemoveRequest(pet);
+        DialogFragment exitDialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_title),
+                getString(R.string.remove_pet_message, pet.getName()),
+                getString(R.string.remove_pet_yes),
+                getString(R.string.remove_pet_no), REMOVE_PET_CONFIRM);
+        exitDialog.show(getSupportFragmentManager(), REMOVE_PET_CONFIRM);
     }
 
     // Convenience method to show an alert dialog.
@@ -247,7 +257,9 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
 
     @Override
     public void onDialogYesSelected(String tag) {
-
+        if (REMOVE_PET_CONFIRM.equals(tag)) {
+            mModel.removePet();
+        }
     }
 
     @Override
