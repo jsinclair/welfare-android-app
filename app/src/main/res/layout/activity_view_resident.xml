@@ -137,7 +137,10 @@
             android:divider="?attr/dividerHorizontal"
             android:layout_below="@+id/scroller"
             android:visibility="gone"
-            android:layout_margin="@dimen/general_padding">
+            android:paddingLeft="@dimen/general_padding"
+            android:paddingStart="@dimen/general_padding"
+            android:paddingEnd="@dimen/general_padding"
+            android:paddingRight="@dimen/general_padding">
         </ListView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

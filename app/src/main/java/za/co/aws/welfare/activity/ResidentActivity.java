@@ -156,7 +156,9 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
             }
         });
 
-        mModel.setup(isNew, resID);
+        if (savedInstanceState == null) {
+            mModel.setup(isNew, resID);
+        }
     }
 
     //TODO: UPDATE OTHER NETWORK HANDLERS
