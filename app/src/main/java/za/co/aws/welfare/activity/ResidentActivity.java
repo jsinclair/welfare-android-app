@@ -210,6 +210,7 @@ public class ResidentActivity extends AppCompatActivity {
 
     /** Generate the animal list and setup click listeners. */
     private void setupAnimalViews(List<ResidentAnimalDetail> list) {
+        mAnimalDisplay.removeAllViews();
         //TODO: Show welfare number!
         //TODO: navigate to animal view
         for (ResidentAnimalDetail animal: list) {
