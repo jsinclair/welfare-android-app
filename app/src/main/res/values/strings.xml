@@ -53,6 +53,10 @@
     <string name="internal_error_pet_search">An internal error occurred while trying to retrieve pet info. Some information might be missing or incorrect.</string>
 
     <!-- Strings related to the residences screen -->
+    <string name="remove_pet_title">Remove pet from residence?</string>
+    <string name="remove_pet_message" formatted="true">Are you sure you want to remove %1$s from this residence?</string>
+    <string name="remove_pet_yes">Remove Pet</string>
+    <string name="remove_pet_no">Cancel</string>
     <string name="retrieving_res_data">Retrieving Residence...</string>
     <string name="updating_res_data">Updating Residence...</string>
     <string name="search_address">Street Address</string>
@@ -79,6 +83,8 @@
     <!--general-->
     <string name="search">Search</string>
     <string name="cancel">Cancel</string>
+    <string name="name">Name:</string>
+    <string name="welfare_no">Welfare No:</string>
     <string name="download_err">Download Error</string>
     <string name="data_required">Data Required</string>
     <string name="notes">Notes</string>

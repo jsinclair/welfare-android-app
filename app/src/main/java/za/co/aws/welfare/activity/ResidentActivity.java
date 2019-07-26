@@ -9,6 +9,7 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -25,14 +26,16 @@ import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
+import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allows the user to view and, if they have permission, edit a residence. */
-public class ResidentActivity extends AppCompatActivity {
+public class ResidentActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
     //TODO: Allow user to ADD and REMOVE animal from residence (on edit)
 
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+    private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
 
     // The view model
     private ResidenceViewModel mModel;
@@ -221,11 +224,17 @@ public class ResidentActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Log.i("CLICKED", ((ResidentAnimalDetail)view.getTag()).getName());
+                    DialogFragment exitDialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_title),
+                            getString(R.string.remove_pet_message, ((ResidentAnimalDetail)view.getTag()).getName()),
+                            getString(R.string.remove_pet_yes),
+                            getString(R.string.remove_pet_no), REMOVE_PET_CONFIRM);
+                    exitDialog.show(getSupportFragmentManager(), REMOVE_PET_CONFIRM);
+                    //TODO: WRONG SPOT
                 }
             });
+
             mAnimalDisplay.addView(aniButton);
             mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, null));
-            //TODO: update animal edit list here too!
         }
     }
 
@@ -234,5 +243,15 @@ public class ResidentActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogFragment alert = AlertDialogFragment.newInstance(title, message);
         Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
+    }
+
+    @Override
+    public void onDialogYesSelected(String tag) {
+
+    }
+
+    @Override
+    public void onDialogNoSelected(String tag) {
+
     }
 }

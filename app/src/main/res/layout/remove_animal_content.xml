@@ -5,12 +5,14 @@
     android:padding="@dimen/small_padding">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="1">
         <TextView
             android:id="@+id/pet_name_title"
+            android:text="@string/name"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -24,6 +26,8 @@
             android:layout_toRightOf="@+id/pet_name_title"/>
         <TextView
             android:id="@+id/welfare_title"
+            android:text="@string/welfare_no"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/pet_name_title"
@@ -43,5 +47,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:tint="@color/red"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/baseline_remove_circle_outline_white_24"/>
 </LinearLayout>
