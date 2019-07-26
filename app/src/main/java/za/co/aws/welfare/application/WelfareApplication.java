@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -175,7 +176,10 @@ public class WelfareApplication extends Application {
 
     // Accessors and mutators for utility lists
     public List<AnimalType> getAnimalTypes() {
-        return mAnimalTypes;
+        AnimalType unknown = new AnimalType(-1, getString(R.string.unknown));
+        ArrayList<AnimalType> returnList = new ArrayList<>(mAnimalTypes);
+        returnList.add(0, unknown);
+        return returnList;
     }
 
     public void setAnimalTypes(List<AnimalType> mAnimalTypes) {

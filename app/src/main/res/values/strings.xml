@@ -46,6 +46,7 @@
     <string name="pet_search_err_view">Pet search had no results or an error occurred. Try again later.</string>
     <string name="search_pet_name">Pet Name</string>
     <string name="search_pet_welfare">Pet Welfare Number</string>
+    <string name="search_pets">Searching Pets...</string>
     <string name="unknown_error_pet_search">An unknown error occurred while trying to retrieve pet info. Please try again later.</string>
 
     <string name="pet_update_conn_err">A connection error occurred while trying to update pet info. Please check your connection and try again.</string>
@@ -81,6 +82,7 @@
     <!-- Strings related to the reminders screen -->
 
     <!--general-->
+    <string name="unknown">Unknown</string>
     <string name="search">Search</string>
     <string name="cancel">Cancel</string>
     <string name="name">Name:</string>

@@ -81,7 +81,11 @@ public class HomeViewModel extends AndroidViewModel {
     //TODO type
     public MutableLiveData<String> mPetNameSearch;
     public MutableLiveData<String> mPetWelfareSearch;
+
+    // List of species available.
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
+
+    // The selected species
     public MutableLiveData<AnimalType> mSpeciesAvailableSearch;
 
 
@@ -94,14 +98,21 @@ public class HomeViewModel extends AndroidViewModel {
 
     public HomeViewModel(Application application) {
         super(application);
+        //res stuff
         mResidenceAddressSearch = new MutableLiveData<>();
         mShackIDSearch = new MutableLiveData<>();
+        mResidenceSearchResults = new MutableLiveData<>();
+
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
         mNavigationHandler = new SingleLiveEvent<>();
-        mResidenceSearchResults = new MutableLiveData<>();
+
+        //animal stuff
+        mSpeciesAvailableSearch = new MutableLiveData<>();
         mSpeciesAvailable = new MutableLiveData<>();
         mSpeciesAvailable.setValue (((WelfareApplication) getApplication()).getAnimalTypes());
+        mPetWelfareSearch = new MutableLiveData<>();
+        mPetNameSearch = new MutableLiveData<>();
     }
 
     /** Use this to respond to network changes. */
@@ -214,11 +225,6 @@ public class HomeViewModel extends AndroidViewModel {
         boolean hasPetName = !(petName == null || petName.isEmpty());
         boolean hasWelfareID = !(welfareID == null || welfareID.isEmpty());
         boolean hasSpecies = (animalTypeSelectedID > 0);
-
-        if (!hasPetName && !hasWelfareID && ! hasSpecies) {
-            mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_DATA_REQ, getApplication().getString(R.string.res_search_data_required)));
-            return;
-        }
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
 

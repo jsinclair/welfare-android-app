@@ -32,6 +32,7 @@ import za.co.aws.welfare.fragment.RemindersFragment;
 import za.co.aws.welfare.fragment.ResidencesFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.HomeViewModel;
+import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Contains the 3 search fragments. */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -127,20 +128,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     /** Handle once network events. */
     private void handleNetworkStatus(HomeViewModel.NetworkStatus status) {
         FragmentManager fm = getSupportFragmentManager();
-        ProgressDialogFragment progressDialog = (ProgressDialogFragment) fm.findFragmentByTag(PROGRESS_DIALOG_TAG);
-        switch (status) { //TODO: REPLACE WITH UPDATING PROGRESS DIALOG!!!!!
+        ProgressDialogFragment progressDialog = Utils.getProgressDialog(fm);
+        switch (status) {
             case IDLE:
                 if (progressDialog != null) {
                     progressDialog.dismiss();
                 }
                 break;
             case SEARCHING_RESIDENCE:
-                ProgressDialogFragment progress = ProgressDialogFragment.newInstance(getString(R.string.search_residence));
-                Utils.showDialog(fm, progress, PROGRESS_DIALOG_TAG, false);
+                Utils.updateProgress(fm, progressDialog, getString(R.string.search_residence));
+                break;
+            case SEARCHING_PET:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.search_pets));
                 break;
 
         }
     }
+
 
     /** Handle one time events triggered from the model. */
     private void handleEvent(Pair<HomeViewModel.Event, String> eventData) {
