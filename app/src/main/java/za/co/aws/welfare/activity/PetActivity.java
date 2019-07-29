@@ -2,6 +2,7 @@ package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,8 @@ public class PetActivity extends AppCompatActivity {
     private TextInputLayout mWelfareIDContainer;
     private Spinner mSpecies;
 
+    private Button mNavResButton;
+
     // Allow the user to edit the view.
     private FloatingActionButton mEditButton;
 
@@ -70,6 +73,8 @@ public class PetActivity extends AppCompatActivity {
         mModel = ViewModelProviders.of(this).get(PetViewModel.class);
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
+
+        mNavResButton = findViewById(R.id.nav_res);
 
         mCancelEditButton = findViewById(R.id.cancel_edit);
         mCancelEditButton.setOnClickListener(new View.OnClickListener() {
@@ -201,12 +206,15 @@ public class PetActivity extends AppCompatActivity {
         mNotesContainer.setEnabled(editable);
         mTreatmentsContainer.setEnabled(editable);
         mWelfareIDContainer.setEnabled(editable);
+        mNavResButton.setEnabled(!editable);
         mSpecies.setEnabled(editable);
         if (editable) {
             mCancelEditButton.show();
+            findViewById(R.id.change_res).setVisibility(View.VISIBLE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
         } else {
             mCancelEditButton.hide();
+            findViewById(R.id.change_res).setVisibility(View.GONE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
         }
     }

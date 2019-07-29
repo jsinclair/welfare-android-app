@@ -68,6 +68,7 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<String> mNotes;
     public MutableLiveData<String> mTreatments;
     public MutableLiveData<String> mWelfareNumber;
+    public MutableLiveData<String> mDisplayAddress;
 
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
@@ -88,6 +89,7 @@ public class PetViewModel extends AndroidViewModel {
         mNotes = new MutableLiveData<>();
         mTreatments = new MutableLiveData<>();
         mWelfareNumber = new MutableLiveData<>();
+        mDisplayAddress = new MutableLiveData<>();
 
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
@@ -162,6 +164,7 @@ public class PetViewModel extends AndroidViewModel {
                                     String notes = pet.optString("notes");
                                     String welfareID = pet.optString("welfare_number");
                                     String treatments = pet.optString("treatments");
+                                    String displayAddresss = pet.optString("display_address");
 
                                     PetViewModel.this.petID = id;
                                     PetViewModel.this.residenceID = residenceID;
@@ -171,6 +174,7 @@ public class PetViewModel extends AndroidViewModel {
                                     mNotes.setValue(notes);
                                     mWelfareNumber.setValue(welfareID);
                                     mTreatments.setValue(treatments);
+                                    mDisplayAddress.setValue(displayAddresss);
                                     mErrorState.setValue(false);
                                 }
                             } catch (JSONException e) {

@@ -154,6 +154,29 @@
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                   <TextView
+                       android:text="@string/curr_res"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/nav_res"
+                        android:text="@={ viewModel.mDisplayAddress }"
+                        android:drawableRight="@drawable/baseline_navigate_next_white_24"
+                        android:drawableEnd="@drawable/baseline_navigate_next_white_24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="@dimen/general_padding"/>
+
+                    <Button
+                        android:id="@+id/change_res"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:text="@string/change_res"
+                        android:layout_gravity="center_horizontal"/>
+
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

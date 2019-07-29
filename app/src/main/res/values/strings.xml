@@ -94,6 +94,9 @@
     <!--general-->
     <string name="any">Any</string>
     <string name="search">Search</string>
+    <string name="curr_res">Current Residence:</string>
+    <string name="unknown">Unknown</string>
+    <string name="change_res">Change Residence</string>
     <string name="cancel">Cancel</string>
     <string name="name">Name:</string>
     <string name="welfare_no">Welfare No:</string>

@@ -161,7 +161,6 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
         }
     }
 
-    //TODO: UPDATE OTHER NETWORK HANDLERS
     private void handleNetworkStatus(ResidenceViewModel.NetworkStatus status) {
         FragmentManager fm = getSupportFragmentManager();
         ProgressDialogFragment progressDialog = Utils.getProgressDialog(fm);
