@@ -1,6 +1,7 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
@@ -18,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
@@ -240,7 +240,107 @@ public class PetViewModel extends AndroidViewModel {
 
     /** Attempt to send the update / to the backend. */
     private void saveData() {
-        //TODO
+        String name = mPetName.getValue();
+        String dob = mApproxDOB.getValue();
+        String notes = mNotes.getValue();
+        String welfareID = mWelfareNumber.getValue();
+        String treatments = mTreatments.getValue();
+        int resID = residenceID;
+        //TODO: ANIMAL TYPE
+
+        // Ensure the user provides some form of address.
+        if ((name == null || name.isEmpty()) || (welfareID == null || welfareID.isEmpty()) /*TODO: ADD TYPE*/) {
+            //TODO: UPDATE MESSGAEG
+            mEventHandler.setValue(new Pair<Event, String>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
+            return;
+        }
+
+        if (isNew) {
+            //TODO: animal type
+            doUpdate(-1, resID, 3, name, dob, welfareID, notes, treatments);
+        } else {
+            boolean hasChanged = ((name != null && !name.equals(mSaveName))
+                    || (dob != null && !dob.equals(mSaveDOB))
+                    || (notes !=null && !notes.equals(mSaveNotes))
+                    || (welfareID != null && !welfareID.equals(mSaveWelfareNo))
+                    || (resID != mSaveResID))
+                    || (treatments != null && !treatments.equals(mSaveTreatements));
+
+            if (hasChanged) {
+                //TODO: ANIMAL TYPE
+                doUpdate(petID, resID, 3, name, dob, welfareID, notes, treatments);
+            } else {
+                Toast.makeText(getApplication(), getApplication().getString(R.string.no_change),
+                        Toast.LENGTH_LONG).show();
+                mEditMode.setValue(false);
+            }
+        }
     }
+
+    /** Send the update to the backend and handle the result. */
+    private void doUpdate(int petID, int residenceID, int animalType, String petName, String dob,
+                          String welfareNo, String notes, String treatments) {
+
+        mNetworkHandler.setValue(NetworkStatus.UPDATING_DATA);
+        JSONObject params = new JSONObject();
+        try {
+            if (!isNew) {
+                params.put("animal_id", petID);
+            }
+            params.put("animal_type_id", animalType); //TODO
+            params.put("residence_id", residenceID); //TODO test -1;
+            params.put("name", petName);
+            params.put("approximate_dob", dob == null ? "" : dob);
+            params.put("notes", notes == null ? "" : notes);
+            params.put("welfare_number", welfareNo == null ? "" : welfareNo);
+            params.put("treatments", treatments == null ? "" : treatments);
+
+        } catch (JSONException e) {
+            //TODO: update messages... for all
+            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_internal_err)));
+            mNetworkHandler.setValue(NetworkStatus.IDLE);
+            return;
+        }
+
+        String URL = getApplication().getString(R.string.kBaseUrl) + "animals/update/";
+
+        RequestQueueManager.getInstance().addToRequestQueue(
+                new JsonObjectRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            String msg = data.getString("message");
+
+                            Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_unknown_err)));
+                        }
+                        mEditMode.setValue(false);
+                        isNew = false; //Set to not new value.
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.res_update_conn_err)));
+                        } else {
+                            String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.res_update_unknown_err));
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, errorMSG));
+                        }
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                        return headers;
+                    }
+                }, getApplication());
+    }
+
 
 }
