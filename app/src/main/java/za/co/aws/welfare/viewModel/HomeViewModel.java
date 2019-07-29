@@ -112,7 +112,7 @@ public class HomeViewModel extends AndroidViewModel {
         //animal stuff
         mSpeciesAvailableSearch = new MutableLiveData<>();
         mSpeciesAvailable = new MutableLiveData<>();
-        mSpeciesAvailable.setValue (((WelfareApplication) getApplication()).getAnimalTypes());
+        mSpeciesAvailable.setValue (((WelfareApplication) getApplication()).getAnimalTypes(true));
         mPetWelfareSearch = new MutableLiveData<>();
         mPetNameSearch = new MutableLiveData<>();
         mPetSearchResults = new MutableLiveData<>();

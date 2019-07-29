@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
@@ -31,6 +32,8 @@ import za.co.aws.welfare.utils.Utils;
 
 /** used for the Pet Activity, which allows the user to view or modify a pet. */
 public class PetViewModel extends AndroidViewModel {
+
+    //TODO: REsidence navigation and change.
 
     /** The network statuses. */
     public enum NetworkStatus {
@@ -57,7 +60,7 @@ public class PetViewModel extends AndroidViewModel {
 
     /** Remember the pet id as sent by the backend. */
     private Integer petID;
-    private Integer residenceID; //TODO: make a way to view this
+    private Integer residenceID;
     private boolean isNew;
     public MutableLiveData<Boolean> mErrorState;
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
@@ -73,13 +76,17 @@ public class PetViewModel extends AndroidViewModel {
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
+    // List of species available.
+    public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
+
     private int mSaveResID;  //TODO: ANUMAL TYPE
     private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo;
 
-    //TODO: NET WORK EVENT and save
-
     public PetViewModel(Application app) {
         super(app);
+
+        mSpeciesAvailable = new MutableLiveData<>();
+        mSpeciesAvailable.setValue(((WelfareApplication) getApplication()).getAnimalTypes(false));
 
         mEditMode = new MutableLiveData<>();
         mErrorState = new MutableLiveData<>();
@@ -107,6 +114,10 @@ public class PetViewModel extends AndroidViewModel {
     // Should set to TRUE if editable.
     public MutableLiveData<Boolean> getEditMode() {
         return mEditMode;
+    }
+
+    public MutableLiveData<List<AnimalType>> getSpeciesAvailable() {
+        return mSpeciesAvailable;
     }
 
     public MutableLiveData<NetworkStatus> getNetworkHandler() {
@@ -304,7 +315,6 @@ public class PetViewModel extends AndroidViewModel {
             params.put("treatments", treatments == null ? "" : treatments);
 
         } catch (JSONException e) {
-            //TODO: update messages... for all
             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.pet_update_internal_err)));
             mNetworkHandler.setValue(NetworkStatus.IDLE);
             return;

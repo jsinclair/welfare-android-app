@@ -2,6 +2,7 @@ package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -15,11 +16,14 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.List;
+
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.DatePickerFragment;
 import za.co.aws.welfare.databinding.ActivityPetBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
+import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.PetViewModel;
 
@@ -106,6 +110,13 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             }
         });
 
+        mModel.getSpeciesAvailable().observe(this, new Observer<List<AnimalType>>() {
+            @Override
+            public void onChanged(List<AnimalType> animalTypes) {
+                ArrayAdapter<AnimalType> adapter = new ArrayAdapter<>(PetActivity.this, android.R.layout.simple_spinner_dropdown_item, animalTypes);
+                mSpecies.setAdapter(adapter);
+            }
+        });
 
         mNameContainer = findViewById(R.id.name_container);
         mSpecies = findViewById(R.id.species);
