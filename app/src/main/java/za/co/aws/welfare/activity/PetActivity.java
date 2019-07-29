@@ -2,6 +2,7 @@ package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -171,6 +172,29 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
                     findViewById(R.id.data_container).setVisibility(View.VISIBLE);
                     findViewById(R.id.edit).setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        mModel.getSpecies().observe(this, new Observer<AnimalType>() {
+            @Override
+            public void onChanged(AnimalType animalType) {
+                int spinnerPosition = ((ArrayAdapter)mSpecies.getAdapter()).getPosition(animalType);
+                if (spinnerPosition > -1) {
+                    mSpecies.setSelection(spinnerPosition);
+                }
+            }
+        });
+
+        mSpecies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                AnimalType chosen = (AnimalType) adapterView.getSelectedItem();
+                mModel.setSpecies(chosen);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 

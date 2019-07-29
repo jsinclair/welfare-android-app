@@ -72,6 +72,7 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<String> mTreatments;
     public MutableLiveData<String> mWelfareNumber;
     public MutableLiveData<String> mDisplayAddress;
+    public MutableLiveData<AnimalType> mSpecies;
 
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
@@ -81,6 +82,7 @@ public class PetViewModel extends AndroidViewModel {
 
     private int mSaveResID;  //TODO: ANUMAL TYPE
     private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo;
+    private AnimalType mSavedAnimalType;
 
     public PetViewModel(Application app) {
         super(app);
@@ -88,6 +90,7 @@ public class PetViewModel extends AndroidViewModel {
         mSpeciesAvailable = new MutableLiveData<>();
         mSpeciesAvailable.setValue(((WelfareApplication) getApplication()).getAnimalTypes(false));
 
+        mSpecies = new MutableLiveData<>();
         mEditMode = new MutableLiveData<>();
         mErrorState = new MutableLiveData<>();
         mAnimalType = new MutableLiveData<>();
@@ -116,6 +119,10 @@ public class PetViewModel extends AndroidViewModel {
         return mEditMode;
     }
 
+    public MutableLiveData<AnimalType> getSpecies() {
+        return mSpecies;
+    }
+
     public MutableLiveData<List<AnimalType>> getSpeciesAvailable() {
         return mSpeciesAvailable;
     }
@@ -141,6 +148,9 @@ public class PetViewModel extends AndroidViewModel {
         return isNew;
     }
 
+    public void setSpecies(AnimalType ani) {
+        mSpecies.setValue(ani);
+    }
 
     /**
      * Use this to reload the data if there was an error. Could also be used if there has been a
@@ -183,7 +193,14 @@ public class PetViewModel extends AndroidViewModel {
 
                                     PetViewModel.this.petID = id;
                                     PetViewModel.this.residenceID = residenceID;
-                                    //TODO: ANIMAL TYPE ID
+                                    if (mSpeciesAvailable.getValue() != null) {
+                                        for (AnimalType ani : mSpeciesAvailable.getValue()) {
+                                            if (ani.getId() == animalTypeID) {
+                                                mSpecies.setValue(ani);
+                                                break;
+                                            }
+                                        }
+                                    }
                                     mPetName.setValue(name);
                                     mApproxDOB.setValue(dob);
                                     mNotes.setValue(notes);
@@ -237,6 +254,7 @@ public class PetViewModel extends AndroidViewModel {
                 mSaveNotes = mNotes.getValue();
                 mSaveTreatements = mTreatments.getValue();
                 mSaveWelfareNo = mWelfareNumber.getValue();
+                mSavedAnimalType = mSpecies.getValue();
                 mEditMode.setValue(true);
             } else {
                 // Do save actions to backend.
@@ -255,39 +273,39 @@ public class PetViewModel extends AndroidViewModel {
         mNotes.setValue(mSaveNotes);
         mTreatments.setValue(mSaveTreatements);
         mWelfareNumber.setValue(mSaveWelfareNo);
+        mSpecies.setValue(mSavedAnimalType);
     }
 
     /** Attempt to send the update / to the backend. */
     private void saveData() {
+        int animalType = mSpecies.getValue() == null ? -1 : mSpecies.getValue().getId();
         String name = mPetName.getValue();
         String dob = mApproxDOB.getValue();
         String notes = mNotes.getValue();
         String welfareID = mWelfareNumber.getValue();
         String treatments = mTreatments.getValue();
         int resID = residenceID;
-        //TODO: ANIMAL TYPE
 
         // Ensure the user provides some form of address.
-        if ((name == null || name.isEmpty()) || (welfareID == null || welfareID.isEmpty()) /*TODO: ADD TYPE*/) {
-            //TODO: UPDATE MESSGAEG
-            mEventHandler.setValue(new Pair<Event, String>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
+        if ((name == null || name.isEmpty()) || (welfareID == null || welfareID.isEmpty()) || (animalType == -1)) {
+            mEventHandler.setValue(new Pair<>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
             return;
         }
 
         if (isNew) {
             //TODO: animal type
-            doUpdate(-1, resID, 3, name, dob, welfareID, notes, treatments);
+            doUpdate(-1, resID, animalType, name, dob, welfareID, notes, treatments);
         } else {
             boolean hasChanged = ((name != null && !name.equals(mSaveName))
                     || (dob != null && !dob.equals(mSaveDOB))
                     || (notes !=null && !notes.equals(mSaveNotes))
                     || (welfareID != null && !welfareID.equals(mSaveWelfareNo))
                     || (resID != mSaveResID))
+                    || (mSavedAnimalType == null || mSavedAnimalType.getId() != animalType)
                     || (treatments != null && !treatments.equals(mSaveTreatements));
 
             if (hasChanged) {
-                //TODO: ANIMAL TYPE
-                doUpdate(petID, resID, 3, name, dob, welfareID, notes, treatments);
+                doUpdate(petID, resID, animalType, name, dob, welfareID, notes, treatments);
             } else {
                 Toast.makeText(getApplication(), getApplication().getString(R.string.no_change),
                         Toast.LENGTH_LONG).show();
@@ -306,7 +324,7 @@ public class PetViewModel extends AndroidViewModel {
             if (!isNew) {
                 params.put("animal_id", petID);
             }
-            params.put("animal_type_id", animalType); //TODO
+            params.put("animal_type_id", animalType);
             params.put("residence_id", residenceID); //TODO test -1;
             params.put("name", petName);
             params.put("approximate_dob", dob == null ? "" : dob);
