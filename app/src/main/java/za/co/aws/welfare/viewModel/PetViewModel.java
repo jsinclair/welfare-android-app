@@ -117,6 +117,10 @@ public class PetViewModel extends AndroidViewModel {
         return mEventHandler;
     }
 
+    public String getDateEntered() {
+        return mApproxDOB.getValue();
+    }
+
 
     public MutableLiveData<Boolean> getHasDownloadError() {
         return mErrorState;

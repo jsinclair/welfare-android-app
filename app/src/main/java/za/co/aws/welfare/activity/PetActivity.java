@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.customComponents.DatePickerFragment;
 import za.co.aws.welfare.databinding.ActivityPetBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
@@ -27,6 +28,7 @@ public class PetActivity extends AppCompatActivity {
 
     // Used for the alert dialog to inform user of errors.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+    private static final String DATE_TAG = "DATE_TAG";
 
 //TODO: set title
     //TODO: Set and nav on Residence + ALLOW TO CHANGE RES>
@@ -108,6 +110,15 @@ public class PetActivity extends AppCompatActivity {
         mNameContainer = findViewById(R.id.name_container);
         mSpecies = findViewById(R.id.species);
         mDOBContainer = findViewById(R.id.dob_container);
+        findViewById(R.id.dob).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mModel.getEditMode().getValue() != null && mModel.getEditMode().getValue()) {
+                    DatePickerFragment dialog = DatePickerFragment.newInstance(mModel.getDateEntered(), "-");
+                    dialog.show(getSupportFragmentManager(), DATE_TAG);
+                }
+            }
+        });
         mNotesContainer = findViewById(R.id.notes_container);
         mTreatmentsContainer = findViewById(R.id.treatments_container);
         mWelfareIDContainer = findViewById(R.id.welfareID_container);
