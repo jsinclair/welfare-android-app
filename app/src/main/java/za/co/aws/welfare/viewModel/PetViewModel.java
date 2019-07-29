@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
@@ -71,6 +72,9 @@ public class PetViewModel extends AndroidViewModel {
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
+    private int mSaveResID;  //TODO: ANUMAL TYPE
+    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo;
+
     //TODO: NET WORK EVENT and save
 
     public PetViewModel(Application app) {
@@ -98,6 +102,11 @@ public class PetViewModel extends AndroidViewModel {
         }
     }
 
+    // Should set to TRUE if editable.
+    public MutableLiveData<Boolean> getEditMode() {
+        return mEditMode;
+    }
+
     public MutableLiveData<NetworkStatus> getNetworkHandler() {
         return mNetworkHandler;
     }
@@ -109,6 +118,10 @@ public class PetViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getHasDownloadError() {
         return mErrorState;
+    }
+
+    public boolean isNew () {
+        return isNew;
     }
 
 
@@ -190,6 +203,44 @@ public class PetViewModel extends AndroidViewModel {
                 }
             }, getApplication());
         }
+    }
+
+
+    /** Either enable edit, or if its enabled already start the saving process. */
+    public void toggleSaveEdit() {
+        Boolean currentEdit = mEditMode.getValue();
+        if (currentEdit != null) {
+
+            if (!currentEdit) {
+                mSaveResID = residenceID;
+                mSaveName = mPetName.getValue();
+                mSaveDOB = mApproxDOB.getValue();
+                mSaveNotes = mNotes.getValue();
+                mSaveTreatements = mTreatments.getValue();
+                mSaveWelfareNo = mWelfareNumber.getValue();
+                mEditMode.setValue(true);
+            } else {
+                // Do save actions to backend.
+                // set editable back to false once done
+                saveData();
+            }
+        }
+    }
+
+    /* Cancel the current edit and reset the values. */
+    public void cancelEdit() {
+        mEditMode.setValue(false);
+        residenceID = mSaveResID;
+        mPetName.setValue(mSaveName);
+        mApproxDOB.setValue(mSaveDOB);
+        mNotes.setValue(mSaveNotes);
+        mTreatments.setValue(mSaveTreatements);
+        mWelfareNumber.setValue(mSaveWelfareNo);
+    }
+
+    /** Attempt to send the update / to the backend. */
+    private void saveData() {
+        //TODO
     }
 
 }

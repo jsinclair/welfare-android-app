@@ -2,6 +2,7 @@ package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
@@ -9,6 +10,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.databinding.ActivityPetBinding;
@@ -20,9 +24,11 @@ import za.co.aws.welfare.viewModel.PetViewModel;
 /** Allow the user to view and edit a pet. */
 public class PetActivity extends AppCompatActivity {
 
+    // Used for the alert dialog to inform user of errors.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
 
 //TODO: set title
+    //TODO: Set and nav on Residence + ALLOW TO CHANGE RES>
     //TODO: ENable and disable
     // save and cancel save
     // update
@@ -30,7 +36,21 @@ public class PetActivity extends AppCompatActivity {
     // New stuff
     //???? STUFF
 
+    // Data controller.
     private PetViewModel mModel;
+
+    private TextInputLayout mNameContainer;
+    private TextInputLayout mDOBContainer;
+    private TextInputLayout mNotesContainer;
+    private TextInputLayout mTreatmentsContainer;
+    private TextInputLayout mWelfareIDContainer;
+    private Spinner mSpecies;
+
+    // Allow the user to edit the view.
+    private FloatingActionButton mEditButton;
+
+    // Allow the user to cancel the edit.
+    private FloatingActionButton mCancelEditButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +70,42 @@ public class PetActivity extends AppCompatActivity {
         mModel = ViewModelProviders.of(this).get(PetViewModel.class);
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
+
+        mCancelEditButton = findViewById(R.id.cancel_edit);
+        mCancelEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mModel.isNew()) {
+                    finish();
+                } else {
+                    mModel.cancelEdit();
+                }
+            }
+        });
+        mEditButton = findViewById(R.id.edit);
+        mEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mModel.toggleSaveEdit();
+            }
+        });
+
+        mModel.getEditMode().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null) {
+                    setEditable(aBoolean);
+                }
+            }
+        });
+
+
+        mNameContainer = findViewById(R.id.name_container);
+        mSpecies = findViewById(R.id.species);
+        mDOBContainer = findViewById(R.id.dob_container);
+        mNotesContainer = findViewById(R.id.notes_container);
+        mTreatmentsContainer = findViewById(R.id.treatments_container);
+        mWelfareIDContainer = findViewById(R.id.welfareID_container);
 
         mModel.getNetworkHandler().observe(this, new Observer<PetViewModel.NetworkStatus>() {
             @Override
@@ -96,7 +152,7 @@ public class PetActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: UPDATE OTHER NETWORK HANDLERS
+    /** Correctly show and hide the progress dialog depending on the network action in progress. */
     private void handleNetworkStatus(PetViewModel.NetworkStatus status) {
         FragmentManager fm = getSupportFragmentManager();
         ProgressDialogFragment progressDialog = Utils.getProgressDialog(fm);
@@ -135,6 +191,24 @@ public class PetActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         AlertDialogFragment alert = AlertDialogFragment.newInstance(title, message);
         Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
+    }
+
+
+    /** Update the editable views and icons. */
+    private void setEditable(boolean editable) {
+        mNameContainer.setEnabled(editable);
+        mDOBContainer.setEnabled(editable);
+        mNotesContainer.setEnabled(editable);
+        mTreatmentsContainer.setEnabled(editable);
+        mWelfareIDContainer.setEnabled(editable);
+        mSpecies.setEnabled(editable);
+        if (editable) {
+            mCancelEditButton.show();
+            mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
+        } else {
+            mCancelEditButton.hide();
+            mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
+        }
     }
 
 }
