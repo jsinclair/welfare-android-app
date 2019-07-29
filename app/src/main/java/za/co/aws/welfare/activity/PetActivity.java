@@ -1,6 +1,7 @@
 package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
@@ -68,6 +69,27 @@ public class PetActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mModel.reloadData();
+            }
+        });
+
+        mModel.getHasDownloadError().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null && aBoolean) {
+                    findViewById(R.id.error_view).setVisibility(View.VISIBLE);
+                    findViewById(R.id.data_container).setVisibility(View.GONE);
+                    findViewById(R.id.edit).setVisibility(View.GONE);
+                } else {
+                    findViewById(R.id.error_view).setVisibility(View.GONE);
+                    findViewById(R.id.data_container).setVisibility(View.VISIBLE);
+                    findViewById(R.id.edit).setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         if (savedInstanceState == null) {
             mModel.setup(isNew, resID);

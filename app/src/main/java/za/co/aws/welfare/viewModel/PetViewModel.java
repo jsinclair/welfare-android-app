@@ -28,6 +28,7 @@ import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 import za.co.aws.welfare.utils.Utils;
 
+/** used for the Pet Activity, which allows the user to view or modify a pet. */
 public class PetViewModel extends AndroidViewModel {
 
     /** The network statuses. */
@@ -103,6 +104,11 @@ public class PetViewModel extends AndroidViewModel {
 
     public MutableLiveData<Pair<Event, String>> getEventHandler() {
         return mEventHandler;
+    }
+
+
+    public MutableLiveData<Boolean> getHasDownloadError() {
+        return mErrorState;
     }
 
 
