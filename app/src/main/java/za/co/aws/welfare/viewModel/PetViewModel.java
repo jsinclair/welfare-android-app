@@ -80,7 +80,7 @@ public class PetViewModel extends AndroidViewModel {
     // List of species available.
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
-    private int mSaveResID;  //TODO: ANUMAL TYPE
+    private int mSaveResID;  //TODO:
     private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo;
     private AnimalType mSavedAnimalType;
 
@@ -288,12 +288,11 @@ public class PetViewModel extends AndroidViewModel {
 
         // Ensure the user provides some form of address.
         if ((name == null || name.isEmpty()) || (welfareID == null || welfareID.isEmpty()) || (animalType == -1)) {
-            mEventHandler.setValue(new Pair<>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
+            mEventHandler.setValue(new Pair<>(Event.DATA_REQUIRED, getApplication().getString(R.string.pet_det_req)));
             return;
         }
 
         if (isNew) {
-            //TODO: animal type
             doUpdate(-1, resID, animalType, name, dob, welfareID, notes, treatments);
         } else {
             boolean hasChanged = ((name != null && !name.equals(mSaveName))
@@ -325,7 +324,9 @@ public class PetViewModel extends AndroidViewModel {
                 params.put("animal_id", petID);
             }
             params.put("animal_type_id", animalType);
-            params.put("residence_id", residenceID); //TODO test -1;
+            if (residenceID != -1) {
+                params.put("residence_id", residenceID);
+            }
             params.put("name", petName);
             params.put("approximate_dob", dob == null ? "" : dob);
             params.put("notes", notes == null ? "" : notes);

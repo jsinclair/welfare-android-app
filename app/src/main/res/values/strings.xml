@@ -54,6 +54,7 @@
     <string name="search_pet_species_res">Species:</string>
     <string name="search_pet_dob_res">DOB:</string>
     <string name="search_pet_dob">Approx. Date of Birth</string>
+    <string name="pet_det_req">Please provide at least the pet name, welfare number and species.</string>
     <string name="unknown_error_pet_search">An unknown error occurred while trying to retrieve pet info. Please try again later.</string>
     <string name="pet_download_err">An error occurred trying to retrieve data for this pet. Please try again.</string>
     <string name="pet_update_conn_err">A connection error occurred while trying to update pet info. Please check your connection and try again.</string>

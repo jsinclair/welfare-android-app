@@ -33,16 +33,14 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
 
     // Used for the alert dialog to inform user of errors.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+
+    // Used for the date dialog.
     private static final String DATE_TAG = "DATE_TAG";
 
 //TODO: set title
     //TODO: Set and nav on Residence + ALLOW TO CHANGE RES>
-    //TODO: ENable and disable
-    // save and cancel save
-    // update
     // navigation
     // New stuff
-    //???? STUFF
 
     // Data controller.
     private PetViewModel mModel;
