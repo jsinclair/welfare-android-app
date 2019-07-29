@@ -54,8 +54,11 @@ public class HomeViewModel extends AndroidViewModel {
 
         // If the user did not provide search data
         SEARCH_RES_DATA_REQ,
+
+        // If the user did not provide search data (not used rn)
         SEARCH_PET_DATA_REQ,
 
+        // If an error occurred while searching on given pet data.
         SEARCH_PET_ERROR,
     }
 
@@ -80,7 +83,6 @@ public class HomeViewModel extends AndroidViewModel {
 
 
     //////PETS
-    //TODO type
     public MutableLiveData<String> mPetNameSearch;
     public MutableLiveData<String> mPetWelfareSearch;
 
@@ -123,7 +125,7 @@ public class HomeViewModel extends AndroidViewModel {
         return mNetworkHandler;
     }
     public LiveData<List<AnimalType>> getSpeciesAvailable() {
-        return mSpeciesAvailable; //TODO: HAVE AN UNKNOW ENTRY
+        return mSpeciesAvailable;
     }
 
     /** Use this to respond to one time events. */
@@ -151,6 +153,7 @@ public class HomeViewModel extends AndroidViewModel {
         return mSpeciesAvailableSearch;
     }
 
+    /** Search for residences given the parameters entered by the user. */
     public void doResidenceSearch() {
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();
@@ -225,9 +228,8 @@ public class HomeViewModel extends AndroidViewModel {
         }, getApplication());
     }
 
+    /** Search for pets on the given search parameters. */
     public void doAnimalSearch() {
-        //TODO:
-
         AnimalType animalType = mSpeciesAvailableSearch.getValue();
         int animalTypeSelectedID = -1;
         if (animalType != null) {
@@ -279,7 +281,6 @@ public class HomeViewModel extends AndroidViewModel {
                                 }
                             }
                         } catch (JSONException e) {
-                            //TODO:
                             mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.internal_error_pet_search)));
                         }
                         mPetSearchResults.setValue(results);

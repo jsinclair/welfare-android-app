@@ -63,9 +63,6 @@ public class ResidencesFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: START SEARCH HERE> ONLY Hide search menu on successful search!!
-//                searchView.setVisibility(View.GONE);
-//                expandButton.show();
                 mModel.doResidenceSearch();
             }
         });

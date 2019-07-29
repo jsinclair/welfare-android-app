@@ -80,7 +80,7 @@ public class PetViewModel extends AndroidViewModel {
     // List of species available.
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
-    private int mSaveResID;  //TODO:
+    private int mSaveResID;
     private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo;
     private AnimalType mSavedAnimalType;
 
