@@ -1,7 +1,6 @@
 package za.co.aws.welfare.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,7 @@ public class ResidencesFragment extends Fragment {
 
         final View v = binding.getRoot();
 
-        results = v.findViewById(R.id.result_residencess);
+        results = v.findViewById(R.id.result_residences);
 
         searchView = v.findViewById(R.id.search_menu);
         searchButton = v.findViewById(R.id.search_button);

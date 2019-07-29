@@ -25,7 +25,6 @@ import java.util.List;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
-import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.AnimalsBinding;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.viewModel.HomeViewModel;
@@ -112,7 +111,7 @@ public class AnimalsFragment extends Fragment {
         v.findViewById(R.id.add_pet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: ADD A PET TO THE DB
+                mModel.triggerAddPet();
             }
         });
 

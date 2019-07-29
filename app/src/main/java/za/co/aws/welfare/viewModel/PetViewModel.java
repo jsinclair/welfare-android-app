@@ -87,6 +87,7 @@ public class PetViewModel extends AndroidViewModel {
     public PetViewModel(Application app) {
         super(app);
 
+        residenceID = -1;
         mSpeciesAvailable = new MutableLiveData<>();
         mSpeciesAvailable.setValue(((WelfareApplication) getApplication()).getAnimalTypes(false));
 

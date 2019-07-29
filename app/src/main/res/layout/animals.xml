@@ -114,12 +114,12 @@
         <ListView
             android:id="@+id/result_pets"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/general_padding"
-            app:layout_constraintTop_toBottomOf="@id/search_menu">
-
+            android:layout_height="0dp"
+            android:paddingLeft="@dimen/general_padding"
+            android:paddingRight="@dimen/general_padding"
+            app:layout_constraintTop_toBottomOf="@id/search_menu"
+            app:layout_constraintBottom_toBottomOf="parent">
         </ListView>
-
 
         <LinearLayout
             android:id="@+id/empty_view"

@@ -60,7 +60,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public enum Navigate {
-        RESIDENCE, ADD_RESIDENCE, PET
+        RESIDENCE, ADD_RESIDENCE, PET, ADD_PET
     }
 
     /** Remember the last searched address entry. Allows us to show the last filter/result that
@@ -317,6 +317,11 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void triggerAddResident() {
         mNavigationHandler.setValue(new Pair<>(Navigate.ADD_RESIDENCE, -1));
+
+    }
+
+    public void triggerAddPet() {
+        mNavigationHandler.setValue(new Pair<>(Navigate.ADD_PET, -1));
 
     }
 
