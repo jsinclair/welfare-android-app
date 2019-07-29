@@ -24,7 +24,7 @@ import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.PetViewModel;
 
 /** Allow the user to view and edit a pet. */
-public class PetActivity extends AppCompatActivity {
+public class PetActivity extends AppCompatActivity implements DatePickerFragment.DatePickerUser {
 
     // Used for the alert dialog to inform user of errors.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
@@ -230,4 +230,8 @@ public class PetActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onDateChosen(String date) {
+        mModel.setDate(date);
+    }
 }

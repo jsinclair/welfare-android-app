@@ -269,7 +269,7 @@ public class HomeViewModel extends AndroidViewModel {
                                 JSONArray resArr = data.getJSONArray("animals");
                                 for (int i = 0; i < resArr.length(); i++) {
                                     JSONObject entry = resArr.getJSONObject(i);
-                                    int id = entry.getInt("animal_type_id");
+                                    int id = entry.getInt("id");
                                     int animalType = entry.getInt("animal_type_id");
                                     String animalTypeDesc = entry.optString("description");
                                     String name = entry.optString("name");

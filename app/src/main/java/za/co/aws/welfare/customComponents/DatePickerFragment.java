@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
@@ -22,7 +23,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     /** Interface the MUST be implemented by the calling activity. */
     public interface DatePickerUser {
         /** The method that will be called when the date has been selected.*/
-        void onDateChosen(int year, int month, int day);
+        void onDateChosen(String dateChosen);
     }
 
     /**
@@ -71,7 +72,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        dialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         return dialog;
     }
 
@@ -85,7 +86,12 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
      */
     public void onDateSet(DatePicker view, int year, int month, int day) {
         if (getActivity() instanceof  DatePickerUser) {
-            ((DatePickerUser) getActivity()).onDateChosen(year, month + 1, day);
+
+            Calendar c = Calendar.getInstance();
+            c.set(year, month, day);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = sdf.format(c.getTime());
+            ((DatePickerUser) getActivity()).onDateChosen(formattedDate);
         } else {
             Log.w("ERROR", "caller does not implement interface. Investigate");
         }

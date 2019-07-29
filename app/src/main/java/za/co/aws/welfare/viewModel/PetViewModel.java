@@ -162,7 +162,7 @@ public class PetViewModel extends AndroidViewModel {
                                     JSONObject pet = data.getJSONObject("animal_details");
                                     int id = pet.getInt("id");
                                     int animalTypeID = pet.getInt("animal_type_id");
-                                    int residenceID = pet.getInt("residence_id");
+                                    int residenceID = pet.optInt("residence_id", -1);
                                     String name = pet.optString("name");
                                     String dob = pet.optString("approximate_dob");
                                     String notes = pet.optString("notes");
@@ -348,6 +348,10 @@ public class PetViewModel extends AndroidViewModel {
                         return headers;
                     }
                 }, getApplication());
+    }
+
+    public void setDate(String date) {
+        mApproxDOB.setValue(date);
     }
 
 
