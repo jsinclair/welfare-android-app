@@ -85,10 +85,10 @@ public class PetActivity extends AppCompatActivity {
                 }
                 break;
             case RETRIEVING_DATA:
-                Utils.updateProgress(fm, progressDialog, getString(R.string.retrieving_res_data));
+                Utils.updateProgress(fm, progressDialog, getString(R.string.retrieving_pet_data));
                 break;
             case UPDATING_DATA:
-                Utils.updateProgress(fm, progressDialog, getString(R.string.updating_res_data));
+                Utils.updateProgress(fm, progressDialog, getString(R.string.updating_pet_data));
                 break;
         }
     }

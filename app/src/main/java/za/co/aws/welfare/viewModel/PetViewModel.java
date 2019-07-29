@@ -158,7 +158,7 @@ public class PetViewModel extends AndroidViewModel {
                                 mErrorState.setValue(false);
                                 // there is still data available or
                                 // there is a data issue. So cannot reload.
-                                mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.internal_error_res_search)));
+                                mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.internal_error_pet_search)));
                             }
                             mNetworkHandler.setValue(NetworkStatus.IDLE);
                         }
@@ -167,9 +167,9 @@ public class PetViewModel extends AndroidViewModel {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                        mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.conn_error_res_search)));
+                        mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.conn_error_pet_search)));
                     } else {
-                        String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_res_search));
+                        String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_pet_search));
                         mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, errorMSG));
                     }
                     mErrorState.setValue(true);

@@ -47,6 +47,8 @@
     <string name="search_pet_name">Pet Name</string>
     <string name="search_pet_welfare">Pet Welfare Number</string>
     <string name="search_pets">Searching Pets...</string>
+    <string name="updating_pet_data">Updating Pet...</string>
+    <string name="retrieving_pet_data">Retrieving Pet...</string>
     <string name="search_pet_name_res">Name:</string>
     <string name="search_pet_welfare_res">Welfare No:</string>
     <string name="search_pet_species_res">Species:</string>
