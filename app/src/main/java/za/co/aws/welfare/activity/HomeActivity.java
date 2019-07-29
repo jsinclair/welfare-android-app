@@ -121,6 +121,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 case PET:
                     Intent petIntent = new Intent(this, PetActivity.class);
                     petIntent.putExtra("petID", data.second);
+                    petIntent.putExtra("RequestNewEntry", false);
                     startActivity(petIntent);
                     break;
             }
