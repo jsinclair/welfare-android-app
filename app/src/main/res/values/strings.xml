@@ -55,10 +55,13 @@
     <string name="search_pet_dob_res">DOB:</string>
     <string name="search_pet_dob">Approx. Date of Birth</string>
     <string name="unknown_error_pet_search">An unknown error occurred while trying to retrieve pet info. Please try again later.</string>
-    <string name="pet_download_err">An error occurred trying to retrieve data for this residence. Please try again.</string>
+    <string name="pet_download_err">An error occurred trying to retrieve data for this pet. Please try again.</string>
     <string name="pet_update_conn_err">A connection error occurred while trying to update pet info. Please check your connection and try again.</string>
     <string name="conn_error_pet_search">A connection error occurred while trying to retrieve pet info. Please check your connection and try again.</string>
     <string name="internal_error_pet_search">An internal error occurred while trying to retrieve pet info. Some information might be missing or incorrect.</string>
+    <string name="pet_update_internal_err">An internal error occurred while trying to update pet. Please try again.</string>
+    <string name="pet_update_unknown_err">An unknown error occurred while trying to update pet. Please try again.</string>
+
 
     <!-- Strings related to the residences screen -->
     <string name="remove_pet_title">Remove pet from residence?</string>

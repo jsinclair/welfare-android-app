@@ -297,7 +297,7 @@ public class PetViewModel extends AndroidViewModel {
 
         } catch (JSONException e) {
             //TODO: update messages... for all
-            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_internal_err)));
+            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.pet_update_internal_err)));
             mNetworkHandler.setValue(NetworkStatus.IDLE);
             return;
         }
@@ -315,7 +315,7 @@ public class PetViewModel extends AndroidViewModel {
                             Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
 
                         } catch (JSONException e) {
-                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_unknown_err)));
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.pet_update_unknown_err)));
                         }
                         mEditMode.setValue(false);
                         isNew = false; //Set to not new value.
@@ -325,9 +325,9 @@ public class PetViewModel extends AndroidViewModel {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.res_update_conn_err)));
+                            mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.pet_update_conn_err)));
                         } else {
-                            String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.res_update_unknown_err));
+                            String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.pet_update_internal_err));
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, errorMSG));
                         }
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
