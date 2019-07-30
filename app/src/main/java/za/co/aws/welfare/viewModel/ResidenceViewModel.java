@@ -68,6 +68,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     /** Remember the user name. */
     private Integer residenceID;
     private boolean isNew;
+    private boolean successfulEditOccurred;
     private ResidentAnimalDetail mRemoveRequest;
 
 
@@ -103,6 +104,7 @@ public class ResidenceViewModel extends AndroidViewModel {
         mAnimalList = new MutableLiveData<>();
 
         mEventHandler = new SingleLiveEvent<>();
+        successfulEditOccurred = false;
         //todo: saved instance!
     }
 
@@ -113,6 +115,10 @@ public class ResidenceViewModel extends AndroidViewModel {
         if (!isNew) {
             loadData(resID);
         }
+    }
+
+    public boolean editOccurred() {
+        return successfulEditOccurred;
     }
 
     /**
@@ -354,6 +360,8 @@ public class ResidenceViewModel extends AndroidViewModel {
                             Toast.makeText(getApplication(), msg,
                                     Toast.LENGTH_LONG).show();
 
+                            // If an edit managed to occur at all, we might need to reload the calling class.
+                            successfulEditOccurred = true;
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_unknown_err)));
                         }

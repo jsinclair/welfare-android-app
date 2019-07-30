@@ -2,12 +2,14 @@ package za.co.aws.welfare.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
@@ -37,6 +39,8 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
 
     // Used for the date dialog.
     private static final String DATE_TAG = "DATE_TAG";
+
+    private static final int RESIDENCE_RESULT = 12;
 
 //TODO: set title
     //TODO: Set and nav on Residence + ALLOW TO CHANGE RES>
@@ -89,7 +93,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("ResidentID", mModel.getResidenceID());
                 intent.putExtra("RequestNewEntry", false);
-                startActivity(intent);
+                startActivityForResult(intent, RESIDENCE_RESULT);
             }
         });
 
@@ -211,6 +215,17 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         if (savedInstanceState == null) {
             mModel.setup(isNew, resID);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == RESIDENCE_RESULT && data != null) {
+           boolean updateRequired = data.getBooleanExtra(Utils.INTENT_UPDATE_REQUIRED, false);
+          if (updateRequired) {
+              mModel.reloadData();
+          }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /** Correctly show and hide the progress dialog depending on the network action in progress. */

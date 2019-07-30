@@ -18,6 +18,7 @@ import za.co.aws.welfare.fragment.ProgressDialogFragment;
 public class Utils {
 
     private static final String PROGRESS_TAG = "PROGRESS_TAG";
+    public static final String INTENT_UPDATE_REQUIRED = "INTENT_UPDATE_REQUIRED";
 
     /** Show the given dialog, if it doesn't exist already. */
     public static void showDialog(FragmentManager fm, DialogFragment dialog, String tag, boolean allowStateLoss) {

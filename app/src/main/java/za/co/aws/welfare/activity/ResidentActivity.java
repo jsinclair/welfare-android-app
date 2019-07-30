@@ -1,5 +1,6 @@
 package za.co.aws.welfare.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -266,5 +267,15 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
     @Override
     public void onDialogNoSelected(String tag) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mModel.editOccurred()) {
+            Intent output = new Intent();
+            output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
+            setResult(RESULT_OK, output);
+        }
+        super.onBackPressed();
     }
 }
