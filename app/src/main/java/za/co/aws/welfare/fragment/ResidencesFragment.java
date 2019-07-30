@@ -32,7 +32,6 @@ public class ResidencesFragment extends Fragment {
     private Button searchButton;
     private ListView results;
 
-    private HomeViewModel mModel;
 
     @Nullable
     @Override

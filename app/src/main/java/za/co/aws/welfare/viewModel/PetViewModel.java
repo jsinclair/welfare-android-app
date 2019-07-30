@@ -19,11 +19,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
@@ -83,6 +85,19 @@ public class PetViewModel extends AndroidViewModel {
     private int mSaveResID;
     private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo;
     private AnimalType mSavedAnimalType;
+
+    ////////Residence search stuff here.
+    public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
+
+    /** Remember the last searched address entry. Allows us to show the last filter/result that
+     * the user entered. SO for example, if they are doing a census in a particular road, the dont
+     * have to redo the search (and spend more data) every time. */
+    public MutableLiveData<String> mResidenceAddressSearch;
+
+    /** Remember the last entry used for shack id. */ //todo: might change to only update on SEARCH pressed!
+    public MutableLiveData<String> mShackIDSearch;
+
+    ////////
 
     public PetViewModel(Application app) {
         super(app);

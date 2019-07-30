@@ -3,11 +3,11 @@
     <data>
         <variable
             name="viewModel"
-            type="za.co.aws.welfare.viewModel.HomeViewModel"/>
+            type="za.co.aws.welfare.viewModel.PetViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".activity.HomeActivity"
+        tools:context=".activity.PetActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

@@ -220,10 +220,10 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == RESIDENCE_RESULT && data != null) {
-           boolean updateRequired = data.getBooleanExtra(Utils.INTENT_UPDATE_REQUIRED, false);
-          if (updateRequired) {
-              mModel.reloadData();
-          }
+            boolean updateRequired = data.getBooleanExtra(Utils.INTENT_UPDATE_REQUIRED, false);
+            if (updateRequired) {
+                mModel.reloadData();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
