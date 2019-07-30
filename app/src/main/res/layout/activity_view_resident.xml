@@ -9,10 +9,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <ScrollView
             android:id="@+id/scroller"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="60">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,37 +118,40 @@
                             android:inputType="textMultiLine" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/animals_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/search_res_animals"/>
-
-                    <!--This list allows the user to navigate to differnt animals if NOT in edit-->
-                    <com.google.android.flexbox.FlexboxLayout
-                        android:id="@+id/animal_nav_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </com.google.android.flexbox.FlexboxLayout>
-
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-        <ListView
-            android:id="@+id/remove_animals_list"
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ani_cont"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:divider="?attr/dividerHorizontal"
-            android:layout_below="@+id/scroller"
-            android:visibility="gone"
-            android:paddingLeft="@dimen/general_padding"
-            android:paddingStart="@dimen/general_padding"
-            android:paddingEnd="@dimen/general_padding"
-            android:paddingRight="@dimen/general_padding">
-        </ListView>
+            android:layout_height="0dp"
+            android:layout_weight="40"
+            android:layout_margin="@dimen/general_padding">
+            <TextView
+                android:id="@+id/animals_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search_res_animals"/>
+
+            <!--This list allows the user to navigate to differnt animals if NOT in edit-->
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/animal_nav_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:flexWrap="wrap"/>
+
+            <ListView
+                android:id="@+id/remove_animals_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?attr/dividerHorizontal"
+                android:visibility="gone">
+            </ListView>
+        </LinearLayout>
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/cancel_edit"
