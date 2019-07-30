@@ -412,7 +412,7 @@ public class PetViewModel extends AndroidViewModel {
     }
 
 
-    //TODO: REFACTOR
+    //TODO: REFACTOR maybe
     public void doResidenceSearch(String address, String shackID) {
         boolean hasShack = !(shackID == null || shackID.isEmpty());
         boolean hasStreet = !(address == null || address.isEmpty());
@@ -479,8 +479,5 @@ public class PetViewModel extends AndroidViewModel {
         }
         }, getApplication());
     }
-
-    ///// Search stuff from hre.
-
 
 }

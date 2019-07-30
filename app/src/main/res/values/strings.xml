@@ -2,6 +2,8 @@
     <string name="app_name">Welfare</string>
 
     <!-- General -->
+    <string name="title_pet">Pet</string>
+    <string name="title_res">Residence</string>
     <string name="ok">OK</string>
     <string name="invalid_server_response">Invalid Server Response.</string>
     <string name="connection_error">A connection error occurred, please ensure a stable internet connection is available and try again.</string>
