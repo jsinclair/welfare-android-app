@@ -1,5 +1,6 @@
 package za.co.aws.welfare.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -79,7 +80,18 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
 
+        //TODO: DISABLE OR HIDE IF NO RESIDENCE PRESENT>
         mNavResButton = findViewById(R.id.nav_res);
+        mNavResButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PetActivity.this, ResidentActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.putExtra("ResidentID", mModel.getResidenceID());
+                intent.putExtra("RequestNewEntry", false);
+                startActivity(intent);
+            }
+        });
 
         mCancelEditButton = findViewById(R.id.cancel_edit);
         mCancelEditButton.setOnClickListener(new View.OnClickListener() {

@@ -44,6 +44,8 @@ public class HomeViewModel extends AndroidViewModel {
 
         // Waiting for residence feedback
         SEARCHING_RESIDENCE,
+
+        // Waiting for pet search results.
         SEARCHING_PET,
     }
 

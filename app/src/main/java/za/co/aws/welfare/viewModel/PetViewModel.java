@@ -115,6 +115,10 @@ public class PetViewModel extends AndroidViewModel {
         }
     }
 
+    public int getResidenceID() {
+        return residenceID;
+    }
+
     // Should set to TRUE if editable.
     public MutableLiveData<Boolean> getEditMode() {
         return mEditMode;
