@@ -34,8 +34,6 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allows the user to view and, if they have permission, edit a residence. */
 public class ResidentActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
-    //TODO: Allow user to ADD and REMOVE animal from residence (on edit)
-
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
     private static final int PET_RESULT = 42;
@@ -229,8 +227,6 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
     /** Generate the animal list and setup click listeners. */
     private void setupAnimalViews(List<ResidentAnimalDetail> list) {
         mAnimalDisplay.removeAllViews();
-        //TODO: Show welfare number!
-        //TODO: navigate to animal view
         for (ResidentAnimalDetail animal: list) {
             Button aniButton = new Button(this);
             aniButton.setText(animal.getName());

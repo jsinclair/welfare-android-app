@@ -35,12 +35,10 @@ import za.co.aws.welfare.utils.Utils;
 /** Controls the resident view/edit interface.*/
 public class ResidenceViewModel extends AndroidViewModel {
 
-    //TODO: Add a delete res option. Decide what should happen with animals
     //TODO: :On add animal, new fragment should be aware that we are not editing an animal but adding one!
     //TODO: On edit, have an add animal button available!!!
     //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
-    //TODO: On back pressed, if in edit mode then just cancel edit?
-    //TODO: SET TITLE
+    //TODO: On back pressed, if in edit mode then just cancel edit?!
 
     /** The network statuses. */
     public enum NetworkStatus {
