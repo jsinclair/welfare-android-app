@@ -109,7 +109,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
                             android:text="@={ viewModel.mNotes }"
-                            android:inputType="text" />
+                            android:inputType="textMultiLine" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView

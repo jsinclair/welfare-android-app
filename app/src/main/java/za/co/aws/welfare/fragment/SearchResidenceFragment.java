@@ -99,6 +99,9 @@ public class SearchResidenceFragment extends DialogFragment {
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            ResidenceSearchData sel = ((ResidenceSearchData) results.getAdapter().getItem(i));
+                            mModel.setResidence(sel.getID(), sel.getStreetAddress());
+                            dismiss();
 //                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID());
                         }
                     });

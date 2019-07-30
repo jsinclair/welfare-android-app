@@ -12,7 +12,6 @@
     app:layout_constraintTop_toTopOf="parent"
     android:animateLayoutChanges="true">
 
-
     <LinearLayout
         android:id="@+id/search_menu"
         android:layout_width="match_parent"

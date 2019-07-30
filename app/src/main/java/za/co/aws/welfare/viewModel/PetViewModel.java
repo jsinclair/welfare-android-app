@@ -36,7 +36,6 @@ import za.co.aws.welfare.utils.Utils;
 /** used for the Pet Activity, which allows the user to view or modify a pet. */
 public class PetViewModel extends AndroidViewModel {
 
-    //TODO: REsidence navigation and change.
 
     /** The network statuses. */
     public enum NetworkStatus {
@@ -88,7 +87,7 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
     private int mSaveResID;
-    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo;
+    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo, mSaveAddressDesc;
     private AnimalType mSavedAnimalType;
 
     ////////Residence search stuff here.
@@ -155,6 +154,11 @@ public class PetViewModel extends AndroidViewModel {
 
     public MutableLiveData<LinkedList<ResidenceSearchData>> getResidenceSearchResult() {
         return mResidenceSearchResults;
+    }
+
+    public void setResidence(int id, String description) {
+        residenceID = id;
+        mDisplayAddress.setValue(description);
     }
 
     public String getDateEntered() {
@@ -276,6 +280,7 @@ public class PetViewModel extends AndroidViewModel {
                 mSaveNotes = mNotes.getValue();
                 mSaveTreatements = mTreatments.getValue();
                 mSaveWelfareNo = mWelfareNumber.getValue();
+                mSaveAddressDesc = mDisplayAddress.getValue();
                 mSavedAnimalType = mSpecies.getValue();
                 mEditMode.setValue(true);
             } else {
@@ -290,6 +295,7 @@ public class PetViewModel extends AndroidViewModel {
     public void cancelEdit() {
         mEditMode.setValue(false);
         residenceID = mSaveResID;
+        mDisplayAddress.setValue(mSaveAddressDesc);
         mPetName.setValue(mSaveName);
         mApproxDOB.setValue(mSaveDOB);
         mNotes.setValue(mSaveNotes);
