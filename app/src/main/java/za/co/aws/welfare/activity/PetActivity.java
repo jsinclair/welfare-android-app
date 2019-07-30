@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,6 +28,7 @@ import za.co.aws.welfare.customComponents.DatePickerFragment;
 import za.co.aws.welfare.databinding.ActivityPetBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
+import za.co.aws.welfare.fragment.SearchResidenceFragment;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.PetViewModel;
@@ -39,6 +41,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
 
     // Used for the date dialog.
     private static final String DATE_TAG = "DATE_TAG";
+    private static final String SEARCH_RES_FRAGMENT = "SEARCH_RES_FRAGMENT";
 
     private static final int RESIDENCE_RESULT = 12;
 
@@ -58,6 +61,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     private Spinner mSpecies;
 
     private Button mNavResButton;
+    private Button mChangeResButton;
 
     // Allow the user to edit the view.
     private FloatingActionButton mEditButton;
@@ -83,6 +87,16 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mModel = ViewModelProviders.of(this).get(PetViewModel.class);
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
+
+        mChangeResButton = findViewById(R.id.change_res);
+        mChangeResButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment newFragment = new SearchResidenceFragment();
+                newFragment.show(getSupportFragmentManager(), SEARCH_RES_FRAGMENT);
+            }
+        });
+
 
         //TODO: DISABLE OR HIDE IF NO RESIDENCE PRESENT>
         mNavResButton = findViewById(R.id.nav_res);
@@ -244,6 +258,9 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             case UPDATING_DATA:
                 Utils.updateProgress(fm, progressDialog, getString(R.string.updating_pet_data));
                 break;
+            case SEARCHING_RESIDENCE:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.search_residence));
+                break;
         }
     }
 
@@ -259,6 +276,10 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             case DATA_REQUIRED:
                 showAlert(getString(R.string.data_required), eventData.second);
                 break;
+            case SEARCH_RES_ERROR:
+                showAlert(getString(R.string.download_err), eventData.second);
+                break;
+
         }
     }
 
@@ -281,11 +302,11 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mSpecies.setEnabled(editable);
         if (editable) {
             mCancelEditButton.show();
-            findViewById(R.id.change_res).setVisibility(View.VISIBLE);
+            mChangeResButton.setVisibility(View.VISIBLE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
         } else {
             mCancelEditButton.hide();
-            findViewById(R.id.change_res).setVisibility(View.GONE);
+            mChangeResButton.setVisibility(View.GONE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
         }
     }

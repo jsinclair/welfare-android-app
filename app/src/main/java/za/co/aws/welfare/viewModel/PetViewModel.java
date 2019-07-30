@@ -15,6 +15,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +48,8 @@ public class PetViewModel extends AndroidViewModel {
 
         // Busy updating pet.
         UPDATING_DATA,
+
+        SEARCHING_RESIDENCE,
     }
 
     public enum Event {
@@ -58,6 +61,8 @@ public class PetViewModel extends AndroidViewModel {
 
         // If the user has not provided enough data to update or create a pet.
         DATA_REQUIRED,
+
+        SEARCH_RES_ERROR,
     }
 
     /** Remember the pet id as sent by the backend. */
@@ -88,15 +93,6 @@ public class PetViewModel extends AndroidViewModel {
 
     ////////Residence search stuff here.
     public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
-
-    /** Remember the last searched address entry. Allows us to show the last filter/result that
-     * the user entered. SO for example, if they are doing a census in a particular road, the dont
-     * have to redo the search (and spend more data) every time. */
-    public MutableLiveData<String> mResidenceAddressSearch;
-
-    /** Remember the last entry used for shack id. */ //todo: might change to only update on SEARCH pressed!
-    public MutableLiveData<String> mShackIDSearch;
-
     ////////
 
     public PetViewModel(Application app) {
@@ -119,6 +115,8 @@ public class PetViewModel extends AndroidViewModel {
 
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
+
+        mResidenceSearchResults = new MutableLiveData<>();
     }
 
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
@@ -153,6 +151,10 @@ public class PetViewModel extends AndroidViewModel {
 
     public MutableLiveData<Pair<Event, String>> getEventHandler() {
         return mEventHandler;
+    }
+
+    public MutableLiveData<LinkedList<ResidenceSearchData>> getResidenceSearchResult() {
+        return mResidenceSearchResults;
     }
 
     public String getDateEntered() {
@@ -402,6 +404,77 @@ public class PetViewModel extends AndroidViewModel {
     public void setDate(String date) {
         mApproxDOB.setValue(date);
     }
+
+
+    //TODO: REFACTOR
+    public void doResidenceSearch(String address, String shackID) {
+        boolean hasShack = !(shackID == null || shackID.isEmpty());
+        boolean hasStreet = !(address == null || address.isEmpty());
+
+        mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
+
+        Map<String, String> params = new HashMap<>();
+        if (hasShack) {
+            params.put("shack_id", shackID);
+        }
+
+        if (hasStreet) {
+            params.put("street_address", address);
+        }
+
+        String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/list/";
+        String url = NetworkUtils.createURL(baseURL, params);
+
+        RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
+                url, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        LinkedList<ResidenceSearchData> results = new LinkedList<>();
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            if (data != null) {
+                                JSONArray resArr = data.getJSONArray("residences");
+                                for (int i = 0; i < resArr.length(); i++) {
+                                    JSONObject entry = resArr.getJSONObject(i);
+                                    int id = entry.getInt("id");
+                                    String shackID = entry.optString("shack_id");
+                                    String streetAddress = entry.optString("street_address");
+                                    String lat = entry.optString("latitude");
+                                    String lon = entry.optString("longitude");
+                                    String animals = entry.optString("animals");
+                                    results.add(new ResidenceSearchData(id, shackID, streetAddress, lat, lon, animals));
+                                }
+                            }
+                        } catch (JSONException e) {
+                            mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.internal_error_res_search)));
+                        }
+                        mResidenceSearchResults.setValue(results);
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mNetworkHandler.setValue(NetworkStatus.IDLE);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.conn_error_res_search)));
+                } else {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
+                }
+                mResidenceSearchResults.setValue(null);
+            }
+        })
+        {@Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
+            return headers;
+        }
+        }, getApplication());
+    }
+
+    ///// Search stuff from hre.
 
 
 }
