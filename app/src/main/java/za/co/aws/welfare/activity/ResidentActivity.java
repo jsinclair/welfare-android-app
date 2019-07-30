@@ -37,6 +37,7 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
 
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
+    private static final int PET_RESULT = 42;
 
     // The view model
     private ResidenceViewModel mModel;
@@ -227,7 +228,11 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
                 public void onClick(View view) {
                     Log.i("CLICKED", ((ResidentAnimalDetail)view.getTag()).getName());
 
-                    //TODO: Nav topet
+                    Intent intent = new Intent(ResidentActivity.this, PetActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("petID", ((ResidentAnimalDetail)view.getTag()).getID());
+                    intent.putExtra("RequestNewEntry", false);
+                    startActivityForResult(intent, PET_RESULT);
                 }
             });
 
