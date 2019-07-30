@@ -238,9 +238,8 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
             aniButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("CLICKED", ((ResidentAnimalDetail)view.getTag()).getName());
                     Intent intent = new Intent(ResidentActivity.this, PetActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("petID", ((ResidentAnimalDetail)view.getTag()).getID());
                     intent.putExtra("RequestNewEntry", false);
                     startActivityForResult(intent, PET_RESULT);

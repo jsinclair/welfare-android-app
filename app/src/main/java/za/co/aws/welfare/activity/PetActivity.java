@@ -103,7 +103,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PetActivity.this, ResidentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("ResidentID", mModel.getResidenceID());
                 intent.putExtra("RequestNewEntry", false);
                 startActivityForResult(intent, RESIDENCE_RESULT);
@@ -229,7 +229,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             mModel.setup(isNew, resID);
         }
     }
-    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -324,5 +323,10 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             setResult(RESULT_OK, output);
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
