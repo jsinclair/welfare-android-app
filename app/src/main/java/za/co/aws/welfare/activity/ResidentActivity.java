@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
@@ -163,6 +164,17 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == PET_RESULT && data != null) {
+            boolean updateRequired = data.getBooleanExtra(Utils.INTENT_UPDATE_REQUIRED, false);
+            if (updateRequired) {
+                mModel.reloadData();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void handleNetworkStatus(ResidenceViewModel.NetworkStatus status) {
         FragmentManager fm = getSupportFragmentManager();
         ProgressDialogFragment progressDialog = Utils.getProgressDialog(fm);
@@ -227,9 +239,8 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
                 @Override
                 public void onClick(View view) {
                     Log.i("CLICKED", ((ResidentAnimalDetail)view.getTag()).getName());
-
                     Intent intent = new Intent(ResidentActivity.this, PetActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("petID", ((ResidentAnimalDetail)view.getTag()).getID());
                     intent.putExtra("RequestNewEntry", false);
                     startActivityForResult(intent, PET_RESULT);

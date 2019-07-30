@@ -68,6 +68,7 @@ public class PetViewModel extends AndroidViewModel {
     private Integer petID;
     private Integer residenceID;
     private boolean isNew;
+    private boolean mSuccessfulUpdate;
     public MutableLiveData<Boolean> mErrorState;
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
@@ -98,6 +99,7 @@ public class PetViewModel extends AndroidViewModel {
         super(app);
 
         residenceID = -1;
+        mSuccessfulUpdate = false;
         mSpeciesAvailable = new MutableLiveData<>();
         mSpeciesAvailable.setValue(((WelfareApplication) getApplication()).getAnimalTypes(false));
 
@@ -172,6 +174,10 @@ public class PetViewModel extends AndroidViewModel {
 
     public boolean isNew () {
         return isNew;
+    }
+
+    public boolean editOccurred() {
+        return mSuccessfulUpdate;
     }
 
     public void setSpecies(AnimalType ani) {
@@ -378,7 +384,7 @@ public class PetViewModel extends AndroidViewModel {
                             String msg = data.getString("message");
 
                             Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
-
+                            mSuccessfulUpdate = true;
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.pet_update_unknown_err)));
                         }

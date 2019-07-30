@@ -97,14 +97,13 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             }
         });
 
-
         //TODO: DISABLE OR HIDE IF NO RESIDENCE PRESENT>
         mNavResButton = findViewById(R.id.nav_res);
         mNavResButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PetActivity.this, ResidentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("ResidentID", mModel.getResidenceID());
                 intent.putExtra("RequestNewEntry", false);
                 startActivityForResult(intent, RESIDENCE_RESULT);
@@ -230,6 +229,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             mModel.setup(isNew, resID);
         }
     }
+    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -314,5 +314,15 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     @Override
     public void onDateChosen(String date) {
         mModel.setDate(date);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mModel.editOccurred()) {
+            Intent output = new Intent();
+            output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
+            setResult(RESULT_OK, output);
+        }
+        super.onBackPressed();
     }
 }
