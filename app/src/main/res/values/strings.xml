@@ -81,6 +81,7 @@
     <string name="search_shack_id">Shack ID:</string>
     <string name="search_latitude">Lat:</string>
     <string name="search_longitude">Long:</string>
+    <string name="add_pet">Add Pet</string>
     <string name="address_shack_req">Please provide at least the address or the shack id.</string>
     <string name="res_update_internal_err">An internal error occurred while trying to update residence. Please try again.</string>
     <string name="res_update_unknown_err">An unknown error occurred while trying to update residence. Please try again.</string>

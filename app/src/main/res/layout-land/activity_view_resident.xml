@@ -126,39 +126,58 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
-        <TextView
-            android:id="@+id/animals_title"
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ani_cont"
             android:layout_width="0dp"
-            android:background="@android:color/white"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@+id/mid_line"
+            app:layout_constraintLeft_toLeftOf="@+id/mid_line"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="@dimen/general_padding"
-            android:text="@string/search_res_animals"/>
+            android:layout_margin="@dimen/small_padding">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/pet_title_area"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/animals_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_res_animals"
+                    android:layout_weight="1"/>
 
-        <!--This list allows the user to navigate to differnt animals if NOT in edit-->
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/animal_nav_list"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/animals_title"
-            app:layout_constraintStart_toEndOf="@+id/mid_line"
-            app:layout_constraintEnd_toEndOf="parent">
+                <Button
+                    android:id="@+id/add_pet_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_pet"
+                    android:drawableStart="@drawable/add_pet"
+                    android:drawableLeft="@drawable/add_pet" />
+            </LinearLayout>
 
-        </com.google.android.flexbox.FlexboxLayout>
+            <!--This list allows the user to navigate to differnt animals if NOT in edit-->
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/animal_nav_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/pet_title_area"
+                app:layout_constraintStart_toEndOf="@+id/mid_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:flexWrap="wrap"/>
 
-        <ListView
-            android:id="@+id/remove_animals_list"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:divider="?attr/dividerHorizontal"
-            app:layout_constraintTop_toBottomOf="@id/animals_title"
-            app:layout_constraintStart_toEndOf="@+id/mid_line"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="gone">
-        </ListView>
+            <ListView
+                android:id="@+id/remove_animals_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?attr/dividerHorizontal"
+                app:layout_constraintTop_toBottomOf="@id/pet_title_area"
+                app:layout_constraintStart_toEndOf="@+id/mid_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone">
+            </ListView>
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/cancel_edit"
