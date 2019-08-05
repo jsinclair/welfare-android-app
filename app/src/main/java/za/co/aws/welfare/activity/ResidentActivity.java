@@ -28,6 +28,8 @@ import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
+import za.co.aws.welfare.fragment.SearchPetsFragment;
+import za.co.aws.welfare.fragment.SearchResidenceFragment;
 import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
@@ -36,6 +38,7 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
 public class ResidentActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
+    private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
     private static final int PET_RESULT = 42;
 
     // The view model
@@ -101,6 +104,14 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
             @Override
             public void onClick(View view) {
                 mModel.toggleSaveEdit();
+            }
+        });
+
+        mAddPet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment newFragment = new SearchPetsFragment();
+                newFragment.show(getSupportFragmentManager(), SEARCH_PETS_FRAGMENT);
             }
         });
 
