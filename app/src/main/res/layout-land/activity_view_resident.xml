@@ -154,7 +154,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/add_pet"
                     android:drawableStart="@drawable/add_pet"
-                    android:drawableLeft="@drawable/add_pet" />
+                    android:drawableLeft="@drawable/add_pet"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <!--This list allows the user to navigate to differnt animals if NOT in edit-->

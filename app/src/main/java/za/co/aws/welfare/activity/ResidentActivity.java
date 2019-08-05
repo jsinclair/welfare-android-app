@@ -52,6 +52,8 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
     // The notes text input layout.
     private TextInputLayout mNotes;
 
+    private Button mAddPet;
+
     // Allow the user to edit the view.
     private FloatingActionButton mEditButton;
 
@@ -77,6 +79,7 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
 
+        mAddPet = findViewById(R.id.add_pet_button);
         mAnimalDisplay = findViewById(R.id.animal_nav_list);
         mAnimalEditList = findViewById(R.id.remove_animals_list);
         mAddress = findViewById(R.id.address_container);
@@ -214,11 +217,13 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
         if (editable) {
             mCancelEditButton.show();
             mAnimalEditList.setVisibility(View.VISIBLE);
+            mAddPet.setVisibility(View.VISIBLE);
             mAnimalDisplay.setVisibility(View.GONE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
         } else {
             mCancelEditButton.hide();
             mAnimalEditList.setVisibility(View.GONE);
+            mAddPet.setVisibility(View.GONE);
             mAnimalDisplay.setVisibility(View.VISIBLE);
             mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
         }
