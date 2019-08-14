@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,8 +24,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
+import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 import za.co.aws.welfare.viewModel.PetViewModel;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
@@ -63,15 +66,19 @@ public class SearchPetsFragment extends DialogFragment {
         mWelfareID = v.findViewById(R.id.welfare_number);
         results = v.findViewById(R.id.result_residences);
         searchView = v.findViewById(R.id.search_menu);
+        mSpecies = v.findViewById(R.id.species);
 
+        ArrayAdapter<AnimalType> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
+                ((WelfareApplication) getActivity().getApplication()).getAnimalTypes(true));
+        mSpecies.setAdapter(adapter);
+       //todo set value
         searchButton = v.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String petName = mPetName.getText() == null ? null : mPetName.getText().toString();
                 String welfareID = mWelfareID.getText() == null ? null : mWelfareID.getText().toString();
-//                String species = ..; //TODO
-//                mModel.doResidenceSearch(address, shack); //TODO;
+                mModel.doAnimalSearch(-1, petName, welfareID); //TODO;
             }
         });
 

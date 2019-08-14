@@ -26,6 +26,7 @@ import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
@@ -50,6 +51,8 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         // Busy updating residence.
         UPDATING_DATA,
+
+        SEARCHING_PET,
     }
 
     public enum Event {
@@ -61,6 +64,8 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         // If the user has not provided enough data to update or create a residence.
         DATA_REQUIRED,
+
+        SEARCH_PET_ERROR,
     }
 
     /** Remember the user name. */
@@ -81,6 +86,8 @@ public class ResidenceViewModel extends AndroidViewModel {
     public MutableLiveData<String> mNotes;
     public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList;
 
+    public MutableLiveData<List<PetSearchData>> mPetSearchResult;
+
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
@@ -100,6 +107,7 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLon = new MutableLiveData<>();
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>();
+        mPetSearchResult = new MutableLiveData<>();
 
         mEventHandler = new SingleLiveEvent<>();
         successfulEditOccurred = false;
@@ -400,5 +408,80 @@ public class ResidenceViewModel extends AndroidViewModel {
            }
            mAnimalList.setValue(list);
         }
+    }
+
+
+    /** Search for pets on the given search parameters. */
+    public void doAnimalSearch(int species, String petName, String welfareID) {
+
+        boolean hasPetName = !(petName == null || petName.isEmpty());
+        boolean hasWelfareID = !(welfareID == null || welfareID.isEmpty());
+        boolean hasSpecies = (species > 0);
+
+        mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
+
+        Map<String, String> params = new HashMap<>();
+        if (hasPetName) {
+            params.put("name", petName);
+        }
+
+        if (hasSpecies) {
+            params.put("animal_type_id", Integer.toString(species));
+        }
+
+        if (hasWelfareID) {
+            params.put("welfare_number", welfareID);
+        }
+
+        String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
+        String url = NetworkUtils.createURL(baseURL, params);
+
+        RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
+                url, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        LinkedList<PetSearchData> results = new LinkedList<>();
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            if (data != null) {
+                                JSONArray resArr = data.getJSONArray("animals");
+                                for (int i = 0; i < resArr.length(); i++) {
+                                    JSONObject entry = resArr.getJSONObject(i);
+                                    int id = entry.getInt("id");
+                                    int animalType = entry.getInt("animal_type_id");
+                                    String animalTypeDesc = entry.optString("description");
+                                    String name = entry.optString("name");
+                                    String dob = entry.optString("approximate_dob");
+                                    String welfareID = entry.optString("welfare_number");
+                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, welfareID));
+                                }
+                            }
+                        } catch (JSONException e) {
+                            mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.internal_error_pet_search)));
+                        }
+                        mPetSearchResult.setValue(results);
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mNetworkHandler.setValue(NetworkStatus.IDLE);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.conn_error_pet_search)));
+                } else {
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.unknown_error_pet_search)));
+                }
+                mPetSearchResult.setValue(null);
+            }
+        })
+        {@Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
+            return headers;
+        }
+        }, getApplication());
     }
 }
