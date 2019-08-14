@@ -413,13 +413,23 @@ public class ResidenceViewModel extends AndroidViewModel {
         }
     }
 
+    /** call this to add a pet to the residence. Will only be persisted on save. */
     public void addPet(ResidentAnimalDetail petToAdd) {
         if (petToAdd != null) {
             List<ResidentAnimalDetail> list = mAnimalList.getValue();
             if (list == null) {
                list = new LinkedList<>();
             }
-            list.add(petToAdd);
+            boolean hasAni = false;
+            for (ResidentAnimalDetail ani: list) {
+                if (ani.getID() == petToAdd.getID()) {
+                    hasAni = true;
+                    break;
+                }
+            }
+            if (!hasAni) {
+                list.add(petToAdd);
+            }
             mAnimalList.setValue(list);
         }
     }
