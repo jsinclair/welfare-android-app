@@ -36,11 +36,9 @@ import za.co.aws.welfare.utils.Utils;
 
 /** Controls the resident view/edit interface.*/
 public class ResidenceViewModel extends AndroidViewModel {
-
-    //TODO: :On add animal, new fragment should be aware that we are not editing an animal but adding one!
-    //TODO: On edit, have an add animal button available!!!
+    //todo; On new res added, set residence id
+    // ensure duplcate animal cannot be added.
     //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
-    //TODO: On back pressed, if in edit mode then just cancel edit?!
 
     /** The network statuses. */
     public enum NetworkStatus {
@@ -418,9 +416,10 @@ public class ResidenceViewModel extends AndroidViewModel {
     public void addPet(ResidentAnimalDetail petToAdd) {
         if (petToAdd != null) {
             List<ResidentAnimalDetail> list = mAnimalList.getValue();
-            if (list != null) {
-                list.add(petToAdd);
+            if (list == null) {
+               list = new LinkedList<>();
             }
+            list.add(petToAdd);
             mAnimalList.setValue(list);
         }
     }
