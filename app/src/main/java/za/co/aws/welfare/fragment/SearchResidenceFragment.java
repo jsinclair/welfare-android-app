@@ -1,8 +1,6 @@
 package za.co.aws.welfare.fragment;
 
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.LinkedList;
@@ -79,14 +76,7 @@ public class SearchResidenceFragment extends DialogFragment {
                 dismiss();
             }
         });
-//
-//        v.findViewById(R.id.add_residence).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mModel.triggerAddResident();
-//            }
-//        });
-//
+
 //        //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
         mModel.getResidenceSearchResult().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
             @Override

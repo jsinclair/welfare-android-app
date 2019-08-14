@@ -22,18 +22,13 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
-import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
-import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.model.AnimalType;
-import za.co.aws.welfare.viewModel.HomeViewModel;
-import za.co.aws.welfare.viewModel.PetViewModel;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /**
