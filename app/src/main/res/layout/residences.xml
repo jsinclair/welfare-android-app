@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_padding"
             android:src="@android:drawable/ic_menu_search"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -43,7 +44,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@color/light_bg"
-            android:visibility="gone"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
