@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.AuthFailureError;
@@ -86,7 +87,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     public MutableLiveData<String> mNotes;
     public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList;
 
-    public MutableLiveData<List<PetSearchData>> mPetSearchResult;
+    public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
 
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
@@ -121,6 +122,10 @@ public class ResidenceViewModel extends AndroidViewModel {
         if (!isNew) {
             loadData(resID);
         }
+    }
+
+    public LiveData<LinkedList<PetSearchData>> getSearchResults() {
+        return mPetSearchResult;
     }
 
     public boolean editOccurred() {
@@ -410,6 +415,15 @@ public class ResidenceViewModel extends AndroidViewModel {
         }
     }
 
+    public void addPet(ResidentAnimalDetail petToAdd) {
+        if (petToAdd != null) {
+            List<ResidentAnimalDetail> list = mAnimalList.getValue();
+            if (list != null) {
+                list.add(petToAdd);
+            }
+            mAnimalList.setValue(list);
+        }
+    }
 
     /** Search for pets on the given search parameters. */
     public void doAnimalSearch(int species, String petName, String welfareID) {

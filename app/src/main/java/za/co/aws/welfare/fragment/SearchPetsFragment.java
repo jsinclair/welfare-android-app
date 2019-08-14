@@ -22,11 +22,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
+import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
+import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 import za.co.aws.welfare.viewModel.PetViewModel;
@@ -64,7 +68,7 @@ public class SearchPetsFragment extends DialogFragment {
 
         mPetName = v.findViewById(R.id.pet_name);
         mWelfareID = v.findViewById(R.id.welfare_number);
-        results = v.findViewById(R.id.result_residences);
+        results = v.findViewById(R.id.result_pets);
         searchView = v.findViewById(R.id.search_menu);
         mSpecies = v.findViewById(R.id.species);
 
@@ -78,7 +82,9 @@ public class SearchPetsFragment extends DialogFragment {
             public void onClick(View view) {
                 String petName = mPetName.getText() == null ? null : mPetName.getText().toString();
                 String welfareID = mWelfareID.getText() == null ? null : mWelfareID.getText().toString();
-                mModel.doAnimalSearch(-1, petName, welfareID); //TODO;
+                int speciesID = ((AnimalType)mSpecies.getSelectedItem()).getId();
+
+                mModel.doAnimalSearch(speciesID, petName, welfareID); //TODO;
             }
         });
 
@@ -89,30 +95,29 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
 
-        //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
-//        mModel.getResidenceSearchResult().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
-//            @Override
-//            public void onChanged(final LinkedList<ResidenceSearchData> residenceSearchData) {
-//                LinearLayout emptyView = v.findViewById(R.id.empty_view);
-//                if (residenceSearchData != null && !residenceSearchData.isEmpty()) {
-//                    emptyView.setVisibility(View.GONE);
-//                    results.setVisibility(View.VISIBLE);
-//                    results.setAdapter(new ResidenceSearchListAdapter(getContext(), R.layout.content_pet_search_entry, residenceSearchData));
-//                    results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                            ResidenceSearchData sel = ((ResidenceSearchData) results.getAdapter().getItem(i));
-//                            mModel.setResidence(sel.getID(), sel.getStreetAddress());
-//                            dismiss();
-////                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID());
-//                        }
-//                    });
-//                } else {
-//                    emptyView.setVisibility(View.VISIBLE);
-//                    results.setVisibility(View.GONE);
-//                }
-//            }
-//        });
+        //TODO: check tht this istthe corect way to observe from a fragment (to avoid memory leaks)
+        mModel.getSearchResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<PetSearchData>>() {
+            @Override
+            public void onChanged(final LinkedList<PetSearchData> searchData) {
+                LinearLayout emptyView = v.findViewById(R.id.empty_view);
+                if (searchData != null && !searchData.isEmpty()) {
+                    emptyView.setVisibility(View.GONE);
+                    results.setVisibility(View.VISIBLE);
+                    results.setAdapter(new PetSearchListAdapter(getContext(), R.layout.content_pet_search_entry, searchData));
+                    results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            PetSearchData sel = ((PetSearchData) results.getAdapter().getItem(i));
+                            mModel.addPet(new ResidentAnimalDetail(sel.getID(), sel.getPetName(), sel.getPetWelfareID()));
+                            dismiss();
+                        }
+                    });
+                } else {
+                    emptyView.setVisibility(View.VISIBLE);
+                    results.setVisibility(View.GONE);
+                }
+            }
+        });
         return v;
     }
 
@@ -122,7 +127,6 @@ public class SearchPetsFragment extends DialogFragment {
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
 
