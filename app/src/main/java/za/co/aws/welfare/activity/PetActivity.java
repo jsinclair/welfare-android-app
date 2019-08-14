@@ -2,7 +2,8 @@ package za.co.aws.welfare.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,7 +19,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
@@ -45,11 +45,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
 
     private static final int RESIDENCE_RESULT = 12;
 
-//TODO: set title
-    //TODO: Set and nav on Residence + ALLOW TO CHANGE RES>
-    // navigation
-    // New stuff
-
     // Data controller.
     private PetViewModel mModel;
 
@@ -63,12 +58,9 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     private Button mNavResButton;
     private Button mChangeResButton;
 
-    // Allow the user to edit the view.
-    private FloatingActionButton mEditButton;
-
     // Allow the user to cancel the edit.
-    private FloatingActionButton mCancelEditButton;
-
+    private MenuItem mCancelAction;
+    private MenuItem mEditCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,25 +99,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
                 intent.putExtra("ResidentID", mModel.getResidenceID());
                 intent.putExtra("RequestNewEntry", false);
                 startActivityForResult(intent, RESIDENCE_RESULT);
-            }
-        });
-
-        mCancelEditButton = findViewById(R.id.cancel_edit);
-        mCancelEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mModel.isNew()) {
-                    finish();
-                } else {
-                    mModel.cancelEdit();
-                }
-            }
-        });
-        mEditButton = findViewById(R.id.edit);
-        mEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mModel.toggleSaveEdit();
             }
         });
 
@@ -300,14 +273,11 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mNavResButton.setEnabled(!editable);
         mSpecies.setEnabled(editable);
         if (editable) {
-            mCancelEditButton.show();
             mChangeResButton.setVisibility(View.VISIBLE);
-            mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
         } else {
-            mCancelEditButton.hide();
             mChangeResButton.setVisibility(View.GONE);
-            mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
         }
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -329,4 +299,39 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     protected void onResume() {
         super.onResume();
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.pet_menu, menu);
+        mEditCancel = menu.findItem(R.id.edit);
+        mCancelAction = menu.findItem(R.id.cancel);
+        if (mModel.getEditMode().getValue() != null && mModel.getEditMode().getValue()) {
+            mCancelAction.setVisible(true);
+            mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_save_white_24));
+        } else {
+            mCancelAction.setVisible(false);
+            mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_edit_white_24));
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.edit) {
+            mModel.toggleSaveEdit();
+        } else if (id == R.id.cancel) {
+            if (mModel.isNew()) {
+                finish();
+            } else {
+                mModel.cancelEdit();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

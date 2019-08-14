@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/cancel"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@drawable/cancel"
+        />
+    <item
+        android:id="@+id/edit"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@drawable/baseline_edit_white_24"
+        />
+</menu>
