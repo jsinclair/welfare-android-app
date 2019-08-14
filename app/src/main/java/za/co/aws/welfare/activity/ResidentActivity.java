@@ -3,6 +3,8 @@ package za.co.aws.welfare.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,7 +19,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
@@ -57,12 +58,6 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
 
     private Button mAddPet;
 
-    // Allow the user to edit the view.
-    private FloatingActionButton mEditButton;
-
-    // Allow the user to cancel the edit.
-    private FloatingActionButton mCancelEditButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,24 +83,6 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
         mAddress = findViewById(R.id.address_container);
         mShackID = findViewById(R.id.shack_container);
         mNotes = findViewById(R.id.notes_container);
-        mCancelEditButton = findViewById(R.id.cancel_edit);
-        mCancelEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mModel.isNew()) {
-                    finish();
-                } else {
-                    mModel.cancelEdit();
-                }
-            }
-        });
-        mEditButton = findViewById(R.id.edit);
-        mEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mModel.toggleSaveEdit();
-            }
-        });
 
         mAddPet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,18 +203,15 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
         mShackID.setEnabled(editable);
         mNotes.setEnabled(editable);
         if (editable) {
-            mCancelEditButton.show();
             mAnimalEditList.setVisibility(View.VISIBLE);
             mAddPet.setVisibility(View.VISIBLE);
             mAnimalDisplay.setVisibility(View.GONE);
-            mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_save_white_24));
         } else {
-            mCancelEditButton.hide();
             mAnimalEditList.setVisibility(View.GONE);
             mAddPet.setVisibility(View.GONE);
             mAnimalDisplay.setVisibility(View.VISIBLE);
-            mEditButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_edit_white_24));
         }
+        invalidateOptionsMenu();
     }
 
     /** Generate the animal list and setup click listeners. */
@@ -304,5 +278,38 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
             setResult(RESULT_OK, output);
         }
         super.onBackPressed();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        MenuItem mEditCancel = menu.findItem(R.id.edit);
+        MenuItem mCancelAction = menu.findItem(R.id.cancel);
+        if (mModel.getEditMode().getValue() != null && mModel.getEditMode().getValue()) {
+            mCancelAction.setVisible(true);
+            mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_save_white_24));
+        } else {
+            mCancelAction.setVisible(false);
+            mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_edit_white_24));
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.edit) {
+            mModel.toggleSaveEdit();
+        } else if (id == R.id.cancel) {
+            if (mModel.isNew()) {
+                finish();
+            } else {
+                mModel.cancelEdit();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

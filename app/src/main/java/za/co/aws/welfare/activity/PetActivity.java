@@ -58,9 +58,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     private Button mNavResButton;
     private Button mChangeResButton;
 
-    // Allow the user to cancel the edit.
-    private MenuItem mCancelAction;
-    private MenuItem mEditCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -262,7 +259,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
     }
 
-
     /** Update the editable views and icons. */
     private void setEditable(boolean editable) {
         mNameContainer.setEnabled(editable);
@@ -300,12 +296,11 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         super.onResume();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.pet_menu, menu);
-        mEditCancel = menu.findItem(R.id.edit);
-        mCancelAction = menu.findItem(R.id.cancel);
+        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        MenuItem mEditCancel = menu.findItem(R.id.edit);
+        MenuItem mCancelAction = menu.findItem(R.id.cancel);
         if (mModel.getEditMode().getValue() != null && mModel.getEditMode().getValue()) {
             mCancelAction.setVisible(true);
             mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_save_white_24));
