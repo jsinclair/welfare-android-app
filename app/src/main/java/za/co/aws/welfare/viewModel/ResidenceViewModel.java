@@ -365,7 +365,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                         try {
                             JSONObject data = response.getJSONObject("data");
                             String msg = data.getString("message");
-
+                            residenceID = data.getInt("residence_id");
                             Toast.makeText(getApplication(), msg,
                                     Toast.LENGTH_LONG).show();
 

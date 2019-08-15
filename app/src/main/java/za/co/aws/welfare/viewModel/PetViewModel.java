@@ -382,7 +382,7 @@ public class PetViewModel extends AndroidViewModel {
                         try {
                             JSONObject data = response.getJSONObject("data");
                             String msg = data.getString("message");
-
+                            PetViewModel.this.petID = data.getInt("animal_id");
                             Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
                             mSuccessfulUpdate = true;
                         } catch (JSONException e) {
