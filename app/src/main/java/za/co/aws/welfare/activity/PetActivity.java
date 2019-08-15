@@ -157,6 +157,17 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             }
         });
 
+        mModel.getAllowAddressNavigation().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null && aBoolean && (mModel.getEditMode().getValue() != null && !mModel.getEditMode().getValue())) {
+                    mNavResButton.setEnabled(true);
+                } else {
+                    mNavResButton.setEnabled(false);
+                }
+            }
+        });
+
         mModel.getHasDownloadError().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -266,7 +277,8 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mNotesContainer.setEnabled(editable);
         mTreatmentsContainer.setEnabled(editable);
         mWelfareIDContainer.setEnabled(editable);
-        mNavResButton.setEnabled(!editable);
+        boolean allowAddNav = mModel.getAllowAddressNavigation().getValue() != null && mModel.getAllowAddressNavigation().getValue();
+        mNavResButton.setEnabled(!editable && allowAddNav);
         mSpecies.setEnabled(editable);
         if (editable) {
             mChangeResButton.setVisibility(View.VISIBLE);

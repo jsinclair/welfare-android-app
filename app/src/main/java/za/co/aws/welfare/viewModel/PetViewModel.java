@@ -69,6 +69,9 @@ public class PetViewModel extends AndroidViewModel {
     private Integer residenceID;
     private boolean isNew;
     private boolean mSuccessfulUpdate;
+
+    //If the display address and resID indicate that the pet is not assigned to an address, do not allow navigation.
+    public MutableLiveData<Boolean> mAllowAddressNavigation;
     public MutableLiveData<Boolean> mErrorState;
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
@@ -113,6 +116,7 @@ public class PetViewModel extends AndroidViewModel {
         mTreatments = new MutableLiveData<>();
         mWelfareNumber = new MutableLiveData<>();
         mDisplayAddress = new MutableLiveData<>();
+        mAllowAddressNavigation = new MutableLiveData<>();
 
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
@@ -127,6 +131,10 @@ public class PetViewModel extends AndroidViewModel {
         if (!isNew) {
             loadData(petID);
         }
+    }
+
+    public MutableLiveData<Boolean> getAllowAddressNavigation() {
+        return mAllowAddressNavigation;
     }
 
     public int getResidenceID() {
@@ -161,12 +169,12 @@ public class PetViewModel extends AndroidViewModel {
     public void setResidence(int id, String description) {
         residenceID = id;
         mDisplayAddress.setValue(description);
+        mAllowAddressNavigation.setValue(id >= 0);
     }
 
     public String getDateEntered() {
         return mApproxDOB.getValue();
     }
-
 
     public MutableLiveData<Boolean> getHasDownloadError() {
         return mErrorState;
@@ -239,6 +247,7 @@ public class PetViewModel extends AndroidViewModel {
                                     mWelfareNumber.setValue(welfareID);
                                     mTreatments.setValue(treatments);
                                     mDisplayAddress.setValue(displayAddresss);
+                                    mAllowAddressNavigation.setValue(residenceID >= 0);
                                     mErrorState.setValue(false);
                                 }
                             } catch (JSONException e) {
@@ -301,6 +310,7 @@ public class PetViewModel extends AndroidViewModel {
     public void cancelEdit() {
         mEditMode.setValue(false);
         residenceID = mSaveResID;
+        mAllowAddressNavigation.setValue(residenceID >= 0);
         mDisplayAddress.setValue(mSaveAddressDesc);
         mPetName.setValue(mSaveName);
         mApproxDOB.setValue(mSaveDOB);

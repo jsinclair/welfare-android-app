@@ -375,7 +375,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_unknown_err)));
                         }
                         mEditMode.setValue(false);
-                        isNew = false; //Set to not new value.
+                        isNew = false;
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
                     }
                 }, new Response.ErrorListener() {
