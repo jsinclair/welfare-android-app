@@ -70,7 +70,7 @@ public class SearchPetsFragment extends DialogFragment {
         ArrayAdapter<AnimalType> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
                 ((WelfareApplication) getActivity().getApplication()).getAnimalTypes(true));
         mSpecies.setAdapter(adapter);
-       //todo set value
+
         searchButton = v.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

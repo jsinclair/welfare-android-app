@@ -36,8 +36,7 @@ import za.co.aws.welfare.utils.Utils;
 
 /** Controls the resident view/edit interface.*/
 public class ResidenceViewModel extends AndroidViewModel {
-    //todo; On new res added, set residence id
-    // ensure duplcate animal cannot be added.
+
     //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
 
     /** The network statuses. */
@@ -315,7 +314,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                         }
                     }
                 }
-            }//TODO: TEST TEST TEST
+            }
 
             if (hasChanged) {
                doUpdate(residenceID, address, shackID, lat, lon, notes);

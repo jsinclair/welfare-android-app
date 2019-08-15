@@ -86,7 +86,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             }
         });
 
-        //TODO: DISABLE OR HIDE IF NO RESIDENCE PRESENT>
         mNavResButton = findViewById(R.id.nav_res);
         mNavResButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,6 +338,4 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
