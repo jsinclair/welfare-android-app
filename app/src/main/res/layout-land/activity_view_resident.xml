@@ -169,6 +169,7 @@
                 app:layout_constraintTop_toBottomOf="@id/pet_title_area"
                 app:layout_constraintStart_toEndOf="@+id/mid_line"
                 app:layout_constraintEnd_toEndOf="parent"
+
                 app:flexWrap="wrap"/>
 
             <ListView

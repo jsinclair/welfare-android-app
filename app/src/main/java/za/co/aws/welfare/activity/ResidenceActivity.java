@@ -1,10 +1,12 @@
 package za.co.aws.welfare.activity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -215,10 +217,12 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
     private void setupAnimalViews(List<ResidentAnimalDetail> list) {
         mAnimalDisplay.removeAllViews();
         for (ResidentAnimalDetail animal: list) {
+
             Button aniButton = new Button(this);
             aniButton.setText(animal.getName());
             aniButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.baseline_navigate_next_white_24), null);
             aniButton.setTag(animal);
+            aniButton.setPadding(4, 4, 4, 4);
             aniButton.setTextColor(getResources().getColor(R.color.colorBackground));
             aniButton.setBackground(getResources().getDrawable(R.drawable.rounded_button));
             aniButton.setOnClickListener(new View.OnClickListener() {
@@ -232,7 +236,15 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
                 }
             });
 
-            mAnimalDisplay.addView(aniButton);
+            FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            int padding = getResources().getDimensionPixelSize(R.dimen.pet_gap);
+            params.setMargins(padding, padding, padding, padding);
+
+//            viewpagerColor.addView(button, params);
+
+            mAnimalDisplay.addView(aniButton, params);
             mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
