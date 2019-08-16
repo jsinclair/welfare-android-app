@@ -49,6 +49,8 @@ public class PetViewModel extends AndroidViewModel {
         UPDATING_DATA,
 
         SEARCHING_RESIDENCE,
+
+        DELETE_PET,
     }
 
     public enum Event {
@@ -62,6 +64,8 @@ public class PetViewModel extends AndroidViewModel {
         DATA_REQUIRED,
 
         SEARCH_RES_ERROR,
+
+        DELETE_DONE,DELETE_ERROR
     }
 
     /** Remember the pet id as sent by the backend. */
@@ -498,4 +502,63 @@ public class PetViewModel extends AndroidViewModel {
         }, getApplication());
     }
 
+
+    public void permanentlyDelete() {
+        if(petID >= 0) {
+            mNetworkHandler.setValue(NetworkStatus.DELETE_PET);
+
+            Map<String, String> params = new HashMap<>();
+            params.put("animal_id", Integer.toString(petID));
+
+            String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/delete";
+            String url = NetworkUtils.createURL(baseURL, params);
+
+            RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.POST,
+                    url, new JSONObject(),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JSONObject data = response.getJSONObject("data");
+                                String msg = getApplication().getString(R.string.delete_done);
+                                if (data != null) {
+                                   msg= data.optString("message");
+                                }
+                                Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_DONE, msg));
+
+                            } catch (JSONException e) {
+                                mErrorState.setValue(false);
+                                // there is still data available or
+                                // there is a data issue. So cannot reload.
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_msg)));
+                            }
+                            mNetworkHandler.setValue(NetworkStatus.IDLE);
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_timeout_msg)));
+                    } else {
+                        String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.delete_error));
+                        mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, errorMSG));
+                    }
+                    mErrorState.setValue(true);
+                    mNetworkHandler.setValue(NetworkStatus.IDLE);
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("X-HTTP-Method-Override", "DELETE");
+                    headers.put("Accept", "application/json");
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                    return headers;
+                }
+            }, getApplication());
+        }
+    }
 }

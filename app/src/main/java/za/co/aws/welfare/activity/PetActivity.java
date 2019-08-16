@@ -37,6 +37,8 @@ import za.co.aws.welfare.viewModel.PetViewModel;
 /** Allow the user to view and edit a pet. */
 public class PetActivity extends AppCompatActivity implements DatePickerFragment.DatePickerUser, YesNoDialogFragment.YesNoDialogUser {
 
+    //TODO: hide delet on a new
+
     // Used for the alert dialog to inform user of errors.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private static final String REMOVE_THIS_PET = "REMOVE_THIS_PET";
@@ -259,6 +261,13 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             case SEARCH_RES_ERROR:
                 showAlert(getString(R.string.download_err), eventData.second);
                 break;
+            case DELETE_DONE:
+                //todo set did edit to true to reload search
+                finish();
+                break;
+            case DELETE_ERROR:
+                showAlert(getString(R.string.delete_error), eventData.second);
+                break;
 
         }
     }
@@ -361,7 +370,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     @Override
     public void onDialogYesSelected(String tag) {
         if (REMOVE_THIS_PET.equals(tag)) {
-            //Remove pet and close activity
+            mModel.permanentlyDelete();
         }
     }
 
