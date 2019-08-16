@@ -160,17 +160,20 @@
             </LinearLayout>
 
             <!--This list allows the user to navigate to differnt animals if NOT in edit-->
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/animal_nav_list"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                app:layout_constraintTop_toBottomOf="@id/pet_title_area"
-                app:layout_constraintStart_toEndOf="@+id/mid_line"
-                app:layout_constraintEnd_toEndOf="parent"
-
-                app:flexWrap="wrap"/>
+                android:layout_height="wrap_content">
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/animal_nav_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    app:layout_constraintTop_toBottomOf="@id/pet_title_area"
+                    app:layout_constraintStart_toEndOf="@+id/mid_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:flexWrap="wrap"/>
+            </ScrollView>
 
             <ListView
                 android:id="@+id/remove_animals_list"
