@@ -90,7 +90,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mNavResButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PetActivity.this, ResidentActivity.class);
+                Intent intent = new Intent(PetActivity.this, ResidenceActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("ResidentID", mModel.getResidenceID());
                 intent.putExtra("RequestNewEntry", false);
@@ -173,11 +173,9 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
                 if (aBoolean != null && aBoolean) {
                     findViewById(R.id.error_view).setVisibility(View.VISIBLE);
                     findViewById(R.id.data_container).setVisibility(View.GONE);
-                    findViewById(R.id.edit).setVisibility(View.GONE);
                 } else {
                     findViewById(R.id.error_view).setVisibility(View.GONE);
                     findViewById(R.id.data_container).setVisibility(View.VISIBLE);
-                    findViewById(R.id.edit).setVisibility(View.VISIBLE);
                 }
             }
         });

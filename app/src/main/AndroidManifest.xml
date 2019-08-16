@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".activity.PetActivity" android:label="@string/title_pet"/>
-        <activity android:name=".activity.ResidentActivity" android:label="@string/title_res"/>
+        <activity android:name=".activity.ResidenceActivity" android:label="@string/title_res"/>
 
         <uses-library
             android:name="org.apache.http.legacy"

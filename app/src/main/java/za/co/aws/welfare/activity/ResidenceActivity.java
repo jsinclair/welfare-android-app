@@ -2,7 +2,6 @@ package za.co.aws.welfare.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +29,12 @@ import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
-import za.co.aws.welfare.fragment.SearchResidenceFragment;
 import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allows the user to view and, if they have permission, edit a residence. */
-public class ResidentActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
+public class ResidenceActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
     private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
@@ -139,11 +137,9 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
                 if (aBoolean != null && aBoolean) {
                     findViewById(R.id.error_view).setVisibility(View.VISIBLE);
                     findViewById(R.id.data_container).setVisibility(View.GONE);
-                    findViewById(R.id.edit).setVisibility(View.GONE);
                 } else {
                     findViewById(R.id.error_view).setVisibility(View.GONE);
                     findViewById(R.id.data_container).setVisibility(View.VISIBLE);
-                    findViewById(R.id.edit).setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -224,7 +220,7 @@ public class ResidentActivity extends AppCompatActivity implements YesNoDialogFr
             aniButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ResidentActivity.this, PetActivity.class);
+                    Intent intent = new Intent(ResidenceActivity.this, PetActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("petID", ((ResidentAnimalDetail)view.getTag()).getID());
                     intent.putExtra("RequestNewEntry", false);

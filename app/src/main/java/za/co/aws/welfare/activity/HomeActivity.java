@@ -107,13 +107,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (data != null && data.first != null && data.second != null) {
             switch (data.first) {
                 case RESIDENCE:
-                    Intent intent = new Intent(this, ResidentActivity.class);
+                    Intent intent = new Intent(this, ResidenceActivity.class);
                     intent.putExtra("ResidentID", data.second);
                     intent.putExtra("RequestNewEntry", false);
                     startActivity(intent);
                     break;
                 case ADD_RESIDENCE:
-                    Intent addIntent = new Intent(this, ResidentActivity.class);
+                    Intent addIntent = new Intent(this, ResidenceActivity.class);
                     addIntent.putExtra("RequestNewEntry", true);
                     startActivity(addIntent);
                     break;
