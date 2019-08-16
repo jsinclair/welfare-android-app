@@ -179,6 +179,12 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             case UPDATING_DATA:
                 Utils.updateProgress(fm, progressDialog, getString(R.string.updating_res_data));
                 break;
+            case DELETE_RES:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.delete_res_data));
+                break;
+            case SEARCHING_PET:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.search_pets));
+                break;
         }
     }
 
@@ -193,6 +199,16 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
                 break;
             case DATA_REQUIRED:
                 showAlert(getString(R.string.data_required), eventData.second);
+                break;
+            case SEARCH_PET_ERROR:
+                showAlert(getString(R.string.download_err), eventData.second);
+                break;
+            case DELETE_DONE:
+                finish();
+                //todo set flags
+                break;
+            case DELETE_ERROR:
+                showAlert(getString(R.string.delete_error), eventData.second);
                 break;
         }
     }
@@ -284,7 +300,7 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         if (REMOVE_PET_CONFIRM.equals(tag)) {
             mModel.removePet();
         } else if (REMOVE_THIS_RES.equals(tag)) {
-            //TODO: Delete Res and finish activity.
+            mModel.permanentlyDelete();
         }
     }
 

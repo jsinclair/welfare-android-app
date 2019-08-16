@@ -243,6 +243,9 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             case SEARCHING_RESIDENCE:
                 Utils.updateProgress(fm, progressDialog, getString(R.string.search_residence));
                 break;
+            case DELETE_PET:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.deleting_pet_from_sys));
+                break;
         }
     }
 

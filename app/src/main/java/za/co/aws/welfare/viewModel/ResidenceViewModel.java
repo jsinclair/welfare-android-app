@@ -50,7 +50,7 @@ public class ResidenceViewModel extends AndroidViewModel {
         // Busy updating residence.
         UPDATING_DATA,
 
-        SEARCHING_PET,
+        SEARCHING_PET, DELETE_RES,
     }
 
     public enum Event {
@@ -64,6 +64,7 @@ public class ResidenceViewModel extends AndroidViewModel {
         DATA_REQUIRED,
 
         SEARCH_PET_ERROR,
+        DELETE_ERROR, DELETE_DONE,
     }
 
     /** Remember the user name. */
@@ -505,5 +506,55 @@ public class ResidenceViewModel extends AndroidViewModel {
             return headers;
         }
         }, getApplication());
+    }
+
+    public void permanentlyDelete() {
+        if(residenceID >= 0) {
+            mNetworkHandler.setValue(NetworkStatus.DELETE_RES);
+
+            JSONObject params = new JSONObject();
+            try {
+                params.put("residence_id", Integer.toString(residenceID));
+            }  catch (JSONException e) {
+                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_internal_msg)));
+                mNetworkHandler.setValue(NetworkStatus.IDLE);
+                return;
+            }
+
+            String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/delete/";
+            RequestQueueManager.getInstance().addToRequestQueue(
+                    new JsonObjectRequest(Request.Method.POST, baseURL, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JSONObject data = response.getJSONObject("data");
+                                String msg = data.optString("message");
+                                Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
+                                mNetworkHandler.setValue(NetworkStatus.IDLE);
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_DONE, msg));
+                            } catch (JSONException e) {
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_msg)));
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_timeout_msg)));
+                            } else {
+                                String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.delete_error_msg));
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, errorMSG));
+                            }
+                            mNetworkHandler.setValue(NetworkStatus.IDLE);
+                        }
+                    }){
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                            return headers;
+                        }
+                    }, getApplication());
+        }
     }
 }

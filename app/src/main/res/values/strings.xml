@@ -77,6 +77,7 @@
     <string name="remove_pet_no">Cancel</string>
     <string name="retrieving_res_data">Retrieving Residence...</string>
     <string name="updating_res_data">Updating Residence...</string>
+    <string name="delete_res_data">Deleting residence permanently...</string>
     <string name="search_address">Street Address</string>
     <string name="search_shack">Shack ID</string>
     <string name="search_res_animals">Pets:</string>
@@ -100,6 +101,7 @@
     <!-- Strings related to the reminders screen -->
 
     <!--general-->
+    <string name="deleting_pet_from_sys">Deleting pet from system...</string>
     <string name="delete_done">Delete Completed</string>
     <string name="delete_error">Delete Error</string>
     <string name="delete_error_msg">An error occurred while trying to delete. Please try again.</string>
