@@ -304,7 +304,7 @@ public class ResidenceViewModel extends AndroidViewModel {
 
             List<ResidentAnimalDetail> pets = mAnimalList.getValue();
             if (!((mSavedAnimalList == null || mSavedAnimalList.isEmpty()) && (pets == null || pets.isEmpty()))) {
-                if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) {
+                if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) { //todo; check logic here
                     hasChanged = true;
                 } else {
                     for (ResidentAnimalDetail pet : mSavedAnimalList) {
