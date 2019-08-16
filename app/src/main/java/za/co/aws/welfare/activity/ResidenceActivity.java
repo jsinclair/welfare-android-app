@@ -217,7 +217,10 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         for (ResidentAnimalDetail animal: list) {
             Button aniButton = new Button(this);
             aniButton.setText(animal.getName());
+            aniButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.baseline_navigate_next_white_24), null);
             aniButton.setTag(animal);
+            aniButton.setTextColor(getResources().getColor(R.color.colorBackground));
+            aniButton.setBackground(getResources().getDrawable(R.drawable.rounded_button));
             aniButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -372,7 +372,9 @@ public class PetViewModel extends AndroidViewModel {
                 params.put("residence_id", residenceID);
             }
             params.put("name", petName);
-            params.put("approximate_dob", dob == null ? "" : dob);
+            if (dob != null && !dob.trim().isEmpty()) {
+                params.put("approximate_dob", dob);
+            }
             params.put("notes", notes == null ? "" : notes);
             params.put("welfare_number", welfareNo == null ? "" : welfareNo);
             params.put("treatments", treatments == null ? "" : treatments);
