@@ -103,6 +103,7 @@
     <string name="delete_done">Delete Completed</string>
     <string name="delete_error">Delete Error</string>
     <string name="delete_error_msg">An error occurred while trying to delete. Please try again.</string>
+    <string name="delete_error_internal_msg">An internal error occurred while trying to delete. Please try again.</string>
     <string name="delete_error_timeout_msg">An error occurred while trying to delete. Please check your data connection and try again.</string>
     <string name="delete">Delete</string>
     <string name="keep">Keep</string>
