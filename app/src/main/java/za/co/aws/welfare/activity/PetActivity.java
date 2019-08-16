@@ -177,6 +177,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
                     findViewById(R.id.error_view).setVisibility(View.GONE);
                     findViewById(R.id.data_container).setVisibility(View.VISIBLE);
                 }
+                invalidateOptionsMenu();
             }
         });
 
@@ -316,6 +317,11 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         } else {
             mCancelAction.setVisible(false);
             mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_edit_white_24));
+        }
+        if (mModel.getHasDownloadError().getValue() != null && mModel.getHasDownloadError().getValue() ) {
+            mEditCancel.setVisible(false);
+        } else {
+            mEditCancel.setVisible(true);
         }
         return super.onCreateOptionsMenu(menu);
     }
