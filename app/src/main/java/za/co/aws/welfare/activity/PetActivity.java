@@ -29,15 +29,17 @@ import za.co.aws.welfare.databinding.ActivityPetBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 import za.co.aws.welfare.fragment.SearchResidenceFragment;
+import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.PetViewModel;
 
 /** Allow the user to view and edit a pet. */
-public class PetActivity extends AppCompatActivity implements DatePickerFragment.DatePickerUser {
+public class PetActivity extends AppCompatActivity implements DatePickerFragment.DatePickerUser, YesNoDialogFragment.YesNoDialogUser {
 
     // Used for the alert dialog to inform user of errors.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+    private static final String REMOVE_THIS_PET = "REMOVE_THIS_PET";
 
     // Used for the date dialog.
     private static final String DATE_TAG = "DATE_TAG";
@@ -286,6 +288,14 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         invalidateOptionsMenu();
     }
 
+    private void requestDeletePet() {
+        DialogFragment dialog = YesNoDialogFragment.newInstance(getString(R.string.delete_pet_title),
+                getString(R.string.delete_pet_msg),
+                getString(R.string.delete),
+                getString(R.string.keep), REMOVE_THIS_PET);
+        dialog.show(getSupportFragmentManager(), REMOVE_THIS_PET);
+    }
+
     @Override
     public void onDateChosen(String date) {
         mModel.setDate(date);
@@ -342,7 +352,21 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             } else {
                 mModel.cancelEdit();
             }
+        } else if (id == R.id.delete) {
+            requestDeletePet();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDialogYesSelected(String tag) {
+        if (REMOVE_THIS_PET.equals(tag)) {
+            //Remove pet and close activity
+        }
+    }
+
+    @Override
+    public void onDialogNoSelected(String tag) {
+
     }
 }

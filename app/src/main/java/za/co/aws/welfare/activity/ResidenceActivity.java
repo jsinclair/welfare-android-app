@@ -39,6 +39,7 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
 public class ResidenceActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
+    private static final String REMOVE_THIS_RES = "REMOVE_THIS_RES";
     private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
     private static final int PET_RESULT = 42;
 
@@ -256,11 +257,19 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
 
     private void requestRemovePet(ResidentAnimalDetail pet) {
         mModel.setRemoveRequest(pet);
-        DialogFragment exitDialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_title),
+        DialogFragment dialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_title),
                 getString(R.string.remove_pet_message, pet.getName()),
                 getString(R.string.remove_pet_yes),
                 getString(R.string.remove_pet_no), REMOVE_PET_CONFIRM);
-        exitDialog.show(getSupportFragmentManager(), REMOVE_PET_CONFIRM);
+        dialog.show(getSupportFragmentManager(), REMOVE_PET_CONFIRM);
+    }
+
+    private void requestDeleteResidence() {
+        DialogFragment dialog = YesNoDialogFragment.newInstance(getString(R.string.delete_res_title),
+                getString(R.string.delete_res_msg),
+                getString(R.string.delete),
+                getString(R.string.keep), REMOVE_THIS_RES);
+        dialog.show(getSupportFragmentManager(), REMOVE_THIS_RES);
     }
 
     // Convenience method to show an alert dialog.
@@ -274,6 +283,8 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
     public void onDialogYesSelected(String tag) {
         if (REMOVE_PET_CONFIRM.equals(tag)) {
             mModel.removePet();
+        } else if (REMOVE_THIS_RES.equals(tag)) {
+            //TODO: Delete Res and finish activity.
         }
     }
 
@@ -329,6 +340,8 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             } else {
                 mModel.cancelEdit();
             }
+        } else if (id == R.id.delete) {
+            requestDeleteResidence();
         }
         return super.onOptionsItemSelected(item);
     }
