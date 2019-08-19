@@ -22,7 +22,6 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
         TextView name;
         TextView species;
         TextView dob;
-        TextView welfare;
         int ref;
     }
 
@@ -67,7 +66,6 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
             holder.name = convertView.findViewById(R.id.pet_name);
             holder.dob = convertView.findViewById(R.id.pet_dob);
             holder.species = convertView.findViewById(R.id.pet_species);
-            holder.welfare = convertView.findViewById(R.id.pet_welfare_no);
 
             convertView.setTag(holder);
         } else {
@@ -77,7 +75,6 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
         holder.name.setText(i.getPetName());
         holder.dob.setText(i.getPetDOB());
         holder.species.setText(i.getmAnimalTypeDesc());
-        holder.welfare.setText(i.getPetWelfareID());
         return convertView;
     }
 
