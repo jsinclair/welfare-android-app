@@ -54,6 +54,9 @@
     <string name="search_pet_species_res">Species:</string>
     <string name="search_pet_dob_res">DOB:</string>
     <string name="search_pet_gender_res">Gender:</string>
+    <string name="all">All</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
     <string name="search_pet_sterilised_res">Sterilised:</string>
     <string name="search_pet_dob">Approx. Date of Birth</string>
     <string name="pet_det_req">Please provide at least the pet name and species.</string>
@@ -110,6 +113,8 @@
     <string name="delete">Delete</string>
     <string name="keep">Keep</string>
     <string name="any">Any</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="search">Search</string>
     <string name="curr_res">Current Residence:</string>
     <string name="unknown">Unknown</string>
