@@ -20,6 +20,11 @@ public class Utils {
     private static final String PROGRESS_TAG = "PROGRESS_TAG";
     public static final String INTENT_UPDATE_REQUIRED = "INTENT_UPDATE_REQUIRED";
 
+
+    public static final String GENDER_MALE = "MALE";
+    public static final String GENDER_FEMALE = "FEMALE";
+    public static final String GENDER_ALL = "ALL";
+
     /** Show the given dialog, if it doesn't exist already. */
     public static void showDialog(FragmentManager fm, DialogFragment dialog, String tag, boolean allowStateLoss) {
         if (allowStateLoss) {

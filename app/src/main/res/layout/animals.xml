@@ -92,7 +92,8 @@
                     android:button="@null"
                     android:padding="@dimen/button_padding"
                     android:gravity="center_horizontal"
-                    android:saveEnabled="false"/>
+                    android:checked="@{viewModel.mPetGenderSearch.equals(viewModel.GENDER_ALL)}"
+                    android:onClick="@{()->viewModel.setPetGender(viewModel.GENDER_ALL)}"/>
 
                 <Space
                     android:layout_width="8dp"
@@ -109,7 +110,8 @@
                     android:button="@null"
                     android:padding="@dimen/button_padding"
                     android:gravity="center_horizontal"
-                    android:saveEnabled="false"/>
+                    android:checked="@{viewModel.mPetGenderSearch.equals(viewModel.GENDER_MALE)}"
+                    android:onClick="@{()->viewModel.setPetGender(viewModel.GENDER_MALE)}"/>
 
                 <Space
                     android:layout_width="8dp"
@@ -126,7 +128,8 @@
                     android:button="@null"
                     android:padding="@dimen/button_padding"
                     android:gravity="center_horizontal"
-                    android:saveEnabled="false"/>
+                    android:checked="@{viewModel.mPetGenderSearch.equals(viewModel.GENDER_FEMALE)}"
+                    android:onClick="@{()->viewModel.setPetGender(viewModel.GENDER_FEMALE)}"/>
             </RadioGroup>
 
 

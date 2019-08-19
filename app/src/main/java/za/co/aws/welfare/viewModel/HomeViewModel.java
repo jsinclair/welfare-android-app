@@ -33,6 +33,7 @@ import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
+import za.co.aws.welfare.utils.Utils;
 
 /** Handles the search fragments. */
 public class HomeViewModel extends AndroidViewModel {
@@ -68,6 +69,10 @@ public class HomeViewModel extends AndroidViewModel {
         RESIDENCE, ADD_RESIDENCE, PET, ADD_PET
     }
 
+    public static final String GENDER_FEMALE = Utils.GENDER_FEMALE;
+    public static final String GENDER_MALE = Utils.GENDER_MALE;
+    public static final String GENDER_ALL = Utils.GENDER_ALL;
+
     /** Remember the last searched address entry. Allows us to show the last filter/result that
      * the user entered. SO for example, if they are doing a census in a particular road, the dont
      * have to redo the search (and spend more data) every time. */
@@ -86,6 +91,8 @@ public class HomeViewModel extends AndroidViewModel {
 
     //////PETS
     public MutableLiveData<String> mPetNameSearch;
+    public MutableLiveData<String> mPetGenderSearch;
+    public MutableLiveData<String> mPetSterilisedSearch;
 
     // List of species available.
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
@@ -117,6 +124,8 @@ public class HomeViewModel extends AndroidViewModel {
         mSpeciesAvailable = new MutableLiveData<>();
         mSpeciesAvailable.setValue(((WelfareApplication) getApplication()).getAnimalTypes(true));
         mPetNameSearch = new MutableLiveData<>();
+        mPetGenderSearch = new MutableLiveData<>();
+        mPetSterilisedSearch = new MutableLiveData<>();
         mPetSearchResults = new MutableLiveData<>();
     }
 
@@ -159,6 +168,7 @@ public class HomeViewModel extends AndroidViewModel {
         String streetAddress = mResidenceAddressSearch.getValue();
         boolean hasShack = !(shackID == null || shackID.isEmpty());
         boolean hasStreet = !(streetAddress == null || streetAddress.isEmpty());
+
 
 //        if (false && !hasShack && !hasStreet) { //TODO: REMOVE FALSE & add lat/lon check too
 //            mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_DATA_REQ, getApplication().getString(R.string.res_search_data_required)));
@@ -228,6 +238,10 @@ public class HomeViewModel extends AndroidViewModel {
         }, getApplication());
     }
 
+    public void setPetGender(String gender) {
+        mPetGenderSearch.setValue(gender);
+    }
+
     /** Search for pets on the given search parameters. */
     public void doAnimalSearch() {
         AnimalType animalType = mSpeciesAvailableSearch.getValue();
@@ -236,8 +250,11 @@ public class HomeViewModel extends AndroidViewModel {
             animalTypeSelectedID = animalType.getId();
         }
         String petName = mPetNameSearch.getValue();
+        String gender = mPetGenderSearch.getValue();
         boolean hasPetName = !(petName == null || petName.isEmpty());
         boolean hasSpecies = (animalTypeSelectedID > 0);
+
+        boolean hasGender = GENDER_FEMALE.equals(gender) || GENDER_MALE.equals(gender);
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
 
@@ -248,6 +265,10 @@ public class HomeViewModel extends AndroidViewModel {
 
         if (hasSpecies) {
             params.put("animal_type_id", Integer.toString(animalTypeSelectedID));
+        }
+
+        if (hasGender) {
+            params.put("gender", gender);
         }
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
