@@ -8,12 +8,10 @@ public class ResidentAnimalDetail {
 
     private int mID;
     private String mName;
-    private String mWelfareNumber;
 
-    public ResidentAnimalDetail(int mID, String mName, String mWelfareNumber) {
+    public ResidentAnimalDetail(int mID, String mName) {
         this.mID = mID;
         this.mName = mName;
-        this.mWelfareNumber = mWelfareNumber;
     }
 
     public int getID() {
@@ -24,7 +22,4 @@ public class ResidentAnimalDetail {
         return mName;
     }
 
-    public String getWelfareNumber() {
-        return mWelfareNumber;
-    }
 }

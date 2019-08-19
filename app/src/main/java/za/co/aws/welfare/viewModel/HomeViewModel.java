@@ -270,8 +270,7 @@ public class HomeViewModel extends AndroidViewModel {
                                     String animalTypeDesc = entry.optString("description");
                                     String name = entry.optString("name");
                                     String dob = entry.optString("approximate_dob");
-                                    String welfareID = entry.optString("welfare_number");
-                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, welfareID));
+                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob));
                                 }
                             }
                         } catch (JSONException e) {

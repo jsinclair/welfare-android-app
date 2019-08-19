@@ -172,8 +172,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                                             JSONObject aniEntry = animals.getJSONObject(i);
                                             int aniID = aniEntry.optInt("id", -1);
                                             String aniName = aniEntry.optString("name");
-                                            String aniWelfareNum = aniEntry.optString("welfare_number");
-                                            animalList.add(new ResidentAnimalDetail(aniID, aniName, aniWelfareNum));
+                                            animalList.add(new ResidentAnimalDetail(aniID, aniName));
                                         }
                                     }
                                     mAnimalList.setValue(animalList);
@@ -435,10 +434,9 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     /** Search for pets on the given search parameters. */
-    public void doAnimalSearch(int species, String petName, String welfareID) {
+    public void doAnimalSearch(int species, String petName) {
 
         boolean hasPetName = !(petName == null || petName.isEmpty());
-        boolean hasWelfareID = !(welfareID == null || welfareID.isEmpty());
         boolean hasSpecies = (species > 0);
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
@@ -450,10 +448,6 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         if (hasSpecies) {
             params.put("animal_type_id", Integer.toString(species));
-        }
-
-        if (hasWelfareID) {
-            params.put("welfare_number", welfareID);
         }
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
@@ -476,8 +470,7 @@ public class ResidenceViewModel extends AndroidViewModel {
                                     String animalTypeDesc = entry.optString("description");
                                     String name = entry.optString("name");
                                     String dob = entry.optString("approximate_dob");
-                                    String welfareID = entry.optString("welfare_number");
-                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, welfareID));
+                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob));
                                 }
                             }
                         } catch (JSONException e) {

@@ -56,7 +56,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     private TextInputLayout mDOBContainer;
     private TextInputLayout mNotesContainer;
     private TextInputLayout mTreatmentsContainer;
-    private TextInputLayout mWelfareIDContainer;
     private Spinner mSpecies;
 
     private Button mNavResButton;
@@ -133,7 +132,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         });
         mNotesContainer = findViewById(R.id.notes_container);
         mTreatmentsContainer = findViewById(R.id.treatments_container);
-        mWelfareIDContainer = findViewById(R.id.welfareID_container);
 
         mModel.getNetworkHandler().observe(this, new Observer<PetViewModel.NetworkStatus>() {
             @Override
@@ -288,7 +286,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mDOBContainer.setEnabled(editable);
         mNotesContainer.setEnabled(editable);
         mTreatmentsContainer.setEnabled(editable);
-        mWelfareIDContainer.setEnabled(editable);
         boolean allowAddNav = mModel.getAllowAddressNavigation().getValue() != null && mModel.getAllowAddressNavigation().getValue();
         mNavResButton.setEnabled(!editable && allowAddNav);
         mSpecies.setEnabled(editable);

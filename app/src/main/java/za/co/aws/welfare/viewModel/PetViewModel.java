@@ -84,7 +84,6 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<String> mApproxDOB;
     public MutableLiveData<String> mNotes;
     public MutableLiveData<String> mTreatments;
-    public MutableLiveData<String> mWelfareNumber;
     public MutableLiveData<String> mDisplayAddress;
     public MutableLiveData<AnimalType> mSpecies;
 
@@ -118,7 +117,6 @@ public class PetViewModel extends AndroidViewModel {
         mApproxDOB = new MutableLiveData<>();
         mNotes = new MutableLiveData<>();
         mTreatments = new MutableLiveData<>();
-        mWelfareNumber = new MutableLiveData<>();
         mDisplayAddress = new MutableLiveData<>();
         mAllowAddressNavigation = new MutableLiveData<>();
 
@@ -231,7 +229,6 @@ public class PetViewModel extends AndroidViewModel {
                                     String name = pet.optString("name");
                                     String dob = pet.optString("approximate_dob");
                                     String notes = pet.optString("notes");
-                                    String welfareID = pet.optString("welfare_number");
                                     String treatments = pet.optString("treatments");
                                     String displayAddresss = pet.optString("display_address");
 
@@ -248,7 +245,6 @@ public class PetViewModel extends AndroidViewModel {
                                     mPetName.setValue(name);
                                     mApproxDOB.setValue(dob);
                                     mNotes.setValue(notes);
-                                    mWelfareNumber.setValue(welfareID);
                                     mTreatments.setValue(treatments);
                                     mDisplayAddress.setValue(displayAddresss);
                                     mAllowAddressNavigation.setValue(residenceID >= 0);
@@ -298,7 +294,6 @@ public class PetViewModel extends AndroidViewModel {
                 mSaveDOB = mApproxDOB.getValue();
                 mSaveNotes = mNotes.getValue();
                 mSaveTreatements = mTreatments.getValue();
-                mSaveWelfareNo = mWelfareNumber.getValue();
                 mSaveAddressDesc = mDisplayAddress.getValue();
                 mSavedAnimalType = mSpecies.getValue();
                 mEditMode.setValue(true);
@@ -320,7 +315,6 @@ public class PetViewModel extends AndroidViewModel {
         mApproxDOB.setValue(mSaveDOB);
         mNotes.setValue(mSaveNotes);
         mTreatments.setValue(mSaveTreatements);
-        mWelfareNumber.setValue(mSaveWelfareNo);
         mSpecies.setValue(mSavedAnimalType);
     }
 
@@ -330,29 +324,27 @@ public class PetViewModel extends AndroidViewModel {
         String name = mPetName.getValue();
         String dob = mApproxDOB.getValue();
         String notes = mNotes.getValue();
-        String welfareID = mWelfareNumber.getValue();
         String treatments = mTreatments.getValue();
         int resID = residenceID;
 
         // Ensure the user provides some form of address.
-        if ((name == null || name.isEmpty()) || (welfareID == null || welfareID.isEmpty()) || (animalType == -1)) {
+        if ((name == null || name.isEmpty()) || (animalType == -1)) {
             mEventHandler.setValue(new Pair<>(Event.DATA_REQUIRED, getApplication().getString(R.string.pet_det_req)));
             return;
         }
 
         if (isNew) {
-            doUpdate(-1, resID, animalType, name, dob, welfareID, notes, treatments);
+            doUpdate(-1, resID, animalType, name, dob, notes, treatments);
         } else {
             boolean hasChanged = ((name != null && !name.equals(mSaveName))
                     || (dob != null && !dob.equals(mSaveDOB))
                     || (notes !=null && !notes.equals(mSaveNotes))
-                    || (welfareID != null && !welfareID.equals(mSaveWelfareNo))
                     || (resID != mSaveResID))
                     || (mSavedAnimalType == null || mSavedAnimalType.getId() != animalType)
                     || (treatments != null && !treatments.equals(mSaveTreatements));
 
             if (hasChanged) {
-                doUpdate(petID, resID, animalType, name, dob, welfareID, notes, treatments);
+                doUpdate(petID, resID, animalType, name, dob, notes, treatments);
             } else {
                 Toast.makeText(getApplication(), getApplication().getString(R.string.no_change),
                         Toast.LENGTH_LONG).show();
@@ -363,7 +355,7 @@ public class PetViewModel extends AndroidViewModel {
 
     /** Send the update to the backend and handle the result. */
     private void doUpdate(int petID, int residenceID, int animalType, String petName, String dob,
-                          String welfareNo, String notes, String treatments) {
+                          String notes, String treatments) {
 
         mNetworkHandler.setValue(NetworkStatus.UPDATING_DATA);
         JSONObject params = new JSONObject();
@@ -380,7 +372,6 @@ public class PetViewModel extends AndroidViewModel {
                 params.put("approximate_dob", dob);
             }
             params.put("notes", notes == null ? "" : notes);
-            params.put("welfare_number", welfareNo == null ? "" : welfareNo);
             params.put("treatments", treatments == null ? "" : treatments);
 
         } catch (JSONException e) {

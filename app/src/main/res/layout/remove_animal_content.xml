@@ -24,22 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/pet_name_title"
             android:layout_toRightOf="@+id/pet_name_title"/>
-        <TextView
-            android:id="@+id/welfare_title"
-            android:text="@string/welfare_no"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pet_name_title"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"/>
-        <TextView
-            android:id="@+id/welfare_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pet_name_title"
-            android:layout_toEndOf="@+id/welfare_title"
-            android:layout_toRightOf="@+id/welfare_title"/>
     </RelativeLayout>
 
     <ImageView

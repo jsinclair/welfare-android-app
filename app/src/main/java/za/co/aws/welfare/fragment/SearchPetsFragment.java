@@ -44,7 +44,6 @@ public class SearchPetsFragment extends DialogFragment {
 
     private ResidenceViewModel mModel;
     private TextInputEditText mPetName;
-    private TextInputEditText mWelfareID;
     private Spinner mSpecies;
 
     @Nullable
@@ -62,7 +61,6 @@ public class SearchPetsFragment extends DialogFragment {
         mModel = ViewModelProviders.of(getActivity()).get(ResidenceViewModel.class);
 
         mPetName = v.findViewById(R.id.pet_name);
-        mWelfareID = v.findViewById(R.id.welfare_number);
         results = v.findViewById(R.id.result_pets);
         searchView = v.findViewById(R.id.search_menu);
         mSpecies = v.findViewById(R.id.species);
@@ -76,10 +74,9 @@ public class SearchPetsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 String petName = mPetName.getText() == null ? null : mPetName.getText().toString();
-                String welfareID = mWelfareID.getText() == null ? null : mWelfareID.getText().toString();
                 int speciesID = ((AnimalType)mSpecies.getSelectedItem()).getId();
 
-                mModel.doAnimalSearch(speciesID, petName, welfareID); //TODO;
+                mModel.doAnimalSearch(speciesID, petName); //TODO add the other stuff;
             }
         });
 
@@ -103,7 +100,7 @@ public class SearchPetsFragment extends DialogFragment {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             PetSearchData sel = ((PetSearchData) results.getAdapter().getItem(i));
-                            mModel.addPet(new ResidentAnimalDetail(sel.getID(), sel.getPetName(), sel.getPetWelfareID()));
+                            mModel.addPet(new ResidentAnimalDetail(sel.getID(), sel.getPetName()));
                             dismiss();
                         }
                     });

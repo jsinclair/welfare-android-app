@@ -22,7 +22,6 @@ public class RemoveAnimalAdapter extends ArrayAdapter<ResidentAnimalDetail> {
     /** Suggested as an optimisation. Object that holds view components. */
     private class ViewHolder {
         TextView name;
-        TextView welfareNumber;
         ImageView deleteButton;
         int ref;
     }
@@ -58,7 +57,6 @@ public class RemoveAnimalAdapter extends ArrayAdapter<ResidentAnimalDetail> {
             convertView = inflater.inflate(R.layout.remove_animal_content, null);
 
             holder.name = convertView.findViewById(R.id.pet_name);
-            holder.welfareNumber = convertView.findViewById(R.id.welfare_number);
             holder.deleteButton = convertView.findViewById(R.id.delete_button);
             holder.deleteButton.setOnClickListener(deleteListener);
 
@@ -68,7 +66,6 @@ public class RemoveAnimalAdapter extends ArrayAdapter<ResidentAnimalDetail> {
         }
         holder.ref = position;
         holder.name.setText(i.getName());
-        holder.welfareNumber.setText(i.getWelfareNumber());
         holder.deleteButton.setTag(i);
         return convertView;
     }

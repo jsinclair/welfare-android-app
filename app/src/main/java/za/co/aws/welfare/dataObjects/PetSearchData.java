@@ -8,15 +8,13 @@ public class PetSearchData {
     private String mAnimalTypeDesc;
     private String mPetName;
     private String mPetDOB;
-    private String mPetWelfareID;
 
-    public PetSearchData(int mID, int mAnimalTypeID, String mAnimalTypeDesc, String mPetName, String mPetDOB, String mPetWelfareID) {
+    public PetSearchData(int mID, int mAnimalTypeID, String mAnimalTypeDesc, String mPetName, String mPetDOB) {
         this.mID = mID;
         this.mAnimalTypeID = mAnimalTypeID;
         this.mAnimalTypeDesc = mAnimalTypeDesc;
         this.mPetName = mPetName;
         this.mPetDOB = mPetDOB;
-        this.mPetWelfareID = mPetWelfareID;
     }
 
     public int getID() {
@@ -33,10 +31,6 @@ public class PetSearchData {
 
     public String getPetDOB() {
         return mPetDOB;
-    }
-
-    public String getPetWelfareID() {
-        return mPetWelfareID;
     }
 
     public String getmAnimalTypeDesc() {
