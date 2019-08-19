@@ -69,20 +69,7 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/search_pet_welfare"
-                android:layout_marginBottom="@dimen/general_padding"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/welfare_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@={ viewModel.mPetWelfareSearch }"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+           <!--todo: gender and sterilised-->
 
             <LinearLayout
                 android:orientation="horizontal"

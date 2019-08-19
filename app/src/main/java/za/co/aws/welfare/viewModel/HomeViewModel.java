@@ -86,7 +86,6 @@ public class HomeViewModel extends AndroidViewModel {
 
     //////PETS
     public MutableLiveData<String> mPetNameSearch;
-    public MutableLiveData<String> mPetWelfareSearch;
 
     // List of species available.
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
@@ -117,7 +116,6 @@ public class HomeViewModel extends AndroidViewModel {
         mSpeciesAvailableSearch = new MutableLiveData<>();
         mSpeciesAvailable = new MutableLiveData<>();
         mSpeciesAvailable.setValue(((WelfareApplication) getApplication()).getAnimalTypes(true));
-        mPetWelfareSearch = new MutableLiveData<>();
         mPetNameSearch = new MutableLiveData<>();
         mPetSearchResults = new MutableLiveData<>();
     }
@@ -238,9 +236,7 @@ public class HomeViewModel extends AndroidViewModel {
             animalTypeSelectedID = animalType.getId();
         }
         String petName = mPetNameSearch.getValue();
-        String welfareID = mPetWelfareSearch.getValue();
         boolean hasPetName = !(petName == null || petName.isEmpty());
-        boolean hasWelfareID = !(welfareID == null || welfareID.isEmpty());
         boolean hasSpecies = (animalTypeSelectedID > 0);
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
@@ -252,10 +248,6 @@ public class HomeViewModel extends AndroidViewModel {
 
         if (hasSpecies) {
             params.put("animal_type_id", Integer.toString(animalTypeSelectedID));
-        }
-
-        if (hasWelfareID) {
-            params.put("welfare_number", welfareID);
         }
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
