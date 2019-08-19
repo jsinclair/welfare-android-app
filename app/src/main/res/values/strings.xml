@@ -53,6 +53,8 @@
     <string name="search_pet_name_res">Name:</string>
     <string name="search_pet_species_res">Species:</string>
     <string name="search_pet_dob_res">DOB:</string>
+    <string name="search_pet_gender_res">Gender:</string>
+    <string name="search_pet_sterilised_res">Sterilised:</string>
     <string name="search_pet_dob">Approx. Date of Birth</string>
     <string name="pet_det_req">Please provide at least the pet name and species.</string>
     <string name="unknown_error_pet_search">An unknown error occurred while trying to retrieve pet info. Please try again later.</string>

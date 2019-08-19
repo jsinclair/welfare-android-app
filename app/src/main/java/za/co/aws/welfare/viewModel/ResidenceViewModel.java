@@ -470,7 +470,9 @@ public class ResidenceViewModel extends AndroidViewModel {
                                     String animalTypeDesc = entry.optString("description");
                                     String name = entry.optString("name");
                                     String dob = entry.optString("approximate_dob");
-                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob));
+                                    String gender = entry.optString("gender");
+                                    boolean isSterilised = entry.optInt("sterilised", 0) == 1;
+                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, gender, isSterilised));
                                 }
                             }
                         } catch (JSONException e) {
