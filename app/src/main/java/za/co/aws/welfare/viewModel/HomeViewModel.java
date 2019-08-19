@@ -73,6 +73,10 @@ public class HomeViewModel extends AndroidViewModel {
     public static final String GENDER_MALE = Utils.GENDER_MALE;
     public static final String GENDER_ALL = Utils.GENDER_ALL;
 
+    public static final String STERILISED_YES = "STERILISED_YES";
+    public static final String STERILISED_NO = "STERILISED_NO";
+    public static final String STERILISED_ALL = "STERILISED_ALL";
+
     /** Remember the last searched address entry. Allows us to show the last filter/result that
      * the user entered. SO for example, if they are doing a census in a particular road, the dont
      * have to redo the search (and spend more data) every time. */
@@ -238,8 +242,13 @@ public class HomeViewModel extends AndroidViewModel {
         }, getApplication());
     }
 
+    /** used when user selects gender to search for. */
     public void setPetGender(String gender) {
         mPetGenderSearch.setValue(gender);
+    }
+
+    public void setPetSterilised (String isSterilised) {
+        mPetSterilisedSearch.setValue(isSterilised);
     }
 
     /** Search for pets on the given search parameters. */
@@ -250,10 +259,12 @@ public class HomeViewModel extends AndroidViewModel {
             animalTypeSelectedID = animalType.getId();
         }
         String petName = mPetNameSearch.getValue();
+        String steriStr = mPetSterilisedSearch.getValue();
         String gender = mPetGenderSearch.getValue();
+
         boolean hasPetName = !(petName == null || petName.isEmpty());
         boolean hasSpecies = (animalTypeSelectedID > 0);
-
+        boolean hasSteri = STERILISED_NO.equals(steriStr) || STERILISED_YES.equals(steriStr);
         boolean hasGender = GENDER_FEMALE.equals(gender) || GENDER_MALE.equals(gender);
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
@@ -261,6 +272,10 @@ public class HomeViewModel extends AndroidViewModel {
         Map<String, String> params = new HashMap<>();
         if (hasPetName) {
             params.put("name", petName);
+        }
+
+        if (hasSteri) {
+            params.put("sterilised", STERILISED_YES.equals(steriStr)? "1": "0");
         }
 
         if (hasSpecies) {

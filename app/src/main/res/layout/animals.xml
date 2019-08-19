@@ -156,7 +156,8 @@
                     android:button="@null"
                     android:padding="@dimen/button_padding"
                     android:gravity="center_horizontal"
-                    android:saveEnabled="false"/>
+                    android:checked="@{viewModel.mPetSterilisedSearch.equals(viewModel.STERILISED_ALL)}"
+                    android:onClick="@{()->viewModel.setPetSterilised(viewModel.STERILISED_ALL)}"/>
 
                 <Space
                     android:layout_width="8dp"
@@ -173,7 +174,8 @@
                     android:button="@null"
                     android:padding="@dimen/button_padding"
                     android:gravity="center_horizontal"
-                    android:saveEnabled="false"/>
+                    android:checked="@{viewModel.mPetSterilisedSearch.equals(viewModel.STERILISED_YES)}"
+                    android:onClick="@{()->viewModel.setPetSterilised(viewModel.STERILISED_YES)}"/>
 
                 <Space
                     android:layout_width="8dp"
@@ -190,10 +192,9 @@
                     android:button="@null"
                     android:padding="@dimen/button_padding"
                     android:gravity="center_horizontal"
-                    android:saveEnabled="false"/>
+                    android:checked="@{viewModel.mPetSterilisedSearch.equals(viewModel.STERILISED_NO)}"
+                    android:onClick="@{()->viewModel.setPetSterilised(viewModel.STERILISED_NO)}"/>
             </RadioGroup>
-
-           <!--todo: gender and sterilised-->
 
             <LinearLayout
                 android:orientation="horizontal"
