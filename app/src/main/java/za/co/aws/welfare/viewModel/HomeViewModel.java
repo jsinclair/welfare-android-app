@@ -84,6 +84,9 @@ public class HomeViewModel extends AndroidViewModel {
 
     /** Remember the last entry used for shack id. */ //todo: might change to only update on SEARCH pressed!
     public MutableLiveData<String> mShackIDSearch;
+    public MutableLiveData<String> mResidentNameSearch;
+    public MutableLiveData<String> mTelSearch;
+    public MutableLiveData<String> mIDNumber;
 
     /** Remember the last entry used for lat / lon. STILL TODO!*/
     public MutableLiveData<String> mLatLongSearch; //TODO!
@@ -117,6 +120,9 @@ public class HomeViewModel extends AndroidViewModel {
         //res stuff
         mResidenceAddressSearch = new MutableLiveData<>();
         mShackIDSearch = new MutableLiveData<>();
+        mIDNumber = new MutableLiveData<>();
+        mResidentNameSearch = new MutableLiveData<>();
+        mTelSearch = new MutableLiveData<>();
         mResidenceSearchResults = new MutableLiveData<>();
 
         mNetworkHandler = new MutableLiveData<>();
@@ -170,14 +176,15 @@ public class HomeViewModel extends AndroidViewModel {
     public void doResidenceSearch() {
         String shackID = mShackIDSearch.getValue();
         String streetAddress = mResidenceAddressSearch.getValue();
+        String tel = mTelSearch.getValue();
+        String residentName = mResidentNameSearch.getValue();
+        String idNum = mIDNumber.getValue();
         boolean hasShack = !(shackID == null || shackID.isEmpty());
         boolean hasStreet = !(streetAddress == null || streetAddress.isEmpty());
 
-
-//        if (false && !hasShack && !hasStreet) { //TODO: REMOVE FALSE & add lat/lon check too
-//            mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_DATA_REQ, getApplication().getString(R.string.res_search_data_required)));
-//            return;
-//        }
+        boolean hasTel = !(tel == null || tel.isEmpty());
+        boolean hasName = !(residentName == null || residentName.isEmpty());
+        boolean hasID = !(idNum == null || idNum.isEmpty());
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_RESIDENCE);
 
@@ -188,6 +195,18 @@ public class HomeViewModel extends AndroidViewModel {
 
         if (hasStreet) {
             params.put("street_address", streetAddress);
+        }
+
+        if (hasName) {
+            params.put("resident_name", residentName);
+        }
+
+        if (hasTel) {
+            params.put("tel_no", tel);
+        }
+
+        if (hasID) {
+            params.put("id_no", idNum);
         }
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/list/";
@@ -307,8 +326,7 @@ public class HomeViewModel extends AndroidViewModel {
                                     String name = entry.optString("name");
                                     String dob = entry.optString("approximate_dob");
                                     String gender = entry.optString("gender");
-                                    //TODO: ALLOW FOR UNKNWN
-                                    int isSterilised = entry.optInt("sterilised", -1);
+                                    int isSterilised = entry.optInt("sterilised", Utils.STERILISED_UNKNOWN);
                                     results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, gender, isSterilised));
                                 }
                             }

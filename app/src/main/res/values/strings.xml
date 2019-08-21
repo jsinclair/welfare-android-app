@@ -88,6 +88,9 @@
     <string name="search_residence">Searching Residence</string>
     <string name="search_street_address">Street Address:</string>
     <string name="search_shack_id">Shack ID:</string>
+    <string name="search_res_name">Resident Name</string>
+    <string name="search_res_id">Resident ID</string>
+    <string name="search_res_tel">Resident Tel</string>
     <string name="search_latitude">Lat:</string>
     <string name="search_longitude">Long:</string>
     <string name="add_pet">Add Pet</string>
