@@ -92,6 +92,9 @@
     <string name="search_res_id">Resident ID</string>
     <string name="search_res_tel">Resident Tel</string>
     <string name="search_latitude">Lat:</string>
+    <string name="search_resident_name">Resident:</string>
+    <string name="search_resident_id">ID:</string>
+    <string name="search_resident_tel">Tel:</string>
     <string name="search_longitude">Long:</string>
     <string name="add_pet">Add Pet</string>
     <string name="address_shack_req">Please provide at least the address or the shack id.</string>

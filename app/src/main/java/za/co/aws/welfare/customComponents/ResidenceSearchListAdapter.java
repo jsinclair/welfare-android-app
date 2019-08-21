@@ -21,9 +21,9 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
     private class ViewHolder {
         TextView streetAddress;
         TextView shackID;
-        TextView lat;
-        TextView lon;
-        TextView dist;
+        TextView residentName;
+        TextView residentID;
+        TextView residentTel;
         TextView animals;
         int ref;
     }
@@ -68,8 +68,9 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
 
             holder.streetAddress = convertView.findViewById(R.id.street_address);
             holder.shackID = convertView.findViewById(R.id.shack_id);
-            holder.lat = convertView.findViewById(R.id.lat);
-            holder.lon = convertView.findViewById(R.id.lon);
+            holder.residentName = convertView.findViewById(R.id.resident_name);
+            holder.residentID = convertView.findViewById(R.id.resident_id);
+            holder.residentTel = convertView.findViewById(R.id.resident_tel);
             holder.animals = convertView.findViewById(R.id.animals);
 
             convertView.setTag(holder);
@@ -79,8 +80,9 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
         holder.ref = position;
         holder.streetAddress.setText(i.getStreetAddress());
         holder.shackID.setText(i.getShackID());
-        holder.lat.setText(i.getLat());
-        holder.lon.setText(i.getLon());
+        holder.residentName.setText(i.getResidentName());
+        holder.residentID.setText(i.getResidentID());
+        holder.residentTel.setText(i.getResidentTel());
         holder.animals.setText(i.getAnimalNames());
         return convertView;
     }

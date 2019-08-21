@@ -8,14 +8,21 @@ public class ResidenceSearchData {
     private String mStreetAddress;
     private String mLat, mLon;
     private String mAnimalNames;
+    private String mResidentName;
+    private String mResidentID;
+    private String mResidentTel;
 
-    public ResidenceSearchData(int mID, String mShackID, String mStreetAddress, String mLat, String mLon, String animalNames) {
+    public ResidenceSearchData(int mID, String mShackID, String mStreetAddress, String name,
+                               String id, String tel, String mLat, String mLon, String animalNames) {
         this.mID = mID;
         this.mShackID = mShackID;
         this.mStreetAddress = mStreetAddress;
         this.mLat = mLat;
         this.mLon = mLon;
         this.mAnimalNames = animalNames;
+        this.mResidentName = name;
+        this.mResidentID = id;
+        this.mResidentTel = tel;
     }
 
     public int getID() {
@@ -40,5 +47,17 @@ public class ResidenceSearchData {
 
     public String getAnimalNames() {
         return mAnimalNames;
+    }
+
+    public String getResidentName() {
+        return mResidentName;
+    }
+
+    public String getResidentID() {
+        return mResidentID;
+    }
+
+    public String getResidentTel() {
+        return mResidentTel;
     }
 }
