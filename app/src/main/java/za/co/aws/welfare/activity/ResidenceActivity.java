@@ -1,6 +1,5 @@
 package za.co.aws.welfare.activity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;

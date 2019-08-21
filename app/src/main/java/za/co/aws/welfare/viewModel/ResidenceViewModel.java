@@ -94,7 +94,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     // These store the values to revert to if the user 'cancels' an edit.
-    private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave;
+    private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave, mSaveName, mSaveIDNumber, mSaveTelNumber;
     private List<ResidentAnimalDetail> mSavedAnimalList;
 
     public ResidenceViewModel(Application app) {
@@ -261,6 +261,10 @@ public class ResidenceViewModel extends AndroidViewModel {
         if (currentEdit != null) {
 
             if (!currentEdit) {
+                mSaveName = mResidentName.getValue();
+                mSaveIDNumber = mResidentID.getValue();
+                mSaveTelNumber = mResidentTel.getValue();
+
                 mAddressSave = mAddress.getValue();
                 mShackIDSave = mShackID.getValue();
                 mShackIDSave = mShackID.getValue();
@@ -289,6 +293,11 @@ public class ResidenceViewModel extends AndroidViewModel {
         mLon.setValue(mLongSave);
         mNotes.setValue(mNotesSave);
         mAnimalList.setValue(mSavedAnimalList);
+
+        mResidentName.setValue(mSaveName);
+        mResidentID.setValue(mSaveIDNumber);
+        mResidentTel.setValue(mSaveTelNumber);
+
     }
 
     /** Attempt to send the update / to the backend. */
@@ -299,6 +308,10 @@ public class ResidenceViewModel extends AndroidViewModel {
         String lon = mLon.getValue();
         String notes = mNotes.getValue();
 
+        String resName = mResidentName.getValue();
+        String resTel = mResidentTel.getValue();
+        String resID = mResidentID.getValue();
+
         // Ensure the user provides some form of address.
         if ((address == null || address.isEmpty()) && (shackID == null || shackID.isEmpty())) {
             mEventHandler.setValue(new Pair<Event, String>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
@@ -306,11 +319,14 @@ public class ResidenceViewModel extends AndroidViewModel {
         }
 
         if (isNew) {
-            doUpdate(-1, address, shackID, lat, lon, notes);
+            doUpdate(-1, address, shackID, resName, resID, resTel, lat, lon, notes);
         } else {
             boolean hasChanged = ((address != null && !address.equals(mAddressSave))
                     || (shackID != null && !shackID.equals(mShackIDSave))
                     || (notes !=null && !notes.equals(mNotesSave))
+                    || (resName != null && !resName.equals(mSaveName))
+                    || (resTel != null && !resTel.equals(mSaveTelNumber))
+                    || (resID != null && !resID.equals(mSaveIDNumber))
                     || (lon != null && !lon.equals(mLongSave))
                     || (lat != null && !lat.equals(mLatSave)));
 
@@ -329,7 +345,7 @@ public class ResidenceViewModel extends AndroidViewModel {
             }
 
             if (hasChanged) {
-               doUpdate(residenceID, address, shackID, lat, lon, notes);
+               doUpdate(residenceID, address, shackID, resName, resID, resTel, lat, lon, notes);
             } else {
                 Toast.makeText(getApplication(), getApplication().getString(R.string.no_change),
                         Toast.LENGTH_LONG).show();
@@ -339,7 +355,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     /** Send the update to the backend and handle the result. */
-    private void doUpdate(int id, String address, String shack, String lat, String lon, String notes) {
+    private void doUpdate(int id, String address, String shack, String resName, String resID, String resTel, String lat, String lon, String notes) {
         mNetworkHandler.setValue(NetworkStatus.UPDATING_DATA);
         JSONObject params = new JSONObject();
         try {
@@ -351,6 +367,9 @@ public class ResidenceViewModel extends AndroidViewModel {
             params.put("latitude", lat == null ? "" : lat);
             params.put("longitude", lon == null ? "" : lon);
             params.put("notes", notes == null ? "" : notes);
+            params.put("resident_name", resName == null ? "" : resName);
+            params.put("id_no", resID == null ? "" : resID);
+            params.put("tel_no", resTel == null ? "" : resTel);
 
             List<ResidentAnimalDetail> animalList = mAnimalList.getValue();
             if (animalList != null) {
