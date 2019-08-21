@@ -83,6 +83,9 @@ public class ResidenceViewModel extends AndroidViewModel {
     public MutableLiveData<String> mLat;
     public MutableLiveData<String> mLon;
     public MutableLiveData<String> mNotes;
+    public MutableLiveData<String> mResidentName;
+    public MutableLiveData<String> mResidentID;
+    public MutableLiveData<String> mResidentTel;
     public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList;
 
     public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
@@ -100,6 +103,9 @@ public class ResidenceViewModel extends AndroidViewModel {
         mAddress = new MutableLiveData<>();
         mNetworkHandler = new MutableLiveData<>();
         mEditMode = new MutableLiveData<>();
+        mResidentName = new MutableLiveData<>();
+        mResidentTel = new MutableLiveData<>();
+        mResidentID = new MutableLiveData<>();
 
         mShackID = new MutableLiveData<>();
         mLat = new MutableLiveData<>();
@@ -165,6 +171,9 @@ public class ResidenceViewModel extends AndroidViewModel {
                                     String lat = res.optString("latitude");
                                     String lon = res.optString("longitude");
                                     String notes = res.optString("notes");
+                                    String resName = res.optString("resident_name");
+                                    String resID = res.optString("id_no");
+                                    String resTel = res.optString("tel_no");
                                     JSONArray animals = res.optJSONArray("animals");
                                     List<ResidentAnimalDetail> animalList = new LinkedList<>();
                                     if (animals != null && animals.length() != 0) {
@@ -182,6 +191,9 @@ public class ResidenceViewModel extends AndroidViewModel {
                                     mLat.setValue(lat);
                                     mLon.setValue(lon);
                                     mNotes.setValue(notes);
+                                    mResidentName.setValue(resName);
+                                    mResidentID.setValue(resID);
+                                    mResidentTel.setValue(resTel);
                                     mErrorState.setValue(false);
                                 }
                             } catch (JSONException e) {

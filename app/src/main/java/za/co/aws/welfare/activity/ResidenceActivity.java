@@ -52,10 +52,15 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
 
     // The address text input layout.
     private TextInputLayout mAddress;
+
     // The shack text input layout.
     private TextInputLayout mShackID;
     // The notes text input layout.
     private TextInputLayout mNotes;
+
+    private TextInputLayout mResName;
+    private TextInputLayout mResID;
+    private TextInputLayout mResTel;
 
     private Button mAddPet;
 
@@ -77,6 +82,10 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         mModel = ViewModelProviders.of(this).get(ResidenceViewModel.class);
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
+
+        mResName = findViewById(R.id.resident_container);
+        mResID = findViewById(R.id.resident_id_container);
+        mResTel = findViewById(R.id.resident_tel_container);
 
         mAddPet = findViewById(R.id.add_pet_button);
         mAnimalDisplay = findViewById(R.id.animal_nav_list);
@@ -218,6 +227,9 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         mAddress.setEnabled(editable);
         mShackID.setEnabled(editable);
         mNotes.setEnabled(editable);
+        mResName.setEnabled(editable);
+        mResID.setEnabled(editable);
+        mResTel.setEnabled(editable);
         if (editable) {
             mAnimalEditList.setVisibility(View.VISIBLE);
             mAddPet.setVisibility(View.VISIBLE);
