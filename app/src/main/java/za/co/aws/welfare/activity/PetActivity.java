@@ -57,9 +57,11 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     private TextInputLayout mDOBContainer;
     private TextInputLayout mNotesContainer;
     private TextInputLayout mTreatmentsContainer;
+    private TextInputLayout mDescContainer;
     private Spinner mSpecies;
 
     private RadioGroup mGenderContainer;
+    private RadioGroup mSterilisedContainer;
 
     private Button mNavResButton;
     private Button mChangeResButton;
@@ -84,6 +86,8 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         binding.setLifecycleOwner(this);
 
         mGenderContainer = findViewById(R.id.selection_gender);
+        mSterilisedContainer = findViewById(R.id.selection_sterilised);
+        mDescContainer = findViewById(R.id.desc_container);
 
         mChangeResButton = findViewById(R.id.change_res);
         mChangeResButton.setOnClickListener(new View.OnClickListener() {
@@ -290,9 +294,13 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mNameContainer.setEnabled(editable);
         mDOBContainer.setEnabled(editable);
         mNotesContainer.setEnabled(editable);
+        mDescContainer.setEnabled(editable);
         mTreatmentsContainer.setEnabled(editable);
         for (int i = 0; i < mGenderContainer.getChildCount(); i++) {
             mGenderContainer.getChildAt(i).setEnabled(editable);
+        }
+        for (int i = 0; i < mSterilisedContainer.getChildCount(); i++) {
+            mSterilisedContainer.getChildAt(i).setEnabled(editable);
         }
         boolean allowAddNav = mModel.getAllowAddressNavigation().getValue() != null && mModel.getAllowAddressNavigation().getValue();
         mNavResButton.setEnabled(!editable && allowAddNav);

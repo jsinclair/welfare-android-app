@@ -71,6 +71,10 @@ public class PetViewModel extends AndroidViewModel {
     public static final String GENDER_MALE = Utils.GENDER_MALE;
     public static final String GENDER_FEMALE = Utils.GENDER_FEMALE;
 
+    public static final int STERILISED_UNKNOWN = Utils.STERILISED_UNKNOWN;
+    public static final int STERILISED_YES = Utils.STERILISED_YES;
+    public static final int STERILISED_NO = Utils.STERILISED_NO;
+
     /** Remember the pet id as sent by the backend. */
     private Integer petID;
     private Integer residenceID;
@@ -576,5 +580,9 @@ public class PetViewModel extends AndroidViewModel {
 
     public void setGender(String gender) {
         mGender.setValue(gender);
+    }
+
+    public void setSterilised(int sterilised) {
+        mSterilised.setValue(sterilised);
     }
 }
