@@ -25,6 +25,10 @@ public class Utils {
     public static final String GENDER_FEMALE = "FEMALE";
     public static final String GENDER_ALL = "ALL";
 
+    public static final int STERILISED_NO = 0;
+    public static final int STERILISED_YES = 1;
+    public static final int STERILISED_UNKNOWN = -1;
+
     /** Show the given dialog, if it doesn't exist already. */
     public static void showDialog(FragmentManager fm, DialogFragment dialog, String tag, boolean allowStateLoss) {
         if (allowStateLoss) {

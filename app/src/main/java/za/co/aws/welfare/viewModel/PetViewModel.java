@@ -36,7 +36,6 @@ import za.co.aws.welfare.utils.Utils;
 /** used for the Pet Activity, which allows the user to view or modify a pet. */
 public class PetViewModel extends AndroidViewModel {
 
-
     /** The network statuses. */
     public enum NetworkStatus {
         // No network action at the moment.
@@ -87,6 +86,10 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<String> mDisplayAddress;
     public MutableLiveData<AnimalType> mSpecies;
 
+    public MutableLiveData<String> mDescription;
+    public MutableLiveData<String> mGender;
+    public MutableLiveData<Integer> mSterilised;
+
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
@@ -94,7 +97,7 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
     private int mSaveResID;
-    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveWelfareNo, mSaveAddressDesc;
+    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveAddressDesc;
     private AnimalType mSavedAnimalType;
 
     ////////Residence search stuff here.
@@ -119,6 +122,10 @@ public class PetViewModel extends AndroidViewModel {
         mTreatments = new MutableLiveData<>();
         mDisplayAddress = new MutableLiveData<>();
         mAllowAddressNavigation = new MutableLiveData<>();
+
+        mGender = new MutableLiveData<>();
+        mSterilised = new MutableLiveData<>();
+        mDescription = new MutableLiveData<>();
 
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
@@ -232,6 +239,10 @@ public class PetViewModel extends AndroidViewModel {
                                     String treatments = pet.optString("treatments");
                                     String displayAddresss = pet.optString("display_address");
 
+                                    String gender = pet.optString("gender");
+                                    int sterilised = pet.optInt("sterilised");
+                                    String description = pet.optString("description");
+
                                     PetViewModel.this.petID = id;
                                     PetViewModel.this.residenceID = residenceID;
                                     if (mSpeciesAvailable.getValue() != null) {
@@ -248,6 +259,9 @@ public class PetViewModel extends AndroidViewModel {
                                     mTreatments.setValue(treatments);
                                     mDisplayAddress.setValue(displayAddresss);
                                     mAllowAddressNavigation.setValue(residenceID >= 0);
+                                    mGender.setValue(gender);
+                                    mSterilised.setValue(sterilised);
+                                    mDescription.setValue(description);
                                     mErrorState.setValue(false);
                                 }
                             } catch (JSONException e) {

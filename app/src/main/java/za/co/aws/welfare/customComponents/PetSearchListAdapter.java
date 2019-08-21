@@ -14,6 +14,7 @@ import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.dataObjects.PetSearchData;
+import za.co.aws.welfare.utils.Utils;
 
 public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements Filterable {
 
@@ -80,7 +81,13 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
         holder.dob.setText(i.getPetDOB());
         holder.species.setText(i.getmAnimalTypeDesc());
         holder.gender.setText(i.getGender());
-        holder.sterilised.setText(i.isSterilised()? "YES": "NO");
+        String sterilisedString = "UNKNOWN";
+        if (Utils.STERILISED_YES == i.isSterilised()) {
+            sterilisedString = "YES";
+        } else if (Utils.STERILISED_NO == i.isSterilised()){
+            sterilisedString = "NO";
+        }
+        holder.sterilised.setText(sterilisedString);
         return convertView;
     }
 

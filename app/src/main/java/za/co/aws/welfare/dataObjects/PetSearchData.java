@@ -9,9 +9,9 @@ public class PetSearchData {
     private String mPetName;
     private String mPetDOB;
     private String mGender;
-    private boolean mSterilised;
+    private int mSterilised;
 
-    public PetSearchData(int mID, int mAnimalTypeID, String mAnimalTypeDesc, String mPetName, String mPetDOB, String gender, boolean sterilised) {
+    public PetSearchData(int mID, int mAnimalTypeID, String mAnimalTypeDesc, String mPetName, String mPetDOB, String gender, int sterilised) {
         this.mID = mID;
         this.mAnimalTypeID = mAnimalTypeID;
         this.mAnimalTypeDesc = mAnimalTypeDesc;
@@ -45,7 +45,7 @@ public class PetSearchData {
         return mGender;
     }
 
-    public boolean isSterilised() {
+    public int isSterilised() {
         return mSterilised;
     }
 }
