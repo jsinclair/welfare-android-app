@@ -6,6 +6,7 @@
     <color name="colorBackground">#ffffff</color>
 
     <color name="disabledGrey">#939393</color>
+    <color name="disabledGreyLight">#eeeeee</color>
     <color name="colorWhite">#ffffff</color>
 
     <color name="navShadeStart">#303F9F</color>

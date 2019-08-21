@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
@@ -58,6 +59,8 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
     private TextInputLayout mTreatmentsContainer;
     private Spinner mSpecies;
 
+    private RadioGroup mGenderContainer;
+
     private Button mNavResButton;
     private Button mChangeResButton;
 
@@ -79,6 +82,8 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mModel = ViewModelProviders.of(this).get(PetViewModel.class);
         binding.setViewModel(mModel);
         binding.setLifecycleOwner(this);
+
+        mGenderContainer = findViewById(R.id.selection_gender);
 
         mChangeResButton = findViewById(R.id.change_res);
         mChangeResButton.setOnClickListener(new View.OnClickListener() {
@@ -286,6 +291,9 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mDOBContainer.setEnabled(editable);
         mNotesContainer.setEnabled(editable);
         mTreatmentsContainer.setEnabled(editable);
+        for (int i = 0; i < mGenderContainer.getChildCount(); i++) {
+            mGenderContainer.getChildAt(i).setEnabled(editable);
+        }
         boolean allowAddNav = mModel.getAllowAddressNavigation().getValue() != null && mModel.getAllowAddressNavigation().getValue();
         mNavResButton.setEnabled(!editable && allowAddNav);
         mSpecies.setEnabled(editable);

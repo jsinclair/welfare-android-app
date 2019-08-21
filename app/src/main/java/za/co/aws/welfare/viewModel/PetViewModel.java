@@ -67,6 +67,10 @@ public class PetViewModel extends AndroidViewModel {
         DELETE_DONE,DELETE_ERROR
     }
 
+    public static final String GENDER_UNKNOWN = Utils.GENDER_UNKNOWN;
+    public static final String GENDER_MALE = Utils.GENDER_MALE;
+    public static final String GENDER_FEMALE = Utils.GENDER_FEMALE;
+
     /** Remember the pet id as sent by the backend. */
     private Integer petID;
     private Integer residenceID;
@@ -260,6 +264,9 @@ public class PetViewModel extends AndroidViewModel {
                                     mTreatments.setValue(treatments);
                                     mDisplayAddress.setValue(displayAddresss);
                                     mAllowAddressNavigation.setValue(residenceID >= 0);
+                                    if (!GENDER_MALE.equals(gender) && !GENDER_FEMALE.equals(gender)) {
+                                        gender = GENDER_UNKNOWN;
+                                    }
                                     mGender.setValue(gender);
                                     mSterilised.setValue(sterilised);
                                     mDescription.setValue(description);
@@ -565,5 +572,9 @@ public class PetViewModel extends AndroidViewModel {
                         }
                     }, getApplication());
         }
+    }
+
+    public void setGender(String gender) {
+        mGender.setValue(gender);
     }
 }

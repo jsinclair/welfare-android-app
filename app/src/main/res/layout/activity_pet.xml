@@ -86,6 +86,69 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/search_pet_gender_res"/>
+                    <RadioGroup
+                        android:id="@+id/selection_gender"
+                        app:layout_constraintTop_toBottomOf="@id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp">
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/all_check"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all"
+                            android:layout_weight="1"
+                            android:background="@drawable/checkbox_button_background"
+                            android:textColor="@android:color/white"
+                            android:button="@null"
+                            android:padding="@dimen/button_padding"
+                            android:gravity="center_horizontal"
+                            android:checked="@{viewModel.mGender.equals(viewModel.GENDER_UNKNOWN)}"
+                            android:onClick="@{()->viewModel.setGender(viewModel.GENDER_UNKNOWN)}"/>
+
+                        <Space
+                            android:layout_width="8dp"
+                            android:layout_height="1dp" />
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/male_check"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/male"
+                            android:layout_weight="1"
+                            android:background="@drawable/checkbox_button_background"
+                            android:textColor="@android:color/white"
+                            android:button="@null"
+                            android:padding="@dimen/button_padding"
+                            android:gravity="center_horizontal"
+                            android:checked="@{viewModel.mGender.equals(viewModel.GENDER_MALE)}"
+                            android:onClick="@{()->viewModel.setGender(viewModel.GENDER_MALE)}"/>
+
+                        <Space
+                            android:layout_width="8dp"
+                            android:layout_height="1dp" />
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/female_check"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/female"
+                            android:layout_weight="1"
+                            android:background="@drawable/checkbox_button_background"
+                            android:textColor="@android:color/white"
+                            android:button="@null"
+                            android:padding="@dimen/button_padding"
+                            android:gravity="center_horizontal"
+                            android:checked="@{viewModel.mGender.equals(viewModel.GENDER_FEMALE)}"
+                            android:onClick="@{()->viewModel.setGender(viewModel.GENDER_FEMALE)}"/>
+                    </RadioGroup>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/dob_container"
                         android:layout_width="match_parent"
@@ -103,6 +166,8 @@
                             android:text="@={ viewModel.mApproxDOB }"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--Gender sterilised and description-->
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/notes_container"
@@ -135,6 +200,22 @@
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
                             android:text="@={ viewModel.mTreatments }"
+                            android:inputType="textMultiLine" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/desc_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/description"
+                        android:layout_marginBottom="@dimen/general_padding"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/desc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:text="@={ viewModel.mDescription }"
                             android:inputType="textMultiLine" />
                     </com.google.android.material.textfield.TextInputLayout>
 

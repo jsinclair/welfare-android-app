@@ -24,6 +24,7 @@ public class Utils {
     public static final String GENDER_MALE = "MALE";
     public static final String GENDER_FEMALE = "FEMALE";
     public static final String GENDER_ALL = "ALL";
+    public static final String GENDER_UNKNOWN = "UNKNOWN";
 
     public static final int STERILISED_NO = 0;
     public static final int STERILISED_YES = 1;
