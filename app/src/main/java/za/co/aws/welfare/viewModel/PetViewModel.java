@@ -97,7 +97,8 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
     private int mSaveResID;
-    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveAddressDesc;
+    private Integer mSaveSterilised;
+    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveAddressDesc, mSaveDescription, mSaveGender;
     private AnimalType mSavedAnimalType;
 
     ////////Residence search stuff here.
@@ -304,6 +305,9 @@ public class PetViewModel extends AndroidViewModel {
 
             if (!currentEdit) {
                 mSaveResID = residenceID;
+                mSaveSterilised = mSterilised.getValue();
+                mSaveGender = mGender.getValue();
+                mSaveDescription = mDescription.getValue();
                 mSaveName = mPetName.getValue();
                 mSaveDOB = mApproxDOB.getValue();
                 mSaveNotes = mNotes.getValue();
@@ -330,6 +334,11 @@ public class PetViewModel extends AndroidViewModel {
         mNotes.setValue(mSaveNotes);
         mTreatments.setValue(mSaveTreatements);
         mSpecies.setValue(mSavedAnimalType);
+
+        mSterilised.setValue(mSaveSterilised);
+        mGender.setValue(mSaveGender);
+        mDescription.setValue(mSaveDescription);
+        mSaveDescription = mGender.getValue();
     }
 
     /** Attempt to send the update / to the backend. */
