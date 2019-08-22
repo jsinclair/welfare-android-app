@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,9 @@ public class SearchPetsFragment extends DialogFragment {
 
     private ResidenceViewModel mModel;
     private TextInputEditText mPetName;
+
+    private RadioGroup mSterilisedGroup;
+    private RadioGroup mGenderGroup;
     private Spinner mSpecies;
 
     @Nullable
@@ -51,7 +55,7 @@ public class SearchPetsFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (getDialog() != null && getDialog().getWindow() != null) {
-            getDialog().getWindow().setTitle("Search and Choose a residence");
+            getDialog().getWindow().setTitle("Search and Choose a pet");
             getDialog().setCanceledOnTouchOutside(false);
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -60,6 +64,8 @@ public class SearchPetsFragment extends DialogFragment {
 
         mModel = ViewModelProviders.of(getActivity()).get(ResidenceViewModel.class);
 
+        mSterilisedGroup = v.findViewById(R.id.selection_sterilised);
+        mGenderGroup = v.findViewById(R.id.selection_gender);
         mPetName = v.findViewById(R.id.pet_name);
         results = v.findViewById(R.id.result_pets);
         searchView = v.findViewById(R.id.search_menu);
