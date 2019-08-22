@@ -1,5 +1,6 @@
 package za.co.aws.welfare.utils;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import androidx.fragment.app.DialogFragment;
@@ -104,5 +105,34 @@ public class Utils {
             }
         }
         return defaultMessage;
+    }
+
+
+    /**
+     * Convenience method to resize the icons.
+     * @param image The icon
+     * @param maxWidth The size
+     * @param maxHeight The size.
+     * @return resized bitmap.
+     */
+    public static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > 1) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
     }
 }

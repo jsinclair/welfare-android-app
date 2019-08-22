@@ -140,7 +140,7 @@ public class SearchPetsFragment extends DialogFragment {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             PetSearchData sel = ((PetSearchData) results.getAdapter().getItem(i));
-                            mModel.addPet(new ResidentAnimalDetail(sel.getID(), sel.getPetName()));
+                            mModel.addPet(new ResidentAnimalDetail(sel.getID(), sel.getPetName(), sel.isSterilised()));
                             dismiss();
                         }
                     });

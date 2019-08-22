@@ -7,11 +7,14 @@ package za.co.aws.welfare.dataObjects;
 public class ResidentAnimalDetail {
 
     private int mID;
+    private int mSterilised;
     private String mName;
 
-    public ResidentAnimalDetail(int mID, String mName) {
+
+    public ResidentAnimalDetail(int mID, String mName, int sterilised) {
         this.mID = mID;
         this.mName = mName;
+        this.mSterilised = sterilised;
     }
 
     public int getID() {
@@ -20,6 +23,10 @@ public class ResidentAnimalDetail {
 
     public String getName() {
         return mName;
+    }
+
+    public int getSterilised() {
+        return mSterilised;
     }
 
 }

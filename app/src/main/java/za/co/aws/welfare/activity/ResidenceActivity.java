@@ -1,6 +1,10 @@
 package za.co.aws.welfare.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -248,7 +252,21 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
 
             Button aniButton = new Button(this);
             aniButton.setText(animal.getName());
-            aniButton.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.baseline_navigate_next_white_24), null);
+            Bitmap steriIcon = null;
+            BitmapDrawable n = null;
+            if (animal.getSterilised() == Utils.STERILISED_NO) {
+                steriIcon = BitmapFactory.decodeResource(getResources(), R.drawable.snip_req);
+            } else if (animal.getSterilised() == Utils.STERILISED_UNKNOWN) {
+                steriIcon = BitmapFactory.decodeResource(getResources(), R.drawable.snip_unknown);
+            }
+
+            if (steriIcon != null) {
+                int size = getResources().getDimensionPixelSize(R.dimen.snip_size);
+                steriIcon = Utils.resize(steriIcon, size, size);
+                n = new BitmapDrawable(getResources(), steriIcon);
+            }
+
+            aniButton.setCompoundDrawablesWithIntrinsicBounds(n, null, getResources().getDrawable(R.drawable.baseline_navigate_next_white_24), null);
             aniButton.setTag(animal);
             aniButton.setPadding(4, 4, 4, 4);
             aniButton.setTextColor(getResources().getColor(R.color.colorBackground));

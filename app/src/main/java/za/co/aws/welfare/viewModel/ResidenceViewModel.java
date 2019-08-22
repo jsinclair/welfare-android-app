@@ -181,7 +181,8 @@ public class ResidenceViewModel extends AndroidViewModel {
                                             JSONObject aniEntry = animals.getJSONObject(i);
                                             int aniID = aniEntry.optInt("id", -1);
                                             String aniName = aniEntry.optString("name");
-                                            animalList.add(new ResidentAnimalDetail(aniID, aniName));
+                                            int sterilised = aniEntry.optInt("sterilised", -1);
+                                            animalList.add(new ResidentAnimalDetail(aniID, aniName, sterilised));
                                         }
                                     }
                                     mAnimalList.setValue(animalList);
