@@ -5,9 +5,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,10 +16,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +29,6 @@ import java.util.Map;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.model.AnimalType;
-import za.co.aws.welfare.utils.FirebaseTokenUpdater;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 
@@ -188,29 +181,8 @@ public class LoginViewModel extends AndroidViewModel {
         // Set utility lists
         ((WelfareApplication)getApplication()).setAnimalTypes(animalTypes);
 
-        // Update the firebase token for the user
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("LoginActivity", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Initialise and run a FirebaseTokenUpdater
-                        new FirebaseTokenUpdater(getApplication().getApplicationContext(), token, sessionToken).start();
-
-                        // Log and toast
-                        Log.d("LoginActivity", token);
-                        Toast.makeText(getApplication(), token, Toast.LENGTH_SHORT).show();
-                        mNetworkHandler.setValue(NetworkStatus.IDLE);
-                        mEventHandler.setValue(new Pair<>(Event.LOG_IN_DONE, ""));
-                    }
-                });
+        mNetworkHandler.setValue(NetworkStatus.IDLE);
+        mEventHandler.setValue(new Pair<>(Event.LOG_IN_DONE, ""));
     }
 
     /**

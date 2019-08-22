@@ -1,16 +1,7 @@
 package za.co.aws.welfare.activity;
 
-import android.app.Notification;
 import android.content.Intent;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -23,8 +14,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.databinding.ActivityLoginBinding;
@@ -66,9 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
 
 //        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -80,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,10 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mRememberMe = (CheckBox) findViewById(R.id.remember_me);
-
-        //TODO: MOVE?
-        checkGooglePlayServicesAvailable();
+        mRememberMe = findViewById(R.id.remember_me);
 
         mModel.getNetworkHandler().observe(this, new Observer<LoginViewModel.NetworkStatus>() {
             @Override
@@ -141,12 +132,6 @@ public class LoginActivity extends AppCompatActivity {
                 Utils.showDialog(fm, alert, LOGIN_ALERT_TAG, true);
                 break;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkGooglePlayServicesAvailable();
     }
 
     /**
@@ -220,24 +205,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onPause();
         if (!mRememberMe.isChecked()) {
             mModel.updateSharedPreferences();
-        }
-    }
-
-    private Notification getNotification(String content) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, getString(R.string.channel_id))
-                .setSmallIcon(R.drawable.dog)
-                .setContentTitle("Scheduled Notification")
-                .setContentText(content)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        return mBuilder.build();
-    }
-
-    private void checkGooglePlayServicesAvailable() {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(getApplicationContext());
-
-        if (resultCode != ConnectionResult.SUCCESS) {
-            googleApiAvailability.makeGooglePlayServicesAvailable(this);
         }
     }
 }
