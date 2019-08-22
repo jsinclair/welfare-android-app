@@ -477,7 +477,7 @@ public class PetViewModel extends AndroidViewModel {
 
 
     //TODO: REFACTOR maybe
-    public void doResidenceSearch(String address, String shackID) {
+    public void doResidenceSearch(String address, String shackID, String resName, String resID, String resTel) {
         boolean hasShack = !(shackID == null || shackID.isEmpty());
         boolean hasStreet = !(address == null || address.isEmpty());
 
@@ -491,6 +491,19 @@ public class PetViewModel extends AndroidViewModel {
         if (hasStreet) {
             params.put("street_address", address);
         }
+
+        if (!(resName == null || resName.isEmpty())) {
+            params.put("resident_name", resName);
+        }
+
+        if (!(resID == null || resID.isEmpty())) {
+            params.put("id_no", resID);
+        }
+
+        if (!(resTel == null || resTel.isEmpty())) {
+            params.put("tel_no", resTel);
+        }
+
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "residences/list/";
         String url = NetworkUtils.createURL(baseURL, params);

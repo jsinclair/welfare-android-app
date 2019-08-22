@@ -40,6 +40,9 @@ public class SearchResidenceFragment extends DialogFragment {
 
     private PetViewModel mModel;
     private TextInputEditText mAddress;
+    private TextInputEditText mResidentName;
+    private TextInputEditText mResidentID;
+    private TextInputEditText mResidentTel;
     private TextInputEditText mShack;
 
     @Nullable
@@ -66,6 +69,10 @@ public class SearchResidenceFragment extends DialogFragment {
             }
         });
 
+        mResidentName = v.findViewById(R.id.res_name);
+        mResidentID = v.findViewById(R.id.res_id);
+        mResidentTel = v.findViewById(R.id.res_tel);
+
         mAddress = v.findViewById(R.id.address);
         mShack = v.findViewById(R.id.shack);
         results = v.findViewById(R.id.result_residences);
@@ -77,7 +84,10 @@ public class SearchResidenceFragment extends DialogFragment {
             public void onClick(View view) {
                 String address = mAddress.getText() == null ? null : mAddress.getText().toString();
                 String shack = mShack.getText() == null ? null : mShack.getText().toString();
-                mModel.doResidenceSearch(address, shack);
+                String residentName = mResidentName.getText() == null ? null : mResidentName.getText().toString();
+                String residentID = mResidentID.getText() == null ? null : mResidentID.getText().toString();
+                String residentTel = mResidentTel.getText() == null ? null : mResidentTel.getText().toString();
+                mModel.doResidenceSearch(address, shack, residentName, residentID, residentTel);
                 searchView.setVisibility(View.GONE);
                 expandButton.show();
             }
