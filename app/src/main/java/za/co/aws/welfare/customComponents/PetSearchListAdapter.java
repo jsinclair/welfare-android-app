@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
         TextView species;
         TextView dob;
         TextView gender;
+        ImageView genderIcon;
         TextView sterilised;
         int ref;
     }
@@ -65,7 +67,7 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.content_pet_search_entry, null);
-
+            holder.genderIcon = convertView.findViewById(R.id.gender_icon);
             holder.name = convertView.findViewById(R.id.pet_name);
             holder.dob = convertView.findViewById(R.id.pet_dob);
             holder.species = convertView.findViewById(R.id.pet_species);
@@ -81,11 +83,21 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
         holder.dob.setText(i.getPetDOB());
         holder.species.setText(i.getmAnimalTypeDesc());
         holder.gender.setText(i.getGender());
+        if (Utils.GENDER_MALE.equals(i.getGender())) {
+            holder.genderIcon.setImageResource(R.drawable.gender_male);
+        } else if (Utils.GENDER_FEMALE.equals(i.getGender())) {
+            holder.genderIcon.setImageResource(R.drawable.gender_female);
+        } else {
+            holder.genderIcon.setImageBitmap(null);
+        }
         String sterilisedString = "UNKNOWN";
+        holder.sterilised.setTextColor(getContext().getResources().getColor(R.color.orange));
         if (Utils.STERILISED_YES == i.isSterilised()) {
             sterilisedString = "YES";
+            holder.sterilised.setTextColor(getContext().getResources().getColor(R.color.colorPrimary));
         } else if (Utils.STERILISED_NO == i.isSterilised()){
             sterilisedString = "NO";
+            holder.sterilised.setTextColor(getContext().getResources().getColor(R.color.red));
         }
         holder.sterilised.setText(sterilisedString);
         return convertView;

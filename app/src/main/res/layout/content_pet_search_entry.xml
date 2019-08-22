@@ -67,6 +67,12 @@
             android:id="@+id/pet_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/gender_icon"
+            android:scaleType="fitEnd"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp" />
     </LinearLayout>
 
     <LinearLayout android:orientation="horizontal"

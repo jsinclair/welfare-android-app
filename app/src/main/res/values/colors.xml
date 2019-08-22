@@ -15,6 +15,7 @@
     <color name="light_bg">#aec9f5</color>
 
     <color name="red">#FF0000</color>
+    <color name="orange">#d89400</color>
 
 
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#3F51B5</color>
