@@ -30,6 +30,7 @@ import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.model.AnimalType;
+import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /**
@@ -82,7 +83,27 @@ public class SearchPetsFragment extends DialogFragment {
                 String petName = mPetName.getText() == null ? null : mPetName.getText().toString();
                 int speciesID = ((AnimalType)mSpecies.getSelectedItem()).getId();
 
-                mModel.doAnimalSearch(speciesID, petName); //TODO add the other stuff;
+                String gender = null;
+                switch (mGenderGroup.getCheckedRadioButtonId()) {
+                    case R.id.female_check:
+                        gender = Utils.GENDER_FEMALE;
+                        break;
+                    case R.id.male_check:
+                        gender = Utils.GENDER_MALE;
+                        break;
+                }
+
+                String sterilised = null;
+                switch (mSterilisedGroup.getCheckedRadioButtonId()) {
+                    case R.id.yes_check:
+                        sterilised = "1";
+                        break;
+                    case R.id.no_check:
+                        sterilised = "0";
+                        break;
+                }
+
+                mModel.doAnimalSearch(speciesID, petName, gender, sterilised); //TODO add the other stuff;
             }
         });
 

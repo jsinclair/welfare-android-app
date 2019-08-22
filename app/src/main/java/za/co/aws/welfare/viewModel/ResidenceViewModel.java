@@ -465,10 +465,12 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     /** Search for pets on the given search parameters. */
-    public void doAnimalSearch(int species, String petName) {
+    public void doAnimalSearch(int species, String petName, String gender, String sterilised) {
 
         boolean hasPetName = !(petName == null || petName.isEmpty());
         boolean hasSpecies = (species > 0);
+        boolean hasGender = gender != null;
+        boolean hasSterilised = sterilised != null;
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
 
@@ -479,6 +481,14 @@ public class ResidenceViewModel extends AndroidViewModel {
 
         if (hasSpecies) {
             params.put("animal_type_id", Integer.toString(species));
+        }
+
+        if (hasGender) {
+            params.put("gender", gender);
+        }
+
+        if (hasSterilised) {
+            params.put("sterilised", sterilised);
         }
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
