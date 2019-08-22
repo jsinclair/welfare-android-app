@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.LinkedList;
@@ -55,6 +56,16 @@ public class SearchResidenceFragment extends DialogFragment {
 
         mModel = ViewModelProviders.of(getActivity()).get(PetViewModel.class);
 
+        searchView = v.findViewById(R.id.search_menu);
+        final FloatingActionButton expandButton = v.findViewById(R.id.expand_button);
+        expandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setVisibility(View.VISIBLE);
+                expandButton.hide();
+            }
+        });
+
         mAddress = v.findViewById(R.id.address);
         mShack = v.findViewById(R.id.shack);
         results = v.findViewById(R.id.result_residences);
@@ -67,6 +78,8 @@ public class SearchResidenceFragment extends DialogFragment {
                 String address = mAddress.getText() == null ? null : mAddress.getText().toString();
                 String shack = mShack.getText() == null ? null : mShack.getText().toString();
                 mModel.doResidenceSearch(address, shack);
+                searchView.setVisibility(View.GONE);
+                expandButton.show();
             }
         });
 
