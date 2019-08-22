@@ -85,6 +85,7 @@
     <string name="search_address">Street Address</string>
     <string name="search_shack">Shack ID</string>
     <string name="search_res_animals">Pets:</string>
+    <string name="search_res_all_sterilised">All Sterilised:</string>
     <string name="search_residence">Searching Residence</string>
     <string name="search_street_address">Street Address:</string>
     <string name="search_shack_id">Shack ID:</string>

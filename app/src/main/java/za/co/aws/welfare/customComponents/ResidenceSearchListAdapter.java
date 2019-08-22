@@ -25,6 +25,7 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
         TextView residentID;
         TextView residentTel;
         TextView animals;
+        TextView sterilisedStat;
         int ref;
     }
 
@@ -72,6 +73,7 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
             holder.residentID = convertView.findViewById(R.id.resident_id);
             holder.residentTel = convertView.findViewById(R.id.resident_tel);
             holder.animals = convertView.findViewById(R.id.animals);
+            holder.sterilisedStat = convertView.findViewById(R.id.all_steri);
 
             convertView.setTag(holder);
         } else {
@@ -84,6 +86,7 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
         holder.residentID.setText(i.getResidentID());
         holder.residentTel.setText(i.getResidentTel());
         holder.animals.setText(i.getAnimalNames());
+        holder.sterilisedStat.setText(i.getAllAnimalsSterilised());
         return convertView;
     }
 

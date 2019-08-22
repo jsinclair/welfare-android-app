@@ -233,7 +233,8 @@ public class HomeViewModel extends AndroidViewModel {
                                     String name = entry.optString("resident_name");
                                     String residentID = entry.optString("id_no");
                                     String tel = entry.optString("tel_no");
-                                    results.add(new ResidenceSearchData(id, shackID, streetAddress, name, residentID, tel, lat, lon, animals));
+                                    String allSteri = entry.optString("animals_sterilised");
+                                    results.add(new ResidenceSearchData(id, shackID, streetAddress, name, residentID, tel, lat, lon, animals, allSteri));
                                 }
                             }
                         } catch (JSONException e) {

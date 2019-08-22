@@ -516,7 +516,10 @@ public class PetViewModel extends AndroidViewModel {
                                     String residentName = entry.optString("resident_name");
                                     String residentID = entry.optString("id_no");
                                     String residentTel = entry.optString("tel_no");
-                                    results.add(new ResidenceSearchData(id, shackID, streetAddress, residentName, residentID, residentTel, lat, lon, animals));
+                                    String allSteri = entry.optString("animals_sterilised");
+                                    results.add(new ResidenceSearchData(id, shackID, streetAddress,
+                                            residentName, residentID, residentTel, lat, lon, animals,
+                                            allSteri));
                                 }
                             }
                         } catch (JSONException e) {
