@@ -6,7 +6,6 @@ android {
         applicationId "za.co.aws.welfare"
         minSdkVersion 16
         targetSdkVersion 28
-        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
