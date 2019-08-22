@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // Set default fragment
         if (savedInstanceState == null) {
-            Fragment newFragment = new AnimalsFragment();
+            Fragment newFragment = new ResidencesFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.content_frame, newFragment);
             ft.addToBackStack(null);
