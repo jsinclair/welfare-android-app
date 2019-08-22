@@ -86,7 +86,15 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
         holder.residentID.setText(i.getResidentID());
         holder.residentTel.setText(i.getResidentTel());
         holder.animals.setText(i.getAnimalNames());
-        holder.sterilisedStat.setText(i.getAllAnimalsSterilised());
+        String steriAll = i.getAllAnimalsSterilised();
+        if ("Yes".equalsIgnoreCase(steriAll)) {
+            holder.sterilisedStat.setTextColor(getContext().getResources().getColor(R.color.colorPrimary));
+        } else if ("No".equalsIgnoreCase(steriAll)) {
+            holder.sterilisedStat.setTextColor(getContext().getResources().getColor(R.color.red));
+        } else {
+            holder.sterilisedStat.setTextColor(getContext().getResources().getColor(R.color.orange));
+        }
+        holder.sterilisedStat.setText(steriAll);
         return convertView;
     }
 
