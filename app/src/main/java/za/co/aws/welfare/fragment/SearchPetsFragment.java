@@ -20,6 +20,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.LinkedList;
@@ -65,6 +66,16 @@ public class SearchPetsFragment extends DialogFragment {
 
         mModel = ViewModelProviders.of(getActivity()).get(ResidenceViewModel.class);
 
+        searchView = v.findViewById(R.id.search_menu);
+        final FloatingActionButton expandButton = v.findViewById(R.id.expand_button);
+         expandButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setVisibility(View.VISIBLE);
+                expandButton.hide();
+            }
+        });
+
         mSterilisedGroup = v.findViewById(R.id.selection_sterilised);
         mGenderGroup = v.findViewById(R.id.selection_gender);
         mPetName = v.findViewById(R.id.pet_name);
@@ -104,6 +115,8 @@ public class SearchPetsFragment extends DialogFragment {
                 }
 
                 mModel.doAnimalSearch(speciesID, petName, gender, sterilised); //TODO add the other stuff;
+                searchView.setVisibility(View.GONE);
+                expandButton.show();
             }
         });
 
