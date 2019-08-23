@@ -549,7 +549,8 @@ public class PetViewModel extends AndroidViewModel {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.conn_error_res_search)));
                 } else {
-                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
+                    String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_res_search));
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, errorMSG));
                 }
                 mResidenceSearchResults.setValue(null);
             }
@@ -564,6 +565,9 @@ public class PetViewModel extends AndroidViewModel {
     }
 
 
+    /**
+     * Permanently delete a pet from the backend.
+     */
     public void permanentlyDelete() {
         if(petID >= 0) {
             mNetworkHandler.setValue(NetworkStatus.DELETE_PET);

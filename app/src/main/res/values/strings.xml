@@ -90,7 +90,7 @@
     <string name="search_street_address">Street Address:</string>
     <string name="search_shack_id">Shack ID:</string>
     <string name="search_res_name">Resident Name</string>
-    <string name="search_res_id">Resident ID</string>
+    <string name="search_res_id">ID Number</string>
     <string name="search_res_tel">Resident Tel</string>
     <string name="search_latitude">Lat:</string>
     <string name="search_resident_name">Resident:</string>

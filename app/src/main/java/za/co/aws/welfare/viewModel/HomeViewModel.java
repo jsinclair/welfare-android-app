@@ -251,7 +251,8 @@ public class HomeViewModel extends AndroidViewModel {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.conn_error_res_search)));
                 } else {
-                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, getApplication().getString(R.string.unknown_error_res_search)));
+                    String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_res_search));
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_RES_ERROR, errorMSG));
                 }
                 mResidenceSearchResults.setValue(null);
             }
@@ -348,7 +349,8 @@ public class HomeViewModel extends AndroidViewModel {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.conn_error_pet_search)));
                 } else {
-                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.unknown_error_pet_search)));
+                    String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_pet_search));
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, errorMSG));
                 }
                 mPetSearchResults.setValue(null);
             }

@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,6 +32,7 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
+import za.co.aws.welfare.utils.Utils;
 
 public class LoginViewModel extends AndroidViewModel {
 
@@ -153,10 +155,12 @@ public class LoginViewModel extends AndroidViewModel {
                         if (error instanceof NoConnectionError) {
                             mEventHandler.setValue(new Pair<>(Event.LOG_IN_ERROR, getApplication().getString(R.string.connection_error)));
                             mNetworkHandler.setValue(NetworkStatus.IDLE);
-                            return;
+                        } else {
+                            String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.invalid_server_response));
+                            mEventHandler.setValue(new Pair<>(Event.LOG_IN_ERROR, errorMSG));
+                            mNetworkHandler.setValue(NetworkStatus.IDLE);
                         }
-                        mEventHandler.setValue(new Pair<>(Event.LOG_IN_ERROR, getApplication().getString(R.string.invalid_server_response)));
-                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+
                     }
                 }){
 

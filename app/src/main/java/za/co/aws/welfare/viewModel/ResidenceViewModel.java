@@ -531,7 +531,8 @@ public class ResidenceViewModel extends AndroidViewModel {
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
                     mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.conn_error_pet_search)));
                 } else {
-                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.unknown_error_pet_search)));
+                    String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_pet_search));
+                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, errorMSG));
                 }
                 mPetSearchResult.setValue(null);
             }
