@@ -363,8 +363,8 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         MenuItem deleteAction = menu.findItem(R.id.delete);
         if (mModel.getEditMode().getValue() != null && mModel.getEditMode().getValue()) {
             mCancelAction.setVisible(true);
-            deleteAction.setVisible(true);
             mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_save_white_24));
+            deleteAction.setVisible(!mModel.isNew());
         } else {
             mCancelAction.setVisible(false);
             deleteAction.setVisible(false);
