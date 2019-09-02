@@ -164,6 +164,10 @@ public class PetViewModel extends AndroidViewModel {
         return mAllowAddressNavigation;
     }
 
+    public boolean fromSearch() {
+        return isFromRes;
+    }
+
     public int getResidenceID() {
         return residenceID;
     }
@@ -583,7 +587,7 @@ public class PetViewModel extends AndroidViewModel {
      * Permanently delete a pet from the backend.
      */
     public void permanentlyDelete() {
-        if(petID >= 0) {
+        if(petID != null && petID >= 0) {
             mNetworkHandler.setValue(NetworkStatus.DELETE_PET);
 
             JSONObject params = new JSONObject();

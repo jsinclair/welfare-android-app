@@ -92,25 +92,29 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         mDescContainer = findViewById(R.id.desc_container);
 
         mChangeResButton = findViewById(R.id.change_res);
-        mChangeResButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment newFragment = new SearchResidenceFragment();
-                newFragment.show(getSupportFragmentManager(), SEARCH_RES_FRAGMENT);
-            }
-        });
-
         mNavResButton = findViewById(R.id.nav_res);
-        mNavResButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PetActivity.this, ResidenceActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("ResidentID", mModel.getResidenceID());
-                intent.putExtra("RequestNewEntry", false);
-                startActivityForResult(intent, RESIDENCE_RESULT);
-            }
-        });
+        if (!fromSearch) {
+            mChangeResButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment newFragment = new SearchResidenceFragment();
+                    newFragment.show(getSupportFragmentManager(), SEARCH_RES_FRAGMENT);
+                }
+            });
+
+            mNavResButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(PetActivity.this, ResidenceActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("ResidentID", mModel.getResidenceID());
+                    intent.putExtra("RequestNewEntry", false);
+                    startActivityForResult(intent, RESIDENCE_RESULT);
+                }
+            });
+        } else {
+            mChangeResButton.setVisibility(View.GONE);
+        }
 
         mModel.getEditMode().observe(this, new Observer<Boolean>() {
             @Override
@@ -315,7 +319,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         boolean allowAddNav = mModel.getAllowAddressNavigation().getValue() != null && mModel.getAllowAddressNavigation().getValue();
         mNavResButton.setEnabled(!editable && allowAddNav);
         mSpecies.setEnabled(editable);
-        if (editable) {
+        if (editable && !mModel.fromSearch()) {
             mChangeResButton.setVisibility(View.VISIBLE);
         } else {
             mChangeResButton.setVisibility(View.GONE);
