@@ -21,6 +21,10 @@ public class Utils {
     private static final String PROGRESS_TAG = "PROGRESS_TAG";
     public static final String INTENT_UPDATE_REQUIRED = "INTENT_UPDATE_REQUIRED";
 
+    public static final String INTENT_PET_RETURN_NAME = "INTENT_PET_RETURN_NAME";
+    public static final String INTENT_PET_RETURN_ID = "INTENT_PET_RETURN_ID";
+    public static final String INTENT_PET_RETURN_STERILISED = "INTENT_PET_RETURN_STERILISED";
+    public static final String INTENT_FROM_SEARCH = "INTENT_FROM_SEARCH";
 
     public static final String GENDER_MALE = "MALE";
     public static final String GENDER_FEMALE = "FEMALE";

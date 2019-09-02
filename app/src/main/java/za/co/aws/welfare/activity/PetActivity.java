@@ -72,8 +72,10 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
 
         Bundle details = getIntent().getExtras();
         boolean isNew = true;
+        boolean fromSearch = false;
         int resID = -1;
         if (details != null) {
+            fromSearch = details.getBoolean(Utils.INTENT_FROM_SEARCH, false);
             isNew = details.getBoolean("RequestNewEntry", true);
             if (!isNew) {
                 resID = details.getInt("petID", -1);
@@ -216,7 +218,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         });
 
         if (savedInstanceState == null) {
-            mModel.setup(isNew, resID);
+            mModel.setup(isNew, resID, fromSearch);
         }
     }
 
@@ -277,6 +279,14 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
                 break;
             case DELETE_ERROR:
                 showAlert(getString(R.string.delete_error), eventData.second);
+                break;
+            case SPECIAL_ADD_DONE:
+                Intent output = new Intent();
+                output.putExtra(Utils.INTENT_PET_RETURN_STERILISED, mModel.getSterilised());
+                output.putExtra(Utils.INTENT_PET_RETURN_NAME, mModel.getPetName());
+                output.putExtra(Utils.INTENT_PET_RETURN_ID, mModel.getPetID());
+                setResult(RESULT_OK, output);
+                finish();
                 break;
 
         }

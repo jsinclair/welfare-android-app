@@ -1,6 +1,7 @@
 package za.co.aws.welfare.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,6 +28,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.activity.PetActivity;
+import za.co.aws.welfare.activity.ResidenceActivity;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
@@ -52,6 +56,8 @@ public class SearchPetsFragment extends DialogFragment {
     private RadioGroup mGenderGroup;
     private Spinner mSpecies;
 
+    private static final int PET_RESULT = 90;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,11 +74,22 @@ public class SearchPetsFragment extends DialogFragment {
 
         searchView = v.findViewById(R.id.search_menu);
         final FloatingActionButton expandButton = v.findViewById(R.id.expand_button);
-         expandButton.setOnClickListener(new View.OnClickListener() {
+        expandButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 searchView.setVisibility(View.VISIBLE);
                 expandButton.hide();
+            }
+        });
+
+        FloatingActionButton add = v.findViewById(R.id.add_pet);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), PetActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(Utils.INTENT_FROM_SEARCH, true);
+                startActivityForResult(intent, PET_RESULT);
             }
         });
 
@@ -166,5 +183,21 @@ public class SearchPetsFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return super.onCreateDialog(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == PET_RESULT && data != null) {
+            if (data.hasExtra(Utils.INTENT_PET_RETURN_ID)) {
+                int sterilised = data.getIntExtra(Utils.INTENT_PET_RETURN_STERILISED, Utils.STERILISED_UNKNOWN);
+                String name = data.getStringExtra(Utils.INTENT_PET_RETURN_NAME);
+                int id = data.getIntExtra(Utils.INTENT_PET_RETURN_ID, -1);
+                if (id != -1) {
+                    mModel.addPet(new ResidentAnimalDetail(id, name, sterilised));
+                }
+                dismiss();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

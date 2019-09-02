@@ -64,7 +64,12 @@ public class PetViewModel extends AndroidViewModel {
 
         SEARCH_RES_ERROR,
 
-        DELETE_DONE,DELETE_ERROR
+        DELETE_DONE,
+
+        DELETE_ERROR,
+
+        // If the user is adding a pet from the search res, we want to return correctly.
+        SPECIAL_ADD_DONE,
     }
 
     public static final String GENDER_UNKNOWN = Utils.GENDER_UNKNOWN;
@@ -79,6 +84,9 @@ public class PetViewModel extends AndroidViewModel {
     private Integer petID;
     private Integer residenceID;
     private boolean isNew;
+
+    // This is when the user is trying to add a new pet from the res screen.
+    private boolean isFromRes;
     private boolean mSuccessfulUpdate;
 
     //If the display address and resID indicate that the pet is not assigned to an address, do not allow navigation.
@@ -143,8 +151,9 @@ public class PetViewModel extends AndroidViewModel {
     }
 
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
-    public void setup(boolean isNew, int petID) {
+    public void setup(boolean isNew, int petID, boolean fromSearch) {
         this.isNew = isNew;
+        this.isFromRes = fromSearch;
         mEditMode.setValue(isNew);
         if (!isNew) {
             loadData(petID);
@@ -445,9 +454,14 @@ public class PetViewModel extends AndroidViewModel {
                             mSuccessfulUpdate = true;
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.pet_update_unknown_err)));
+                            mNetworkHandler.setValue(NetworkStatus.IDLE);
+                            return;
                         }
                         mEditMode.setValue(false);
                         isNew = false; //Set to not new value.
+                        if (isFromRes) {
+                           mEventHandler.setValue(new Pair<>(Event.SPECIAL_ADD_DONE, ""));
+                        }
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
                     }
                 }, new Response.ErrorListener() {
@@ -624,5 +638,17 @@ public class PetViewModel extends AndroidViewModel {
 
     public void setSterilised(int sterilised) {
         mSterilised.setValue(sterilised);
+    }
+
+    public int getSterilised() {
+        return mSterilised.getValue() == null ? Utils.STERILISED_UNKNOWN : mSterilised.getValue();
+    }
+
+    public int getPetID() {
+        return petID;
+    }
+
+    public String getPetName() {
+        return mPetName.getValue();
     }
 }
