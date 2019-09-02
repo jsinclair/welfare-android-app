@@ -73,8 +73,10 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
 
         Bundle details = getIntent().getExtras();
         boolean isNew = true;
+        boolean fromSearch = false;
         int resID = -1;
         if (details != null) {
+            fromSearch = details.getBoolean(Utils.INTENT_FROM_SEARCH, false);
            isNew = details.getBoolean("RequestNewEntry", true);
            if (!isNew) {
                resID = details.getInt("ResidentID", -1);
@@ -161,7 +163,7 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         });
 
         if (savedInstanceState == null) {
-            mModel.setup(isNew, resID);
+            mModel.setup(isNew, resID, fromSearch);
         }
     }
 
@@ -221,6 +223,13 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
                 break;
             case DELETE_ERROR:
                 showAlert(getString(R.string.delete_error), eventData.second);
+                break;
+            case SPECIAL_ADD_DONE:
+                Intent output = new Intent();
+                output.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());
+                output.putExtra(Utils.INTENT_RES_DESC, mModel.getAddress());
+                setResult(RESULT_OK, output);
+                finish();
                 break;
         }
     }

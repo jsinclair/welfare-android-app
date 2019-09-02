@@ -1,6 +1,7 @@
 package za.co.aws.welfare.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -23,8 +25,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.activity.PetActivity;
+import za.co.aws.welfare.activity.ResidenceActivity;
 import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
+import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
+import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.PetViewModel;
 
 /**
@@ -44,6 +50,8 @@ public class SearchResidenceFragment extends DialogFragment {
     private TextInputEditText mResidentID;
     private TextInputEditText mResidentTel;
     private TextInputEditText mShack;
+
+    private static final int RES_RESULT = 90;
 
     @Nullable
     @Override
@@ -77,6 +85,17 @@ public class SearchResidenceFragment extends DialogFragment {
         mShack = v.findViewById(R.id.shack);
         results = v.findViewById(R.id.result_residences);
         searchView = v.findViewById(R.id.search_menu);
+
+        FloatingActionButton add = v.findViewById(R.id.add_residence);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ResidenceActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(Utils.INTENT_FROM_SEARCH, true);
+                startActivityForResult(intent, RES_RESULT);
+            }
+        });
 
         searchButton = v.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +134,6 @@ public class SearchResidenceFragment extends DialogFragment {
                             ResidenceSearchData sel = ((ResidenceSearchData) results.getAdapter().getItem(i));
                             mModel.setResidence(sel.getID(), sel.getStreetAddress());
                             dismiss();
-//                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID());
                         }
                     });
                 } else {
@@ -133,7 +151,6 @@ public class SearchResidenceFragment extends DialogFragment {
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
 
@@ -141,5 +158,20 @@ public class SearchResidenceFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         return super.onCreateDialog(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == RES_RESULT && data != null) {
+            if (data.hasExtra(Utils.INTENT_RES_ID)) {
+                int id = data.getIntExtra(Utils.INTENT_RES_ID, -1);
+                if (id != -1) {
+                    String resDesc = data.getStringExtra(Utils.INTENT_RES_DESC);
+                    mModel.setResidence(id, resDesc);
+                }
+                dismiss();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

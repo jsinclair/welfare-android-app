@@ -21,9 +21,16 @@ public class Utils {
     private static final String PROGRESS_TAG = "PROGRESS_TAG";
     public static final String INTENT_UPDATE_REQUIRED = "INTENT_UPDATE_REQUIRED";
 
+    // Used to return data from the residence activity to the search fragment.
+    public static final String INTENT_RES_ID = "INTENT_RES_ID";
+    public static final String INTENT_RES_DESC = "INTENT_RES_DESC";
+
+    // Used to return data from the pet activity to the search fragment.
     public static final String INTENT_PET_RETURN_NAME = "INTENT_PET_RETURN_NAME";
     public static final String INTENT_PET_RETURN_ID = "INTENT_PET_RETURN_ID";
     public static final String INTENT_PET_RETURN_STERILISED = "INTENT_PET_RETURN_STERILISED";
+
+    // used to indicate to an activity that it is adding a new item from the 'search' screens
     public static final String INTENT_FROM_SEARCH = "INTENT_FROM_SEARCH";
 
     public static final String GENDER_MALE = "MALE";

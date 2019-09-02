@@ -64,12 +64,17 @@ public class ResidenceViewModel extends AndroidViewModel {
         DATA_REQUIRED,
 
         SEARCH_PET_ERROR,
-        DELETE_ERROR, DELETE_DONE,
+        DELETE_ERROR,
+        DELETE_DONE,
+
+        // If the user is adding a pet from the search res, we want to return correctly.
+        SPECIAL_ADD_DONE,
     }
 
     /** Remember the user name. */
     private Integer residenceID;
     private boolean isNew;
+    private boolean fromSearch;
     private boolean successfulEditOccurred;
     private ResidentAnimalDetail mRemoveRequest;
 
@@ -120,8 +125,9 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
-    public void setup(boolean isNew, int resID) {
+    public void setup(boolean isNew, int resID, boolean fromSearch) {
         this.isNew = isNew;
+        this.fromSearch = fromSearch;
         mEditMode.setValue(isNew);
         if (!isNew) {
             loadData(resID);
@@ -404,9 +410,13 @@ public class ResidenceViewModel extends AndroidViewModel {
                             successfulEditOccurred = true;
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_unknown_err)));
+                            return;
                         }
                         mEditMode.setValue(false);
                         isNew = false;
+                        if (fromSearch) {
+                            mEventHandler.setValue(new Pair<>(Event.SPECIAL_ADD_DONE, ""));
+                        }
                         mNetworkHandler.setValue(NetworkStatus.IDLE);
                     }
                 }, new Response.ErrorListener() {
@@ -547,7 +557,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     public void permanentlyDelete() {
-        if(residenceID >= 0) {
+        if(residenceID != null && residenceID >= 0) {
             mNetworkHandler.setValue(NetworkStatus.DELETE_RES);
 
             JSONObject params = new JSONObject();
@@ -594,5 +604,13 @@ public class ResidenceViewModel extends AndroidViewModel {
                         }
                     }, getApplication());
         }
+    }
+
+    public Integer getResidenceID() {
+        return residenceID == null ? -1 : residenceID;
+    }
+
+    public String getAddress() {
+        return mAddress.getValue() == null? "": mAddress.getValue();
     }
 }
