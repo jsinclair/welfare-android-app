@@ -278,7 +278,9 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
                 showAlert(getString(R.string.download_err), eventData.second);
                 break;
             case DELETE_DONE:
-                //todo set did edit to true to reload search
+                Intent outputDelete = new Intent();
+                outputDelete.putExtra(Utils.INTENT_PET_RETURN_ID, mModel.getPetID());
+                setResult(RESULT_OK, outputDelete);
                 finish();
                 break;
             case DELETE_ERROR:

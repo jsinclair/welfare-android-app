@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -38,6 +39,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public static final String TAG = "HomeActivity";
     public static final String PROGRESS_DIALOG_TAG = "PROGRESS_DIALOG_TAG";
     public static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+    public static final int PET = 89;
+    public static final int RES = 88;
     private HomeViewModel mModel;
 
     @Override
@@ -47,7 +50,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         mModel = ViewModelProviders.of(this).get(HomeViewModel.class);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Set default fragment
@@ -59,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -121,7 +124,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     Intent petIntent = new Intent(this, PetActivity.class);
                     petIntent.putExtra("petID", data.second);
                     petIntent.putExtra("RequestNewEntry", false);
-                    startActivity(petIntent);
+                    startActivityForResult(petIntent, PET);
                     break;
                 case ADD_PET:
                     Intent addPetIntent = new Intent(this, PetActivity.class);
@@ -235,5 +238,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == PET && data != null) {
+            if (data.hasExtra(Utils.INTENT_PET_RETURN_ID)) {
+                int id = data.getIntExtra(Utils.INTENT_PET_RETURN_ID, -1);
+                if (id != -1) {
+                   mModel.removePetFromResults(id);
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

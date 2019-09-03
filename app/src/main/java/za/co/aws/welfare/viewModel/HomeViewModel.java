@@ -379,7 +379,19 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void triggerAddPet() {
         mNavigationHandler.setValue(new Pair<>(Navigate.ADD_PET, -1));
+    }
 
+    public void removePetFromResults(int id) {
+        LinkedList<PetSearchData> vals = mPetSearchResults.getValue();
+        if (vals != null) {
+            for (PetSearchData data : vals) {
+                if (data.getID() == id) {
+                    vals.remove(data);
+                    break;
+                }
+            }
+            mPetSearchResults.setValue(vals);
+        }
     }
 
 }
