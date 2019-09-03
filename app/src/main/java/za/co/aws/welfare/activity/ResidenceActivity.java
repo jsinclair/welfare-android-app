@@ -99,13 +99,17 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         mShackID = findViewById(R.id.shack_container);
         mNotes = findViewById(R.id.notes_container);
 
-        mAddPet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment newFragment = new SearchPetsFragment();
-                newFragment.show(getSupportFragmentManager(), SEARCH_PETS_FRAGMENT);
-            }
-        });
+        if (!mModel.fromSearch()) {
+            mAddPet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment newFragment = new SearchPetsFragment();
+                    newFragment.show(getSupportFragmentManager(), SEARCH_PETS_FRAGMENT);
+                }
+            });
+        } else {
+            mAddPet.setVisibility(View.GONE);
+        }
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,7 +248,9 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         mResTel.setEnabled(editable);
         if (editable) {
             mAnimalEditList.setVisibility(View.VISIBLE);
-            mAddPet.setVisibility(View.VISIBLE);
+            if (!mModel.fromSearch()) {
+                mAddPet.setVisibility(View.VISIBLE);
+            }
             mAnimalDisplay.setVisibility(View.GONE);
         } else {
             mAnimalEditList.setVisibility(View.GONE);
