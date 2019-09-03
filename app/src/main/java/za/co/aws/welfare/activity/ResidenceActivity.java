@@ -297,8 +297,6 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             int padding = getResources().getDimensionPixelSize(R.dimen.pet_gap);
             params.setMargins(padding, padding, padding, padding);
 
-//            viewpagerColor.addView(button, params);
-
             mAnimalDisplay.addView(aniButton, params);
             mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
                 @Override
@@ -366,8 +364,8 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         MenuItem deleteAction = menu.findItem(R.id.delete);
         if (mModel.getEditMode().getValue() != null && mModel.getEditMode().getValue()) {
             mCancelAction.setVisible(true);
-            deleteAction.setVisible(true);
             mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_save_white_24));
+            deleteAction.setVisible(!mModel.isNew());
         } else {
             mCancelAction.setVisible(false);
             deleteAction.setVisible(false);

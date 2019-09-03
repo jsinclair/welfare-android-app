@@ -613,4 +613,8 @@ public class ResidenceViewModel extends AndroidViewModel {
     public String getAddress() {
         return mAddress.getValue() == null? "": mAddress.getValue();
     }
+
+    public boolean fromSearch() {
+        return fromSearch;
+    }
 }
