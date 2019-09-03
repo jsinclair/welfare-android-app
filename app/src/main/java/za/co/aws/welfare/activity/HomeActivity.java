@@ -113,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     Intent intent = new Intent(this, ResidenceActivity.class);
                     intent.putExtra("ResidentID", data.second);
                     intent.putExtra("RequestNewEntry", false);
-                    startActivity(intent);
+                    startActivityForResult(intent, RES);
                     break;
                 case ADD_RESIDENCE:
                     Intent addIntent = new Intent(this, ResidenceActivity.class);
@@ -247,6 +247,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 int id = data.getIntExtra(Utils.INTENT_PET_RETURN_ID, -1);
                 if (id != -1) {
                    mModel.removePetFromResults(id);
+                }
+            }
+        } else if (resultCode == AppCompatActivity.RESULT_OK && requestCode == RES && data != null) {
+            if (data.hasExtra(Utils.INTENT_RES_ID)) {
+                int id = data.getIntExtra(Utils.INTENT_RES_ID, -1);
+                if (id != -1) {
+                    mModel.removeResFromResults(id);
                 }
             }
         }

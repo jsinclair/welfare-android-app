@@ -221,8 +221,10 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
                 showAlert(getString(R.string.download_err), eventData.second);
                 break;
             case DELETE_DONE:
+                Intent outputDelete = new Intent();
+                outputDelete.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());
+                setResult(RESULT_OK, outputDelete);
                 finish();
-                //todo set flags
                 break;
             case DELETE_ERROR:
                 showAlert(getString(R.string.delete_error), eventData.second);

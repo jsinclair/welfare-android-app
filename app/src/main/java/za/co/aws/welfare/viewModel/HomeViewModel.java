@@ -394,4 +394,17 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
+    public void removeResFromResults(int id) {
+        LinkedList<ResidenceSearchData> vals = mResidenceSearchResults.getValue();
+        if (vals != null) {
+            for (ResidenceSearchData data : vals) {
+                if (data.getID() == id) {
+                    vals.remove(data);
+                    break;
+                }
+            }
+            mResidenceSearchResults.setValue(vals);
+        }
+    }
+
 }
