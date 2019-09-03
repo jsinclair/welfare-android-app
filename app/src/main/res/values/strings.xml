@@ -141,4 +141,6 @@
     <string name="species">Species</string>
     <string name="update_successful">Changes submitted successfully!</string>
 
+    <string name="version">Version:</string>
+
 </resources>

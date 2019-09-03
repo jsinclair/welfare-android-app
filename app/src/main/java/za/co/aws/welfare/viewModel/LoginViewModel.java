@@ -1,6 +1,7 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
@@ -62,6 +63,8 @@ public class LoginViewModel extends AndroidViewModel {
     /** Remember the user password. */
     public MutableLiveData<String> mPassword;
 
+    public MutableLiveData<String> mCurrentVersion;
+
     /** Handle the network status. */
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
@@ -74,7 +77,14 @@ public class LoginViewModel extends AndroidViewModel {
         mUsername = new MutableLiveData<>();
         mPassword = new MutableLiveData<>();
         mNetworkHandler = new MutableLiveData<>();
+        mCurrentVersion = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
+
+        try {
+            mCurrentVersion.setValue(getApplication().getPackageManager().getPackageInfo(getApplication().getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            mCurrentVersion.setValue("Unknown");
+        }
 
         boolean remember = ((WelfareApplication) getApplication()).getRememberMe();
         mRememberMe.setValue(remember);
