@@ -8,13 +8,15 @@
             name="viewModel"
             type="za.co.aws.welfare.viewModel.RemindersViewModel"/>
     </data>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,8 +47,41 @@
                         android:inputType="textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-
         </ScrollView>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ani_cont"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/general_padding">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/colorWhite">
+                <TextView
+                    android:id="@+id/animals_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_res_animals"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/add_pet_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_pet"
+                    android:drawableLeft="@drawable/add_pet"
+                    android:drawableStart="@drawable/add_pet"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/pets_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?attr/dividerHorizontal"/>
+        </LinearLayout>
+
+    </LinearLayout>
 </layout>
