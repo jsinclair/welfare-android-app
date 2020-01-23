@@ -131,6 +131,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     addPetIntent.putExtra("RequestNewEntry", true);
                     startActivity(addPetIntent);
                     break;
+                case ADD_REMINDER:
+                    Intent addReminderIntent = new Intent(this, AddReminder.class);
+                    addReminderIntent.putExtra("RequestNewEntry", true);
+                    startActivity(addReminderIntent);
+                    break;
             }
         }
     }

@@ -66,7 +66,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     public enum Navigate {
-        RESIDENCE, ADD_RESIDENCE, PET, ADD_PET
+        RESIDENCE, ADD_RESIDENCE, PET, ADD_PET, ADD_REMINDER
     }
 
     public static final String GENDER_FEMALE = Utils.GENDER_FEMALE;
@@ -374,11 +374,14 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void triggerAddResident() {
         mNavigationHandler.setValue(new Pair<>(Navigate.ADD_RESIDENCE, -1));
-
     }
 
     public void triggerAddPet() {
         mNavigationHandler.setValue(new Pair<>(Navigate.ADD_PET, -1));
+    }
+
+    public void triggerAddReminder() {
+        mNavigationHandler.setValue(new Pair<>(Navigate.ADD_REMINDER, -1));
     }
 
     public void removePetFromResults(int id) {
