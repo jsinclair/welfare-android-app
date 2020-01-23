@@ -37,9 +37,7 @@ public class AnimalsFragment extends Fragment {
     private Button searchButton;
     private ListView results;
     private Spinner mSpecies;
-
     private HomeViewModel mModel;
-
 
     @Nullable
     @Override

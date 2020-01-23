@@ -9,8 +9,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.viewModel.HomeViewModel;
 
 public class RemindersFragment extends Fragment {
+
+    private HomeViewModel mModel;
 
     @Nullable
     @Override
