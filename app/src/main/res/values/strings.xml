@@ -110,6 +110,7 @@
     <string name="unknown_error_res_search">An unknown error occurred while trying to retrieve Resident info. Please try again later.</string>
 
     <!-- Strings related to the reminders screen -->
+    <string name="choose_date">Choose a date on which the reminder should be sent:</string>
 
     <!--general-->
     <string name="deleting_pet_from_sys">Deleting pet from system...</string>

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AddReminder"></activity>
+        <activity android:name=".activity.AddReminderActivity"></activity>
         <activity
             android:name=".activity.PetActivity"
             android:label="@string/title_pet"
