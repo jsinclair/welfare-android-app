@@ -17,12 +17,18 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     public MutableLiveData<Date> mDateSelected;
     public MutableLiveData<String> mNotes;
+
+    // List of animals to associate with reminder.
     public MutableLiveData<List<PetMinDetail>> mAnimalList;
 
     public RemindersViewModel(Application application) {
         super(application);
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<List<PetMinDetail>> getAnimalList() {
+        return mAnimalList;
     }
 
     /** call this to add a pet to the residence. Will only be persisted on save. */

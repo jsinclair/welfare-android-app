@@ -77,7 +77,7 @@
             </LinearLayout>
 
             <ListView
-                android:id="@+id/pets_list"
+                android:id="@+id/pets_edit_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="?attr/dividerHorizontal"/>
