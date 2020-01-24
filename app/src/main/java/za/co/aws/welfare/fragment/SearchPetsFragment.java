@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -47,6 +48,8 @@ import za.co.aws.welfare.viewModel.SearchPetsViewModel;
  */
 public class SearchPetsFragment extends DialogFragment {
 
+    private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+
     /** Should be implemented by all users of this dialog. */
     public interface PetSearcher {
         /**
@@ -72,10 +75,10 @@ public class SearchPetsFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (getDialog() != null && getDialog().getWindow() != null) {
-            getDialog().getWindow().setTitle("Search and Choose a pet");
+            getDialog().getWindow().setTitle(getString(R.string.pet_search_title));
             getDialog().setCanceledOnTouchOutside(false);
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -168,6 +171,13 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
 
+        mModel.getEventHandler().observe(this, new Observer<Pair<SearchPetsViewModel.Event, String>>() {
+            @Override
+            public void onChanged(Pair<SearchPetsViewModel.Event, String> eventStringPair) {
+                handleEvent(eventStringPair);
+            }
+        });
+
         //TODO: check tht this istthe corect way to observe from a fragment (to avoid memory leaks)
         mModel.getSearchResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<PetSearchData>>() {
             @Override
@@ -198,7 +208,6 @@ public class SearchPetsFragment extends DialogFragment {
 
     /**
      * Take care of displaying the network status to the user.
-     * @param status
      */
     private void handleNetworkStatus(SearchPetsViewModel.NetworkStatus status) {
         FragmentManager fm = getChildFragmentManager();
@@ -215,6 +224,20 @@ public class SearchPetsFragment extends DialogFragment {
         }
     }
 
+    // Take care of error while searching.
+    private void handleEvent(Pair<SearchPetsViewModel.Event, String> eventDetails) {
+        if (eventDetails != null && eventDetails.first != null) {
+            switch (eventDetails.first) {
+                case SEARCH_PET_ERROR:
+                    FragmentManager fm = getChildFragmentManager();
+                    AlertDialogFragment alert = AlertDialogFragment.newInstance(getString(R.string.download_err), eventDetails.second);
+                    Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
+                    break;
+            }
+        }
+    }
+
+    /** The calling activity MUST set this to receive the resulting value. */
     public void setPetSearcher(PetSearcher petSearcher) {
         this.mPetSearcher = petSearcher;
     }

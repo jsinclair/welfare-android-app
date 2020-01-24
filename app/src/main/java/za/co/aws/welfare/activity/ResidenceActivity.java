@@ -218,9 +218,6 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             case DATA_REQUIRED:
                 showAlert(getString(R.string.data_required), eventData.second);
                 break;
-            case SEARCH_PET_ERROR:
-                showAlert(getString(R.string.download_err), eventData.second);
-                break;
             case DELETE_DONE:
                 Intent outputDelete = new Intent();
                 outputDelete.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());

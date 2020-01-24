@@ -64,7 +64,6 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
         // If the user has not provided enough data to update or create a residence.
         DATA_REQUIRED,
 
-        SEARCH_PET_ERROR,
         DELETE_ERROR,
         DELETE_DONE,
 
