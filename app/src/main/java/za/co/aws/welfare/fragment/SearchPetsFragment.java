@@ -29,6 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.activity.PetActivity;
@@ -112,16 +113,37 @@ public class SearchPetsFragment extends DialogFragment {
         searchView = v.findViewById(R.id.search_menu);
         mSpecies = v.findViewById(R.id.species);
 
-        ArrayAdapter<AnimalType> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
-                ((WelfareApplication) getActivity().getApplication()).getAnimalTypes(true));
-        mSpecies.setAdapter(adapter);
+        mModel.getSpeciesAvailable().observe(getViewLifecycleOwner(), new Observer<List<AnimalType>>() {
+            @Override
+            public void onChanged(List<AnimalType> animalTypes) {
+                ArrayAdapter<AnimalType> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, animalTypes);
+                mSpecies.setAdapter(adapter);
+
+                AnimalType selected = mModel.getSpeciesTypeSelected().getValue();
+                if (selected != null) {
+                    int spinnerPosition = adapter.getPosition(selected);
+                    mSpecies.setSelection(spinnerPosition);
+                }
+            }
+        });
+
+        mSpecies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mModel.mSelectedSpecies.setValue((AnimalType) adapterView.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         searchButton = v.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int speciesID = ((AnimalType)mSpecies.getSelectedItem()).getId();
-                mModel.doAnimalSearch(speciesID); //TODO add the other stuff;
+                mModel.doAnimalSearch(); //TODO add the other stuff;
                 searchView.setVisibility(View.GONE);
                 expandButton.show();
             }

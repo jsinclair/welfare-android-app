@@ -21,17 +21,20 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.PetSearchData;
+import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 import za.co.aws.welfare.utils.Utils;
 
-/** Viewmodel for the pet search view. Takes care of the searching of pets from the backend. */
+/** Viewmodel for the pet search view. Takes care of the searching of pets from the backend.
+ * TODO: REplace Animals fragment with a copy of this*/
 public class SearchPetsViewModel extends AndroidViewModel {
 
     /** The network statuses. */
@@ -61,6 +64,12 @@ public class SearchPetsViewModel extends AndroidViewModel {
     public MutableLiveData<String> mPetGenderSearch;
     public MutableLiveData<String> mPetSterilisedSearch;
 
+    // List of species available.
+    public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
+
+    // The selected species
+    public MutableLiveData<AnimalType> mSelectedSpecies;
+
     // The result of the search.
     public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
 
@@ -73,11 +82,24 @@ public class SearchPetsViewModel extends AndroidViewModel {
         mPetNameSearch = new MutableLiveData<>();
         mPetGenderSearch = new MutableLiveData<>();
         mPetSterilisedSearch = new MutableLiveData<>();
+        mSpeciesAvailable = new MutableLiveData<>();
+        mSpeciesAvailable.setValue(((WelfareApplication) getApplication()).getAnimalTypes(true));
+        mSelectedSpecies = new MutableLiveData<>();
     }
 
     public LiveData<LinkedList<PetSearchData>> getSearchResults() {
         return mPetSearchResult;
     }
+
+    public LiveData<List<AnimalType>> getSpeciesAvailable() {
+        return mSpeciesAvailable;
+    }
+
+    /** Use this to respond to search result changes. */
+    public LiveData<AnimalType> getSpeciesTypeSelected() {
+        return mSelectedSpecies;
+    }
+
     public MutableLiveData<NetworkStatus> getNetworkHandler() {
         return mNetworkHandler;
     }
@@ -87,18 +109,22 @@ public class SearchPetsViewModel extends AndroidViewModel {
     }
 
     /** Search for pets on the given search parameters. */
-    public void doAnimalSearch(int species) {
-
-        boolean hasSpecies = (species > 0);
+    public void doAnimalSearch() {
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
+
+        AnimalType animalType = mSelectedSpecies.getValue();
+        int animalTypeSelectedID = -1;
+        if (animalType != null) {
+            animalTypeSelectedID = animalType.getId();
+        }
 
         String petName = mPetNameSearch.getValue();
         String steriStr = mPetSterilisedSearch.getValue();
         String gender = mPetGenderSearch.getValue();
 
         boolean hasPetName = !(petName == null || petName.isEmpty());
-      //  boolean hasSpecies = (animalTypeSelectedID > 0);
+        boolean hasSpecies = (animalTypeSelectedID > 0);
         boolean hasSteri = steriStr != null && !steriStr.isEmpty();
         boolean hasGender = GENDER_FEMALE.equals(gender) || GENDER_MALE.equals(gender);
 
@@ -108,7 +134,7 @@ public class SearchPetsViewModel extends AndroidViewModel {
         }
 
         if (hasSpecies) {
-            params.put("animal_type_id", Integer.toString(species));
+            params.put("animal_type_id", Integer.toString(animalTypeSelectedID));
         }
 
         if (hasGender) {
