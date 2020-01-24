@@ -1,6 +1,8 @@
 package za.co.aws.welfare.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,8 +11,10 @@ import android.widget.DatePicker;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -22,18 +26,23 @@ import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.databinding.ActivityAddReminderBinding;
+import za.co.aws.welfare.fragment.AlertDialogFragment;
+import za.co.aws.welfare.fragment.DatePickerFragment;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
 import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.RemindersViewModel;
+import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allow the user to add / edit a reminder. */
-public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
+public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser, DatePickerFragment.DatePickerUser {
 
     private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
+    private static final String DATE_TAG = "DATE_TAG";
+    private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
 
-    private DatePicker mDatePicker;
+    private Button mDatePicker;
 
     // The notes text input layout.
     private TextInputLayout mNotes;
@@ -64,10 +73,20 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         binding.setLifecycleOwner(this);
 
         mPetsEditList = findViewById(R.id.pets_edit_list);
+        mDatePicker = findViewById(R.id.date_picker);
+        mDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String date = mModel.getSelectedDate().getValue();
+                if (RemindersViewModel.UNKNOWN_DATE.equals(date)) {
+                    date = "";
+                }
+                DatePickerFragment dialog = DatePickerFragment.newInstance(date, "/");
+                dialog.show(getSupportFragmentManager(), DATE_TAG);
+            }
+        });
 
         mNotes = findViewById(R.id.notes_container);
-        mDatePicker = findViewById(R.id.date_picker);
-        mDatePicker.setMinDate(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
 
         mAddPet = findViewById(R.id.add_pet_button);
         mAddPet.setOnClickListener(new View.OnClickListener() {
@@ -95,9 +114,32 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             }
         });
 
+        mModel.getEventHandler().observe(this, new Observer<Pair<RemindersViewModel.Event, String>>() {
+            @Override
+            public void onChanged(Pair<RemindersViewModel.Event, String> eventStringPair) {
+                handleEvent(eventStringPair);
+            }
+        });
+
         if (savedInstanceState == null) {
             mModel.setup(isNew, reminderID, fromSearch);
         }
+    }
+
+    /** Handle once off events.*/
+    private void handleEvent(Pair<RemindersViewModel.Event, String> eventData) {
+        switch (eventData.first) {
+            case DATE_REQUIRED:
+                showAlert(getString(R.string.data_required), eventData.second);
+                break;
+        }
+    }
+
+    // Convenience method to show an alert dialog.
+    private void showAlert(String title, String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        AlertDialogFragment alert = AlertDialogFragment.newInstance(title, message);
+        Utils.showDialog(fm, alert, ALERT_DIALOG_TAG, true);
     }
 
     /** Update the editable views and icons. */
@@ -173,6 +215,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         }));
     }
 
+    // Confirm that the user wishes to remove selected pet.
     private void requestRemovePet(PetMinDetail pet) {
         mModel.setRemoveRequest(pet);
         DialogFragment dialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_reminder_title),
@@ -237,5 +280,14 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
     @Override
     public void onDialogNoSelected(String tag) {
 
+    }
+
+    @Override
+    public void onDateChosen(int year, int month, int day) {
+        String monthString = String.format("%02d", month);
+        String dayString = String.format("%02d", day);
+        String date = year + "/" + monthString + "/" + dayString;
+        Log.i("DATE>>>", date);
+        mModel.setDate(date);
     }
 }

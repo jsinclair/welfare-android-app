@@ -14,6 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 
 public class Utils {
@@ -60,6 +63,7 @@ public class Utils {
             }
         }
     }
+
 
     public static ProgressDialogFragment getProgressDialog(FragmentManager fm) {
         return (ProgressDialogFragment) fm.findFragmentByTag(PROGRESS_TAG);
@@ -146,4 +150,5 @@ public class Utils {
             return image;
         }
     }
+
 }

@@ -13,7 +13,6 @@ import androidx.fragment.app.DialogFragment;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 
-
 /**
  * Modified from android docs. A Dialog fragment displaying a date picker.
  */
@@ -48,6 +47,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         String startDate = getArguments().getString("startDate");
         String separator = getArguments().getString("separator");
         final Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_YEAR, 1);
+
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
@@ -62,7 +63,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         }
 
         DatePickerDialog dialog = new DatePickerDialog(getActivity(),
-                AlertDialog.THEME_HOLO_DARK,this,year,month,day);
+                AlertDialog.THEME_HOLO_DARK,this, year, month, day);
 
         Field mDatePickerField;
         try {
@@ -71,7 +72,16 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        Calendar car = Calendar.getInstance();
+        car.add(Calendar.DAY_OF_YEAR, 1);
+        int minYear = c.get(Calendar.YEAR);
+        int minMonth = c.get(Calendar.MONTH);
+        int minDay = c.get(Calendar.DAY_OF_MONTH);
+        if (minDay == day && minMonth == month && minYear == year) {
+            car.set(Calendar.HOUR_OF_DAY, 0);
+        }
+        dialog.getDatePicker().setMinDate(car.getTimeInMillis());
         return dialog;
     }
 
