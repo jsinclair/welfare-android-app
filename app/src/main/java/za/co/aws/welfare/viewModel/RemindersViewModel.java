@@ -2,22 +2,40 @@ package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
 import android.text.format.DateUtils;
+import android.widget.Toast;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
+import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
+import za.co.aws.welfare.utils.Utils;
 
 /** Viewmodel for the add reminders activity. Handle backend calls and data changes. */
 public class RemindersViewModel extends AndroidViewModel implements SearchPetsFragment.PetSearcher {
@@ -27,8 +45,20 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     // Once off events.
     public enum Event {
+        // Happens when the user has not provided a date.
         DATE_REQUIRED,
+
+        // Happens when the user tries to edit a reminder that is today.
         EDIT_ATTEMPT_TODAY,
+
+        // Error on update
+        UPDATE_ERROR,
+    }
+
+    // Once off events.
+    public enum NetworkAction {
+        IDLE,
+        UPDATING,
     }
 
     // Used to indicate an event has triggered.
@@ -39,6 +69,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     // Stores notes for the event.
     public MutableLiveData<String> mNotes;
+    public MutableLiveData<NetworkAction> mNetworkHandler;
 
     // Stores a list of animals associated with the reminder.
     public MutableLiveData<List<PetMinDetail>> mAnimalList;
@@ -61,6 +92,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         mAnimalList = new MutableLiveData<>();
         mDateSelected = new MutableLiveData<>();
         mEditMode = new MutableLiveData<>();
+        mNetworkHandler = new MutableLiveData<>();
         successfulEditOccurred = false;
         mEventHandler = new SingleLiveEvent<>();
     }
@@ -71,6 +103,10 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     public MutableLiveData<String> getSelectedDate() {
         return mDateSelected;
+    }
+
+    public MutableLiveData<NetworkAction> getmNetworkHandler() {
+        return mNetworkHandler;
     }
 
     // Should set to TRUE if editable.
@@ -166,59 +202,107 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     private void saveData() {
         String date = mDateSelected.getValue();
         if (date == null || date.isEmpty() || UNKNOWN_DATE.equals(mDateSelected.getValue())) {
-            mEventHandler.setValue(new Pair<Event, String>(Event.DATE_REQUIRED, getApplication().getString(R.string.date_required)));
+            mEventHandler.setValue(new Pair<>(Event.DATE_REQUIRED, getApplication().getString(R.string.date_required)));
             return;
         }
-//        String address = mAddress.getValue();
-//        String shackID = mShackID.getValue();
-//        String lat = mLat.getValue();
-//        String lon = mLon.getValue();
-//        String notes = mNotes.getValue();
-//
-//        String resName = mResidentName.getValue();
-//        String resTel = mResidentTel.getValue();
-//        String resID = mResidentID.getValue();
-//
-//        // Ensure the user provides some form of address.
-//        if ((address == null || address.isEmpty()) && (shackID == null || shackID.isEmpty())) {
-//            mEventHandler.setValue(new Pair<ResidenceViewModel.Event, String>(ResidenceViewModel.Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
-//            return;
-//        }
-//
-//        if (isNew) {
-//            doUpdate(-1, address, shackID, resName, resID, resTel, lat, lon, notes);
-//        } else {
-//            boolean hasChanged = ((address != null && !address.equals(mAddressSave))
-//                    || (shackID != null && !shackID.equals(mShackIDSave))
-//                    || (notes !=null && !notes.equals(mNotesSave))
-//                    || (resName != null && !resName.equals(mSaveName))
-//                    || (resTel != null && !resTel.equals(mSaveTelNumber))
-//                    || (resID != null && !resID.equals(mSaveIDNumber))
-//                    || (lon != null && !lon.equals(mLongSave))
-//                    || (lat != null && !lat.equals(mLatSave)));
-//
-//            List<PetMinDetail> pets = mAnimalList.getValue();
-//            if (!((mSavedAnimalList == null || mSavedAnimalList.isEmpty()) && (pets == null || pets.isEmpty()))) {
-//                if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) { //todo; check logic here
-//                    hasChanged = true;
-//                } else {
-//                    for (PetMinDetail pet : mSavedAnimalList) {
-//                        if (!pets.contains(pet)) {
-//                            hasChanged = true;
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if (hasChanged) {
-//                doUpdate(residenceID, address, shackID, resName, resID, resTel, lat, lon, notes);
-//            } else {
-//                Toast.makeText(getApplication(), getApplication().getString(R.string.no_change),
-//                        Toast.LENGTH_LONG).show();
-//                mEditMode.setValue(false);
-//            }
-//        }
+
+        String note = mNotes.getValue();
+        if (isNew) {
+            doUpdate(-1, date, note, mAnimalList.getValue());
+        } else {
+            boolean hasChanged = ((note != null && !note.equals(mNotesSave))
+                    || (date != null && !date.equals(mDateSave)));
+
+            List<PetMinDetail> pets = mAnimalList.getValue();
+            if (!((mSavedAnimalList == null || mSavedAnimalList.isEmpty()) && (pets == null || pets.isEmpty()))) {
+                if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) { //todo; check logic here
+                    hasChanged = true;
+                } else {
+                    for (PetMinDetail pet : mSavedAnimalList) {
+                        if (!pets.contains(pet)) {
+                            hasChanged = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (hasChanged) {
+                doUpdate(reminderID, date, note, pets);
+            } else {
+                Toast.makeText(getApplication(), getApplication().getString(R.string.no_change),
+                        Toast.LENGTH_LONG).show();
+                mEditMode.setValue(false);
+            }
+        }
+    }
+
+    /** Send the update to the backend and handle the result. */
+    private void doUpdate(int id, String date, String notes, List<PetMinDetail> pets) {
+        mNetworkHandler.setValue(NetworkAction.UPDATING);
+        JSONObject params = new JSONObject();
+        try {
+            if (!isNew) {
+                params.put("reminder_id", id);
+            }
+            params.put("note", notes == null ? "" : notes);
+            params.put("date", date);
+
+            if (pets != null) {
+                JSONArray animalIDs = new JSONArray();
+                for (PetMinDetail det: pets) {
+                    animalIDs.put(det.getID());
+                }
+                params.put("animals", animalIDs);
+            }
+
+        } catch (JSONException e) {
+            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.reminder_update_internal_err)));
+            mNetworkHandler.setValue(NetworkAction.IDLE);
+            return;
+        }
+
+        String URL = getApplication().getString(R.string.kBaseUrl) + "reminders/update/";
+
+        RequestQueueManager.getInstance().addToRequestQueue(
+                new JsonObjectRequest(Request.Method.POST, URL, params, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            String msg = data.getString("message");
+                            reminderID = data.getInt("reminder_id");
+                            Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
+
+                            // If an edit managed to occur at all, we might need to reload the calling class.
+                            successfulEditOccurred = true;
+                        } catch (JSONException e) {
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.reminder_update_unknown_err)));
+                            return;
+                        }
+                        mEditMode.setValue(false);
+                        isNew = false;
+                        mNetworkHandler.setValue(NetworkAction.IDLE);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.reminder_update_conn_err)));
+                        } else {
+                            String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.reminder_update_unknown_err));
+                            mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, errorMSG));
+                        }
+                        mNetworkHandler.setValue(NetworkAction.IDLE);
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<>();
+                        headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                        return headers;
+                    }
+                }, getApplication());
     }
 
     /* Cancel the current edit and reset the values. */

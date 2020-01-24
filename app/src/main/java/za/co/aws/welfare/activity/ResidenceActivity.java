@@ -213,7 +213,7 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
                 showAlert(getString(R.string.fetch_error_title), eventData.second);
                 break;
             case UPDATE_ERROR:
-                showAlert(getString(R.string.fetch_error_title), eventData.second);
+                showAlert(getString(R.string.update_error_title), eventData.second);
                 break;
             case DATA_REQUIRED:
                 showAlert(getString(R.string.data_required), eventData.second);

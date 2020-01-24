@@ -39,9 +39,13 @@
     <string name="residences">Residences</string>
     <string name="description">Description</string>
     <string name="reminders">Reminders</string>
+    <string name="updating_reminder_data">Updating Reminder...</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="reminder_update_internal_err">An internal error occurred while trying to update reminder. Please try again.</string>
+    <string name="reminder_update_unknown_err">An unknown error occurred while trying to update reminder. Please try again.</string>
+    <string name="reminder_update_conn_err">A connection error occurred while trying to update reminder info. Please check your connection and try again.</string>
 
     <!-- Strings related to the animals screen -->
     <string name="pet_search_err_view">Pet search had no results or an error occurred. Try again later.</string>

@@ -25,11 +25,13 @@ import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.databinding.ActivityAddReminderBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
+import za.co.aws.welfare.fragment.ProgressDialogFragment;
 import za.co.aws.welfare.fragment.ReminderDatePickerFragment;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
 import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.RemindersViewModel;
+import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allow the user to add / edit a reminder. */
 public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser, ReminderDatePickerFragment.DatePickerUser {
@@ -126,6 +128,15 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             }
         });
 
+        mModel.getmNetworkHandler().observe(this, new Observer<RemindersViewModel.NetworkAction>() {
+            @Override
+            public void onChanged(RemindersViewModel.NetworkAction networkAction) {
+                if (networkAction != null) {
+                    handleNetworkStatus(networkAction);
+                }
+            }
+        });
+
         if (savedInstanceState == null) {
             mModel.setup(isNew, reminderID, fromSearch);
         }
@@ -139,6 +150,24 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 break;
             case EDIT_ATTEMPT_TODAY:
                 showAlert(getString(R.string.not_editable), eventData.second);
+                break;
+            case UPDATE_ERROR:
+                showAlert(getString(R.string.update_error_title), eventData.second);
+                break;
+        }
+    }
+
+    private void handleNetworkStatus(RemindersViewModel.NetworkAction action) {
+        FragmentManager fm = getSupportFragmentManager();
+        ProgressDialogFragment progressDialog = Utils.getProgressDialog(fm);
+        switch (action) {
+            case IDLE:
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                break;
+            case UPDATING:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.updating_reminder_data));
                 break;
         }
     }
