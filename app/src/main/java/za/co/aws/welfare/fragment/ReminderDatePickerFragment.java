@@ -16,7 +16,7 @@ import java.util.Calendar;
 /**
  * Modified from android docs. A Dialog fragment displaying a date picker.
  */
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class ReminderDatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     /** Interface the MUST be implemented by the calling activity. */
     public interface DatePickerUser {
@@ -30,8 +30,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
      * @param separator The separator used in the date .
      * @return A date picker
      */
-    public static DatePickerFragment newInstance(String startDate, String separator) {
-        DatePickerFragment f = new DatePickerFragment();
+    public static ReminderDatePickerFragment newInstance(String startDate, String separator) {
+        ReminderDatePickerFragment f = new ReminderDatePickerFragment();
 
         // Supply num input as an argument.
         Bundle args = new Bundle();

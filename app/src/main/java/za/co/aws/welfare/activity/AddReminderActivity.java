@@ -1,13 +1,11 @@
 package za.co.aws.welfare.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,15 +25,14 @@ import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.databinding.ActivityAddReminderBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
-import za.co.aws.welfare.fragment.DatePickerFragment;
+import za.co.aws.welfare.fragment.ReminderDatePickerFragment;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
 import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.RemindersViewModel;
-import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allow the user to add / edit a reminder. */
-public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser, DatePickerFragment.DatePickerUser {
+public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser, ReminderDatePickerFragment.DatePickerUser {
 
     private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
@@ -81,7 +78,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 if (RemindersViewModel.UNKNOWN_DATE.equals(date)) {
                     date = "";
                 }
-                DatePickerFragment dialog = DatePickerFragment.newInstance(date, "/");
+                ReminderDatePickerFragment dialog = ReminderDatePickerFragment.newInstance(date, "/");
                 dialog.show(getSupportFragmentManager(), DATE_TAG);
             }
         });
