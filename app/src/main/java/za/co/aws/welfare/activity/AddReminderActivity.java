@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -22,13 +23,15 @@ import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.databinding.ActivityAddReminderBinding;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
+import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.RemindersViewModel;
 
 /** Allow the user to add / edit a reminder. */
-public class AddReminderActivity extends AppCompatActivity {
+public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser {
 
     private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
+    private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
 
     private DatePicker mDatePicker;
 
@@ -160,14 +163,23 @@ public class AddReminderActivity extends AppCompatActivity {
             params.setMargins(padding, padding, padding, padding);
 
             mAnimalDisplay.addView(aniButton, params); */
-            mPetsEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO!!!!!
-//                    requestRemovePet((PetMinDetail)view.getTag());
-                }
-            }));
         }
+
+        mPetsEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestRemovePet((PetMinDetail)view.getTag());
+            }
+        }));
+    }
+
+    private void requestRemovePet(PetMinDetail pet) {
+        mModel.setRemoveRequest(pet);
+        DialogFragment dialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_reminder_title),
+                getString(R.string.remove_pet__reminder_message, pet.getName()),
+                getString(R.string.remove_pet_yes),
+                getString(R.string.remove_pet_no), REMOVE_PET_CONFIRM);
+        dialog.show(getSupportFragmentManager(), REMOVE_PET_CONFIRM);
     }
 
 
@@ -213,5 +225,17 @@ public class AddReminderActivity extends AppCompatActivity {
 //   TODO         requestDeleteReminder();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDialogYesSelected(String tag) {
+        if (REMOVE_PET_CONFIRM.equals(tag)) {
+            mModel.removePet();
+        }
+    }
+
+    @Override
+    public void onDialogNoSelected(String tag) {
+
     }
 }

@@ -112,6 +112,8 @@
 
     <!-- Strings related to the reminders screen -->
     <string name="choose_date">Choose a date on which the reminder should be sent:</string>
+    <string name="remove_pet_reminder_title">Remove pet from reminder?</string>
+    <string name="remove_pet__reminder_message" formatted="true">Are you sure you want to remove %1$s from this reminder?</string>
 
     <!--general-->
     <string name="deleting_pet_from_sys">Deleting pet from system...</string>

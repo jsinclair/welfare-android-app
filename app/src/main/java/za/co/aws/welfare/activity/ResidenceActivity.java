@@ -303,13 +303,13 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             params.setMargins(padding, padding, padding, padding);
 
             mAnimalDisplay.addView(aniButton, params);
-            mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    requestRemovePet((PetMinDetail)view.getTag());
-                }
-            }));
         }
+        mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestRemovePet((PetMinDetail)view.getTag());
+            }
+        }));
     }
 
     private void requestRemovePet(PetMinDetail pet) {

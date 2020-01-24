@@ -23,6 +23,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     private boolean isNew;
     private boolean fromSearch;
     private boolean successfulEditOccurred;
+    private PetMinDetail mRemoveRequest;
 
     // These store the values to revert to if the user 'cancels' an edit.
     private String mDateSave, mNotesSave;
@@ -112,5 +113,21 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         mDateSelected.setValue(mDateSave);
         mNotes.setValue(mNotesSave);
         mAnimalList.setValue(mSavedAnimalList);
+    }
+
+    // Set the last pet that was selected to remove from the reminder.
+    public void setRemoveRequest(PetMinDetail deleteRequest) {
+        this.mRemoveRequest = deleteRequest;
+    }
+
+    // remove a pet from the pet list.
+    public void removePet() {
+        if (mRemoveRequest != null) {
+            List<PetMinDetail> list = mAnimalList.getValue();
+            if (list != null) {
+                list.remove(mRemoveRequest);
+            }
+            mAnimalList.setValue(list);
+        }
     }
 }
