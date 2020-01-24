@@ -1,6 +1,8 @@
 package za.co.aws.welfare.activity;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -11,6 +13,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.List;
 
 import za.co.aws.welfare.R;
@@ -18,6 +22,7 @@ import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.databinding.ActivityAddReminderBinding;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
+import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.RemindersViewModel;
 
 /** Allow the user to add / edit a reminder. */
@@ -26,6 +31,10 @@ public class AddReminderActivity extends AppCompatActivity {
     private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
 
     private DatePicker mDatePicker;
+
+    // The notes text input layout.
+    private TextInputLayout mNotes;
+
     private RemindersViewModel mModel;
     private Button mAddPet;
     private ListView mPetsEditList;
@@ -34,6 +43,18 @@ public class AddReminderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle details = getIntent().getExtras();
+        boolean isNew = true;
+        boolean fromSearch = false;
+        int reminderID = -1;
+        if (details != null) {
+            fromSearch = details.getBoolean(Utils.INTENT_FROM_SEARCH, false);
+            isNew = details.getBoolean("RequestNewEntry", true);
+            if (!isNew) {
+                reminderID = details.getInt("ReminderID", -1);
+            }
+        }
+
         ActivityAddReminderBinding binding =  DataBindingUtil.setContentView(this, R.layout.activity_add_reminder);
         mModel = ViewModelProviders.of(this).get(RemindersViewModel.class);
         binding.setViewModel(mModel);
@@ -41,6 +62,7 @@ public class AddReminderActivity extends AppCompatActivity {
 
         mPetsEditList = findViewById(R.id.pets_edit_list);
 
+        mNotes = findViewById(R.id.notes_container);
         mDatePicker = findViewById(R.id.date_picker);
         mDatePicker.setMinDate(System.currentTimeMillis() + 24 * 60 * 60 * 1000);
 
@@ -60,6 +82,38 @@ public class AddReminderActivity extends AppCompatActivity {
                 setupAnimalViews(petMinDetails);
             }
         });
+
+        mModel.getEditMode().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null) {
+                    setEditable(aBoolean);
+                }
+            }
+        });
+
+        if (savedInstanceState == null) {
+            mModel.setup(isNew, reminderID, fromSearch);
+        }
+    }
+
+    /** Update the editable views and icons. */
+    private void setEditable(boolean editable) {
+        mDatePicker.setEnabled(editable);
+        mNotes.setEnabled(editable);
+        if (editable) {
+            mPetsEditList.setVisibility(View.VISIBLE);
+            mAddPet.setVisibility(View.VISIBLE);
+            //TODO
+//            mAnimalDisplay.setVisibility(View.GONE);
+        } else {
+            mPetsEditList.setVisibility(View.GONE);
+            mAddPet.setVisibility(View.GONE);
+
+            //TODO:
+//            mAnimalDisplay.setVisibility(View.VISIBLE);
+        }
+        invalidateOptionsMenu();
     }
 
     /** Generate the animal list and setup click listeners. */
@@ -114,5 +168,50 @@ public class AddReminderActivity extends AppCompatActivity {
                 }
             }));
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        MenuItem mEditCancel = menu.findItem(R.id.edit);
+        MenuItem mCancelAction = menu.findItem(R.id.cancel);
+        MenuItem deleteAction = menu.findItem(R.id.delete);
+        if (mModel.getEditMode().getValue() != null && mModel.getEditMode().getValue()) {
+            mCancelAction.setVisible(true);
+            mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_save_white_24));
+            deleteAction.setVisible(!mModel.isNew());
+        } else {
+            mCancelAction.setVisible(false);
+            deleteAction.setVisible(false);
+            mEditCancel.setIcon(getResources().getDrawable(R.drawable.baseline_edit_white_24));
+        }
+
+        ///TODO:
+//        if (mModel.getHasDownloadError().getValue() != null && mModel.getHasDownloadError().getValue() ) {
+//            mEditCancel.setVisible(false);
+//        } else {
+            mEditCancel.setVisible(true);
+//        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.edit) {
+            mModel.toggleSaveEdit();
+        } else if (id == R.id.cancel) {
+            if (mModel.isNew()) {
+                finish();
+            } else {
+                mModel.cancelEdit();
+            }
+        } else if (id == R.id.delete) {
+//   TODO         requestDeleteReminder();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
