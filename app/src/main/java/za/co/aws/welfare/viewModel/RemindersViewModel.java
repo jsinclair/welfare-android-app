@@ -145,6 +145,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         this.isNew = isNew;
         this.fromSearch = fromSearch;
         mEditMode.setValue(isNew);
+        this.reminderID = reminderID;
         if (!isNew) {
             //TODO: LOAD DATA FROM THE BACKEND loadData(reminderID);
         } else {

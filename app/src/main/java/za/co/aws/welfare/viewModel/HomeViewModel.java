@@ -1,7 +1,6 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
@@ -28,6 +27,7 @@ import java.util.Map;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.PetSearchData;
+import za.co.aws.welfare.dataObjects.ReminderData;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.NetworkUtils;
@@ -48,6 +48,7 @@ public class HomeViewModel extends AndroidViewModel {
 
         // Waiting for pet search results.
         SEARCHING_PET,
+        GET_REMINDERS,
     }
 
     /** Use this for one-time events. */
@@ -63,6 +64,8 @@ public class HomeViewModel extends AndroidViewModel {
 
         // If an error occurred while searching on given pet data.
         SEARCH_PET_ERROR,
+
+        GET_REMINDER_ERROR,
     }
 
     public enum Navigate {
@@ -94,6 +97,7 @@ public class HomeViewModel extends AndroidViewModel {
     /** Holds the results of the last search done. */
     public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
     public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResults;
+    public MutableLiveData<LinkedList<ReminderData>> mRemindersResults;
 
 
     //////PETS
@@ -137,6 +141,7 @@ public class HomeViewModel extends AndroidViewModel {
         mPetGenderSearch = new MutableLiveData<>();
         mPetSterilisedSearch = new MutableLiveData<>();
         mPetSearchResults = new MutableLiveData<>();
+        mRemindersResults = new MutableLiveData<>();
     }
 
     /** Use this to respond to network changes. */
@@ -165,6 +170,10 @@ public class HomeViewModel extends AndroidViewModel {
     /** Use this to respond to search result changes. */
     public LiveData<LinkedList<PetSearchData>> getPetSearchResults() {
         return mPetSearchResults;
+    }
+
+    public LiveData<LinkedList<ReminderData>> getReminders() {
+        return mRemindersResults;
     }
 
     /** Use this to respond to search result changes. */
@@ -273,6 +282,60 @@ public class HomeViewModel extends AndroidViewModel {
 
     public void setPetSterilised (String isSterilised) {
         mPetSterilisedSearch.setValue(isSterilised);
+    }
+
+    // Reload all reminders.
+    public void reloadReminders() {
+        mNetworkHandler.setValue(NetworkStatus.GET_REMINDERS);
+
+        String baseURL = getApplication().getString(R.string.kBaseUrl) + "reminders/list/";
+        RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
+                baseURL, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        LinkedList<ReminderData> results = new LinkedList<>();
+                        try {
+                            JSONObject data = response.getJSONObject("data");
+                            if (data != null) {
+                                JSONArray resArr = data.getJSONArray("reminders");
+                                for (int i = 0; i < resArr.length(); i++) {
+                                    JSONObject entry = resArr.getJSONObject(i);
+                                    int id = entry.getInt("id");
+
+                                    String date = entry.optString("date");
+                                    String animals = entry.optString("animals");
+                                    results.add(new ReminderData(id, date, animals));
+                                }
+                            }
+                        } catch (JSONException e) {
+                            //TODO:!!!!!
+                            mEventHandler.setValue(new Pair<>(Event.GET_REMINDER_ERROR, getApplication().getString(R.string.internal_error_reminder_search)));
+                        }
+                        mRemindersResults.setValue(results);
+                        mNetworkHandler.setValue(NetworkStatus.IDLE);
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mNetworkHandler.setValue(NetworkStatus.IDLE);
+                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                    mEventHandler.setValue(new Pair<>(Event.GET_REMINDER_ERROR, getApplication().getString(R.string.conn_error_reminder_search)));
+                } else {
+                    String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_reminder_search));
+                    mEventHandler.setValue(new Pair<>(Event.GET_REMINDER_ERROR, errorMSG));
+                }
+                mRemindersResults.setValue(null);
+            }
+        })
+        {@Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            HashMap<String, String> headers = new HashMap<>();
+            headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
+            return headers;
+        }
+        }, getApplication());
     }
 
     /** Search for pets on the given search parameters. */

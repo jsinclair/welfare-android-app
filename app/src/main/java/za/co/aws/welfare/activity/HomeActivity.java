@@ -156,6 +156,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case SEARCHING_PET:
                 Utils.updateProgress(fm, progressDialog, getString(R.string.search_pets));
                 break;
+            case GET_REMINDERS:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.search_reminders));
+                break;
 
         }
     }
@@ -171,6 +174,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 showAlert(getString(R.string.data_required), eventData.second);
                 break;
             case SEARCH_PET_ERROR:
+                showAlert(getString(R.string.download_err), eventData.second);
+                break;
+            case GET_REMINDER_ERROR:
                 showAlert(getString(R.string.download_err), eventData.second);
                 break;
         }
