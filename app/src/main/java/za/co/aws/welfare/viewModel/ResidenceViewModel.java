@@ -28,14 +28,15 @@ import java.util.Map;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.PetSearchData;
-import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
+import za.co.aws.welfare.dataObjects.PetMinDetail;
+import za.co.aws.welfare.fragment.SearchPetsFragment;
 import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 import za.co.aws.welfare.utils.Utils;
 
 /** Controls the resident view/edit interface.*/
-public class ResidenceViewModel extends AndroidViewModel {
+public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFragment.PetSearcher {
 
     //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
 
@@ -76,7 +77,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     private boolean isNew;
     private boolean fromSearch;
     private boolean successfulEditOccurred;
-    private ResidentAnimalDetail mRemoveRequest;
+    private PetMinDetail mRemoveRequest;
 
 
     public MutableLiveData<Boolean> mErrorState;
@@ -91,7 +92,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     public MutableLiveData<String> mResidentName;
     public MutableLiveData<String> mResidentID;
     public MutableLiveData<String> mResidentTel;
-    public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList;
+    public MutableLiveData<List<PetMinDetail>> mAnimalList;
 
     public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
 
@@ -100,7 +101,7 @@ public class ResidenceViewModel extends AndroidViewModel {
 
     // These store the values to revert to if the user 'cancels' an edit.
     private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave, mSaveName, mSaveIDNumber, mSaveTelNumber;
-    private List<ResidentAnimalDetail> mSavedAnimalList;
+    private List<PetMinDetail> mSavedAnimalList;
 
     public ResidenceViewModel(Application app) {
         super(app);
@@ -181,14 +182,14 @@ public class ResidenceViewModel extends AndroidViewModel {
                                     String resID = res.optString("id_no");
                                     String resTel = res.optString("tel_no");
                                     JSONArray animals = res.optJSONArray("animals");
-                                    List<ResidentAnimalDetail> animalList = new LinkedList<>();
+                                    List<PetMinDetail> animalList = new LinkedList<>();
                                     if (animals != null && animals.length() != 0) {
                                         for (int i= 0; i < animals.length(); i++) {
                                             JSONObject aniEntry = animals.getJSONObject(i);
                                             int aniID = aniEntry.optInt("id", -1);
                                             String aniName = aniEntry.optString("name");
                                             int sterilised = aniEntry.optInt("sterilised", -1);
-                                            animalList.add(new ResidentAnimalDetail(aniID, aniName, sterilised));
+                                            animalList.add(new PetMinDetail(aniID, aniName, sterilised));
                                         }
                                     }
                                     mAnimalList.setValue(animalList);
@@ -253,7 +254,7 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     // Should set to TRUE if editable.
-    public MutableLiveData<List<ResidentAnimalDetail>> getAnimalList() {
+    public MutableLiveData<List<PetMinDetail>> getAnimalList() {
         return mAnimalList;
     }
 
@@ -337,12 +338,12 @@ public class ResidenceViewModel extends AndroidViewModel {
                     || (lon != null && !lon.equals(mLongSave))
                     || (lat != null && !lat.equals(mLatSave)));
 
-            List<ResidentAnimalDetail> pets = mAnimalList.getValue();
+            List<PetMinDetail> pets = mAnimalList.getValue();
             if (!((mSavedAnimalList == null || mSavedAnimalList.isEmpty()) && (pets == null || pets.isEmpty()))) {
                 if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) { //todo; check logic here
                     hasChanged = true;
                 } else {
-                    for (ResidentAnimalDetail pet : mSavedAnimalList) {
+                    for (PetMinDetail pet : mSavedAnimalList) {
                         if (!pets.contains(pet)) {
                             hasChanged = true;
                             break;
@@ -378,10 +379,10 @@ public class ResidenceViewModel extends AndroidViewModel {
             params.put("id_no", resID == null ? "" : resID);
             params.put("tel_no", resTel == null ? "" : resTel);
 
-            List<ResidentAnimalDetail> animalList = mAnimalList.getValue();
+            List<PetMinDetail> animalList = mAnimalList.getValue();
             if (animalList != null) {
                 JSONArray animalIDs = new JSONArray();
-                for (ResidentAnimalDetail det: animalList) {
+                for (PetMinDetail det: animalList) {
                     animalIDs.put(det.getID());
                 }
                 params.put("animals", animalIDs);
@@ -440,13 +441,13 @@ public class ResidenceViewModel extends AndroidViewModel {
                 }, getApplication());
     }
 
-    public void setRemoveRequest(ResidentAnimalDetail deleteRequest) {
+    public void setRemoveRequest(PetMinDetail deleteRequest) {
         this.mRemoveRequest = deleteRequest;
     }
 
     public void removePet() {
         if (mRemoveRequest != null) {
-           List<ResidentAnimalDetail> list = mAnimalList.getValue();
+           List<PetMinDetail> list = mAnimalList.getValue();
            if (list != null) {
                list.remove(mRemoveRequest);
            }
@@ -455,14 +456,14 @@ public class ResidenceViewModel extends AndroidViewModel {
     }
 
     /** call this to add a pet to the residence. Will only be persisted on save. */
-    public void addPet(ResidentAnimalDetail petToAdd) {
+    public void onPetSelected(PetMinDetail petToAdd) {
         if (petToAdd != null) {
-            List<ResidentAnimalDetail> list = mAnimalList.getValue();
+            List<PetMinDetail> list = mAnimalList.getValue();
             if (list == null) {
                list = new LinkedList<>();
             }
             boolean hasAni = false;
-            for (ResidentAnimalDetail ani: list) {
+            for (PetMinDetail ani: list) {
                 if (ani.getID() == petToAdd.getID()) {
                     hasAni = true;
                     break;

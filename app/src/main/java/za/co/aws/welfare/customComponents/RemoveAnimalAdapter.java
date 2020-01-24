@@ -5,19 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import za.co.aws.welfare.R;
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
+import za.co.aws.welfare.dataObjects.PetMinDetail;
 
-public class RemoveAnimalAdapter extends ArrayAdapter<ResidentAnimalDetail> {
+public class RemoveAnimalAdapter extends ArrayAdapter<PetMinDetail> {
 
     /** Suggested as an optimisation. Object that holds view components. */
     private class ViewHolder {
@@ -26,7 +24,7 @@ public class RemoveAnimalAdapter extends ArrayAdapter<ResidentAnimalDetail> {
         int ref;
     }
 
-    private List<ResidentAnimalDetail> displayObjects;
+    private List<PetMinDetail> displayObjects;
 
     private View.OnClickListener deleteListener;
 
@@ -36,7 +34,7 @@ public class RemoveAnimalAdapter extends ArrayAdapter<ResidentAnimalDetail> {
      * @param textResourceId resource ID
      * @param objects The list of objects to display.
      */
-    public RemoveAnimalAdapter(Context context, int textResourceId, List<ResidentAnimalDetail> objects, View.OnClickListener deleteListener) {
+    public RemoveAnimalAdapter(Context context, int textResourceId, List<PetMinDetail> objects, View.OnClickListener deleteListener) {
         super(context, textResourceId, objects);
         this.displayObjects = objects;
         this.deleteListener = deleteListener;
@@ -46,7 +44,7 @@ public class RemoveAnimalAdapter extends ArrayAdapter<ResidentAnimalDetail> {
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
 
-        ResidentAnimalDetail i = displayObjects.get(position);
+        PetMinDetail i = displayObjects.get(position);
         ViewHolder holder;
 
         // first check to see if the view is null. if so, we have to inflate it.

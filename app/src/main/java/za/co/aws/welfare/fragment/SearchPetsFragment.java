@@ -32,7 +32,7 @@ import za.co.aws.welfare.activity.PetActivity;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
-import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
+import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.ResidenceViewModel;
@@ -44,6 +44,15 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
  */
 public class SearchPetsFragment extends DialogFragment {
 
+    /** Should be implemented by all users of this dialog. */
+    public interface PetSearcher {
+        /**
+         * Will be called when once an option is selected.
+         * @param result Details of the pet selected.
+         **/
+        void onPetSelected(PetMinDetail result);
+    }
+
     private LinearLayout searchView;
     private Button searchButton;
     private ListView results;
@@ -52,6 +61,8 @@ public class SearchPetsFragment extends DialogFragment {
     private RadioGroup mSterilisedGroup;
     private RadioGroup mGenderGroup;
     private Spinner mSpecies;
+
+    private PetSearcher mPetSearcher;
 
     private static final int PET_RESULT = 90;
 
@@ -153,8 +164,10 @@ public class SearchPetsFragment extends DialogFragment {
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            PetSearchData sel = ((PetSearchData) results.getAdapter().getItem(i));
-                            mModel.addPet(new ResidentAnimalDetail(sel.getID(), sel.getPetName(), sel.isSterilised()));
+                            if (mPetSearcher != null) {
+                                PetSearchData sel = ((PetSearchData) results.getAdapter().getItem(i));
+                                mPetSearcher.onPetSelected(new PetMinDetail(sel.getID(), sel.getPetName(), sel.isSterilised()));
+                            }
                             dismiss();
                         }
                     });
@@ -165,6 +178,10 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
         return v;
+    }
+
+    public void setPetSearcher(PetSearcher petSearcher) {
+        this.mPetSearcher = petSearcher;
     }
 
     @Override
@@ -189,8 +206,8 @@ public class SearchPetsFragment extends DialogFragment {
                 int sterilised = data.getIntExtra(Utils.INTENT_PET_RETURN_STERILISED, Utils.STERILISED_UNKNOWN);
                 String name = data.getStringExtra(Utils.INTENT_PET_RETURN_NAME);
                 int id = data.getIntExtra(Utils.INTENT_PET_RETURN_ID, -1);
-                if (id != -1) {
-                    mModel.addPet(new ResidentAnimalDetail(id, name, sterilised));
+                if (id != -1 && mPetSearcher != null) {
+                    mPetSearcher.onPetSelected(new PetMinDetail(id, name, sterilised));
                 }
                 dismiss();
             }

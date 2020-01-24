@@ -28,7 +28,7 @@ import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
-import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
+import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
@@ -102,7 +102,8 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             mAddPet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DialogFragment newFragment = new SearchPetsFragment();
+                    SearchPetsFragment newFragment = new SearchPetsFragment();
+                    newFragment.setPetSearcher(mModel);
                     newFragment.show(getSupportFragmentManager(), SEARCH_PETS_FRAGMENT);
                 }
             });
@@ -126,10 +127,10 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             }
         });
 
-        mModel.getAnimalList().observe(this, new Observer<List<ResidentAnimalDetail>>() {
+        mModel.getAnimalList().observe(this, new Observer<List<PetMinDetail>>() {
             @Override
-            public void onChanged(List<ResidentAnimalDetail> residentAnimalDetails) {
-                setupAnimalViews(residentAnimalDetails);
+            public void onChanged(List<PetMinDetail> petMinDetails) {
+                setupAnimalViews(petMinDetails);
             }
         });
 
@@ -262,9 +263,9 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
     }
 
     /** Generate the animal list and setup click listeners. */
-    private void setupAnimalViews(List<ResidentAnimalDetail> list) {
+    private void setupAnimalViews(List<PetMinDetail> list) {
         mAnimalDisplay.removeAllViews();
-        for (ResidentAnimalDetail animal: list) {
+        for (PetMinDetail animal: list) {
 
             Button aniButton = new Button(this);
             aniButton.setText(animal.getName());
@@ -292,7 +293,7 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
                 public void onClick(View view) {
                     Intent intent = new Intent(ResidenceActivity.this, PetActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("petID", ((ResidentAnimalDetail)view.getTag()).getID());
+                    intent.putExtra("petID", ((PetMinDetail)view.getTag()).getID());
                     intent.putExtra("RequestNewEntry", false);
                     startActivityForResult(intent, PET_RESULT);
                 }
@@ -308,13 +309,13 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             mAnimalEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    requestRemovePet((ResidentAnimalDetail)view.getTag());
+                    requestRemovePet((PetMinDetail)view.getTag());
                 }
             }));
         }
     }
 
-    private void requestRemovePet(ResidentAnimalDetail pet) {
+    private void requestRemovePet(PetMinDetail pet) {
         mModel.setRemoveRequest(pet);
         DialogFragment dialog = YesNoDialogFragment.newInstance(getString(R.string.remove_pet_title),
                 getString(R.string.remove_pet_message, pet.getName()),

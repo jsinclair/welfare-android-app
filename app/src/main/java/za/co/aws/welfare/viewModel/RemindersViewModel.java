@@ -8,13 +8,13 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.Date;
 import java.util.List;
 
-import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
+import za.co.aws.welfare.dataObjects.PetMinDetail;
 
 public class RemindersViewModel extends AndroidViewModel {
 
     public MutableLiveData<Date> mDateSelected;
     public MutableLiveData<String> mNotes;
-    public MutableLiveData<List<ResidentAnimalDetail>> mAnimalList;
+    public MutableLiveData<List<PetMinDetail>> mAnimalList;
 
     public RemindersViewModel(Application application) {
         super(application);

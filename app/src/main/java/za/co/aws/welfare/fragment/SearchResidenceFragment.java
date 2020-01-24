@@ -25,11 +25,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
-import za.co.aws.welfare.activity.PetActivity;
 import za.co.aws.welfare.activity.ResidenceActivity;
 import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
-import za.co.aws.welfare.dataObjects.ResidentAnimalDetail;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.PetViewModel;
 
