@@ -79,7 +79,6 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
     private boolean successfulEditOccurred;
     private PetMinDetail mRemoveRequest;
 
-
     public MutableLiveData<Boolean> mErrorState;
 
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
@@ -93,8 +92,6 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
     public MutableLiveData<String> mResidentID;
     public MutableLiveData<String> mResidentTel;
     public MutableLiveData<List<PetMinDetail>> mAnimalList;
-
-    public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
 
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
@@ -118,7 +115,6 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
         mLon = new MutableLiveData<>();
         mNotes = new MutableLiveData<>();
         mAnimalList = new MutableLiveData<>();
-        mPetSearchResult = new MutableLiveData<>();
 
         mEventHandler = new SingleLiveEvent<>();
         successfulEditOccurred = false;
@@ -135,9 +131,6 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
         }
     }
 
-    public LiveData<LinkedList<PetSearchData>> getSearchResults() {
-        return mPetSearchResult;
-    }
 
     public boolean editOccurred() {
         return successfulEditOccurred;
@@ -474,87 +467,6 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
             }
             mAnimalList.setValue(list);
         }
-    }
-
-    /** Search for pets on the given search parameters. */
-    public void doAnimalSearch(int species, String petName, String gender, String sterilised) {
-
-        boolean hasPetName = !(petName == null || petName.isEmpty());
-        boolean hasSpecies = (species > 0);
-        boolean hasGender = gender != null;
-        boolean hasSterilised = sterilised != null;
-
-        mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
-
-        Map<String, String> params = new HashMap<>();
-        if (hasPetName) {
-            params.put("name", petName);
-        }
-
-        if (hasSpecies) {
-            params.put("animal_type_id", Integer.toString(species));
-        }
-
-        if (hasGender) {
-            params.put("gender", gender);
-        }
-
-        if (hasSterilised) {
-            params.put("sterilised", sterilised);
-        }
-
-        String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
-        String url = NetworkUtils.createURL(baseURL, params);
-
-        RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
-                url, new JSONObject(),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        LinkedList<PetSearchData> results = new LinkedList<>();
-                        try {
-                            JSONObject data = response.getJSONObject("data");
-                            if (data != null) {
-                                JSONArray resArr = data.getJSONArray("animals");
-                                for (int i = 0; i < resArr.length(); i++) {
-                                    JSONObject entry = resArr.getJSONObject(i);
-                                    int id = entry.getInt("id");
-                                    int animalType = entry.getInt("animal_type_id");
-                                    String animalTypeDesc = entry.optString("description");
-                                    String name = entry.optString("name");
-                                    String dob = entry.optString("approximate_dob");
-                                    String gender = entry.optString("gender");
-                                    int isSterilised = entry.optInt("sterilised", -1);
-                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, gender, isSterilised));
-                                }
-                            }
-                        } catch (JSONException e) {
-                            mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.internal_error_pet_search)));
-                        }
-                        mPetSearchResult.setValue(results);
-                        mNetworkHandler.setValue(NetworkStatus.IDLE);
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mNetworkHandler.setValue(NetworkStatus.IDLE);
-                if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, getApplication().getString(R.string.conn_error_pet_search)));
-                } else {
-                    String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_pet_search));
-                    mEventHandler.setValue(new Pair<>(Event.SEARCH_PET_ERROR, errorMSG));
-                }
-                mPetSearchResult.setValue(null);
-            }
-        })
-        {@Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
-            HashMap<String, String> headers = new HashMap<>();
-            headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
-            return headers;
-        }
-        }, getApplication());
     }
 
     public void permanentlyDelete() {

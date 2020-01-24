@@ -18,7 +18,9 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -33,9 +35,10 @@ import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
+import za.co.aws.welfare.databinding.SearchPetsBinding;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.Utils;
-import za.co.aws.welfare.viewModel.ResidenceViewModel;
+import za.co.aws.welfare.viewModel.SearchPetsViewModel;
 
 /**
  * This fragment is strictly used from the Pet Activity to MOVE a pet from one residence to another.
@@ -56,13 +59,14 @@ public class SearchPetsFragment extends DialogFragment {
     private LinearLayout searchView;
     private Button searchButton;
     private ListView results;
-    private ResidenceViewModel mModel;
     private TextInputEditText mPetName;
     private RadioGroup mSterilisedGroup;
     private RadioGroup mGenderGroup;
     private Spinner mSpecies;
 
     private PetSearcher mPetSearcher;
+
+    private SearchPetsViewModel mModel;
 
     private static final int PET_RESULT = 90;
 
@@ -76,9 +80,12 @@ public class SearchPetsFragment extends DialogFragment {
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
 
-        final View v = inflater.inflate(R.layout.search_pets, container, false);
+        SearchPetsBinding binding = DataBindingUtil.inflate(inflater, R.layout.search_pets, container, false);
+        mModel = ViewModelProviders.of(this).get(SearchPetsViewModel.class);
+        binding.setLifecycleOwner(this);
+        binding.setViewModel(mModel);
 
-        mModel = ViewModelProviders.of(getActivity()).get(ResidenceViewModel.class);
+        final View v = binding.getRoot();
 
         searchView = v.findViewById(R.id.search_menu);
         final FloatingActionButton expandButton = v.findViewById(R.id.expand_button);
@@ -152,6 +159,15 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
 
+        mModel.getNetworkHandler().observe(this, new Observer<SearchPetsViewModel.NetworkStatus>() {
+            @Override
+            public void onChanged(SearchPetsViewModel.NetworkStatus networkStatus) {
+                if (networkStatus != null) {
+                    handleNetworkStatus(networkStatus);
+                }
+            }
+        });
+
         //TODO: check tht this istthe corect way to observe from a fragment (to avoid memory leaks)
         mModel.getSearchResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<PetSearchData>>() {
             @Override
@@ -178,6 +194,25 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
         return v;
+    }
+
+    /**
+     * Take care of displaying the network status to the user.
+     * @param status
+     */
+    private void handleNetworkStatus(SearchPetsViewModel.NetworkStatus status) {
+        FragmentManager fm = getChildFragmentManager();
+        ProgressDialogFragment progressDialog = Utils.getProgressDialog(fm);
+        switch (status) {
+            case IDLE:
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                break;
+            case SEARCHING_PET:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.search_pets));
+                break;
+        }
     }
 
     public void setPetSearcher(PetSearcher petSearcher) {
