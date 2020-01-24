@@ -29,7 +29,6 @@ import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.activity.PetActivity;
-import za.co.aws.welfare.activity.ResidenceActivity;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
 import za.co.aws.welfare.dataObjects.PetSearchData;
@@ -40,18 +39,16 @@ import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /**
  * This fragment is strictly used from the Pet Activity to MOVE a pet from one residence to another.
- * It should display residences based on the user's search result. On residence picked, it should return the
- * residence id to the pet activity.
+ * It should display pets based on the user's search result. On pet picked, it should return the
+ * pet id to the residence activity.
  */
 public class SearchPetsFragment extends DialogFragment {
 
     private LinearLayout searchView;
     private Button searchButton;
     private ListView results;
-
     private ResidenceViewModel mModel;
     private TextInputEditText mPetName;
-
     private RadioGroup mSterilisedGroup;
     private RadioGroup mGenderGroup;
     private Spinner mSpecies;
