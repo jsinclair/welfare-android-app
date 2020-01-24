@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -26,29 +25,30 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.activity.PetActivity;
-import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.customComponents.PetSearchListAdapter;
-import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
+import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.databinding.SearchPetsBinding;
 import za.co.aws.welfare.model.AnimalType;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.SearchPetsViewModel;
 
 /**
- * This fragment is strictly used from the Pet Activity to MOVE a pet from one residence to another.
+ * This fragment is used to search for pets and return a selected pet.
  * It should display pets based on the user's search result. On pet picked, it should return the
- * pet id to the residence activity.
+ * pet id to the calling activity.
+ *
+ * ALWAYS CALL setPetSearcher() TO MAKE SURE RESULT IS OBTAINED.
  */
 public class SearchPetsFragment extends DialogFragment {
 
+    // Tag used for alert dialog.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
 
     /** Should be implemented by all users of this dialog. */
@@ -60,15 +60,22 @@ public class SearchPetsFragment extends DialogFragment {
         void onPetSelected(PetMinDetail result);
     }
 
+    // Container for the search result. Hidden on error / empty.
     private LinearLayout searchView;
-    private Button searchButton;
+
+    // List of results.
     private ListView results;
+
+    // Spinner for species.
     private Spinner mSpecies;
 
+    // The interface to send the result to.
     private PetSearcher mPetSearcher;
 
+    // The viewmodel of this fragment.
     private SearchPetsViewModel mModel;
 
+    // Code used to obtain result from adding new pet.
     private static final int PET_RESULT = 90;
 
     @Nullable
@@ -139,11 +146,11 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
 
-        searchButton = v.findViewById(R.id.search_button);
+        Button searchButton = v.findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mModel.doAnimalSearch(); //TODO add the other stuff;
+                mModel.doAnimalSearch();
                 searchView.setVisibility(View.GONE);
                 expandButton.show();
             }
@@ -172,7 +179,6 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
 
-        //TODO: check tht this istthe corect way to observe from a fragment (to avoid memory leaks)
         mModel.getSearchResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<PetSearchData>>() {
             @Override
             public void onChanged(final LinkedList<PetSearchData> searchData) {

@@ -34,7 +34,7 @@ import za.co.aws.welfare.utils.SingleLiveEvent;
 import za.co.aws.welfare.utils.Utils;
 
 /** Viewmodel for the pet search view. Takes care of the searching of pets from the backend.
- * TODO: REplace Animals fragment with a copy of this*/
+ * TODO: REplace Animals fragment with a copy of this!!!! 1. Move to a fragment. 2. Use fragment in dialog?*/
 public class SearchPetsViewModel extends AndroidViewModel {
 
     /** The network statuses. */
@@ -204,6 +204,7 @@ public class SearchPetsViewModel extends AndroidViewModel {
         mPetGenderSearch.setValue(gender);
     }
 
+    /** Used when the user selects sterilised option. */
     public void setPetSterilised (String isSterilised) {
         mPetSterilisedSearch.setValue(isSterilised);
     }
