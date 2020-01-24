@@ -1,12 +1,7 @@
 package za.co.aws.welfare.activity;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
@@ -16,8 +11,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.flexbox.FlexboxLayout;
-
 import java.util.List;
 
 import za.co.aws.welfare.R;
@@ -25,7 +18,6 @@ import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.databinding.ActivityAddReminderBinding;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
-import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.RemindersViewModel;
 
 /** Allow the user to add / edit a reminder. */

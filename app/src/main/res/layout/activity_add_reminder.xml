@@ -29,7 +29,9 @@
                 <DatePicker
                     android:id="@+id/date_picker"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:datePickerMode="spinner"
+                    android:calendarViewShown="false"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/notes_container"
