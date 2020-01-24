@@ -34,11 +34,19 @@ import za.co.aws.welfare.viewModel.RemindersViewModel;
 /** Allow the user to add / edit a reminder. */
 public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser, ReminderDatePickerFragment.DatePickerUser {
 
+    // Used as tag for the search pets dialog.
     private static final String SEARCH_PETS_FRAGMENT = "SEARCH_PETS_FRAGMENT";
+
+    // Used as tag for the confirmation dialog to remove pet from reminder.
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
+
+    // Used as tag for the date picker.
     private static final String DATE_TAG = "DATE_TAG";
+
+    // Used as tag for the alert dialog.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
 
+    // Button to display date of reminder, as well as open the date picker.
     private Button mDatePicker;
 
     // The notes text input layout.
@@ -287,7 +295,6 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         String monthString = String.format("%02d", month);
         String dayString = String.format("%02d", day);
         String date = year + "/" + monthString + "/" + dayString;
-        Log.i("DATE>>>", date);
         mModel.setDate(date);
     }
 }
