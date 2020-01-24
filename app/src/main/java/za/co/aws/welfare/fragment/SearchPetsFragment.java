@@ -62,9 +62,6 @@ public class SearchPetsFragment extends DialogFragment {
     private LinearLayout searchView;
     private Button searchButton;
     private ListView results;
-    private TextInputEditText mPetName;
-    private RadioGroup mSterilisedGroup;
-    private RadioGroup mGenderGroup;
     private Spinner mSpecies;
 
     private PetSearcher mPetSearcher;
@@ -111,9 +108,6 @@ public class SearchPetsFragment extends DialogFragment {
             }
         });
 
-        mSterilisedGroup = v.findViewById(R.id.selection_sterilised);
-        mGenderGroup = v.findViewById(R.id.selection_gender);
-        mPetName = v.findViewById(R.id.pet_name);
         results = v.findViewById(R.id.result_pets);
         searchView = v.findViewById(R.id.search_menu);
         mSpecies = v.findViewById(R.id.species);
@@ -126,30 +120,8 @@ public class SearchPetsFragment extends DialogFragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String petName = mPetName.getText() == null ? null : mPetName.getText().toString();
                 int speciesID = ((AnimalType)mSpecies.getSelectedItem()).getId();
-
-                String gender = null;
-                switch (mGenderGroup.getCheckedRadioButtonId()) {
-                    case R.id.female_check:
-                        gender = Utils.GENDER_FEMALE;
-                        break;
-                    case R.id.male_check:
-                        gender = Utils.GENDER_MALE;
-                        break;
-                }
-
-                String sterilised = null;
-                switch (mSterilisedGroup.getCheckedRadioButtonId()) {
-                    case R.id.yes_check:
-                        sterilised = "1";
-                        break;
-                    case R.id.no_check:
-                        sterilised = "0";
-                        break;
-                }
-
-                mModel.doAnimalSearch(speciesID, petName, gender, sterilised); //TODO add the other stuff;
+                mModel.doAnimalSearch(speciesID); //TODO add the other stuff;
                 searchView.setVisibility(View.GONE);
                 expandButton.show();
             }

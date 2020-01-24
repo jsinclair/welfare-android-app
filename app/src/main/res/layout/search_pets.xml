@@ -52,6 +52,7 @@
                         android:id="@+id/pet_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@={ viewModel.mPetNameSearch }"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,7 +78,9 @@
                         android:textColor="@android:color/white"
                         android:button="@null"
                         android:padding="@dimen/button_padding"
-                        android:gravity="center_horizontal" />
+                        android:gravity="center_horizontal"
+                        android:checked="@{viewModel.mPetGenderSearch.equals(viewModel.GENDER_ALL)}"
+                        android:onClick="@{()->viewModel.setPetGender(viewModel.GENDER_ALL)}"/>
 
                     <Space
                         android:layout_width="8dp"
@@ -93,7 +96,9 @@
                         android:textColor="@android:color/white"
                         android:button="@null"
                         android:padding="@dimen/button_padding"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:checked="@{viewModel.mPetGenderSearch.equals(viewModel.GENDER_MALE)}"
+                        android:onClick="@{()->viewModel.setPetGender(viewModel.GENDER_MALE)}"/>
 
                     <Space
                         android:layout_width="8dp"
@@ -109,7 +114,9 @@
                         android:textColor="@android:color/white"
                         android:button="@null"
                         android:padding="@dimen/button_padding"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:checked="@{viewModel.mPetGenderSearch.equals(viewModel.GENDER_FEMALE)}"
+                        android:onClick="@{()->viewModel.setPetGender(viewModel.GENDER_FEMALE)}"/>
                 </RadioGroup>
 
 
@@ -135,7 +142,9 @@
                         android:textColor="@android:color/white"
                         android:button="@null"
                         android:padding="@dimen/button_padding"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:checked="@{viewModel.mPetSterilisedSearch.equals(viewModel.STERILISED_ALL)}"
+                        android:onClick="@{()->viewModel.setPetSterilised(viewModel.STERILISED_ALL)}"/>
 
                     <Space
                         android:layout_width="8dp"
@@ -151,7 +160,9 @@
                         android:textColor="@android:color/white"
                         android:button="@null"
                         android:padding="@dimen/button_padding"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:checked="@{viewModel.mPetSterilisedSearch.equals(viewModel.STERILISED_YES)}"
+                        android:onClick="@{()->viewModel.setPetSterilised(viewModel.STERILISED_YES)}"/>
 
                     <Space
                         android:layout_width="8dp"
@@ -167,7 +178,9 @@
                         android:textColor="@android:color/white"
                         android:button="@null"
                         android:padding="@dimen/button_padding"
-                        android:gravity="center_horizontal"/>
+                        android:gravity="center_horizontal"
+                        android:checked="@{viewModel.mPetSterilisedSearch.equals(viewModel.STERILISED_NO)}"
+                        android:onClick="@{()->viewModel.setPetSterilised(viewModel.STERILISED_NO)}"/>
                 </RadioGroup>
 
                 <LinearLayout

@@ -46,8 +46,20 @@ public class SearchPetsViewModel extends AndroidViewModel {
         SEARCH_PET_ERROR,
     }
 
+    public static final String GENDER_FEMALE = Utils.GENDER_FEMALE;
+    public static final String GENDER_MALE = Utils.GENDER_MALE;
+    public static final String GENDER_ALL = Utils.GENDER_ALL;
+
+    public static final String STERILISED_YES = "1";
+    public static final String STERILISED_NO = "0";
+    public static final String STERILISED_ALL = "";
+
     private MutableLiveData<NetworkStatus> mNetworkHandler;
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
+
+    public MutableLiveData<String> mPetNameSearch;
+    public MutableLiveData<String> mPetGenderSearch;
+    public MutableLiveData<String> mPetSterilisedSearch;
 
     // The result of the search.
     public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
@@ -57,6 +69,10 @@ public class SearchPetsViewModel extends AndroidViewModel {
         mNetworkHandler = new MutableLiveData<>();
         mPetSearchResult = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
+
+        mPetNameSearch = new MutableLiveData<>();
+        mPetGenderSearch = new MutableLiveData<>();
+        mPetSterilisedSearch = new MutableLiveData<>();
     }
 
     public LiveData<LinkedList<PetSearchData>> getSearchResults() {
@@ -71,14 +87,20 @@ public class SearchPetsViewModel extends AndroidViewModel {
     }
 
     /** Search for pets on the given search parameters. */
-    public void doAnimalSearch(int species, String petName, String gender, String sterilised) {
+    public void doAnimalSearch(int species) {
 
-        boolean hasPetName = !(petName == null || petName.isEmpty());
         boolean hasSpecies = (species > 0);
-        boolean hasGender = gender != null;
-        boolean hasSterilised = sterilised != null;
 
         mNetworkHandler.setValue(NetworkStatus.SEARCHING_PET);
+
+        String petName = mPetNameSearch.getValue();
+        String steriStr = mPetSterilisedSearch.getValue();
+        String gender = mPetGenderSearch.getValue();
+
+        boolean hasPetName = !(petName == null || petName.isEmpty());
+      //  boolean hasSpecies = (animalTypeSelectedID > 0);
+        boolean hasSteri = steriStr != null && !steriStr.isEmpty();
+        boolean hasGender = GENDER_FEMALE.equals(gender) || GENDER_MALE.equals(gender);
 
         Map<String, String> params = new HashMap<>();
         if (hasPetName) {
@@ -93,8 +115,8 @@ public class SearchPetsViewModel extends AndroidViewModel {
             params.put("gender", gender);
         }
 
-        if (hasSterilised) {
-            params.put("sterilised", sterilised);
+        if (hasSteri) {
+            params.put("sterilised", steriStr);
         }
 
         String baseURL = getApplication().getString(R.string.kBaseUrl) + "animals/list/";
@@ -150,4 +172,14 @@ public class SearchPetsViewModel extends AndroidViewModel {
         }
         }, getApplication());
     }
+
+    /** used when user selects gender to search for. */
+    public void setPetGender(String gender) {
+        mPetGenderSearch.setValue(gender);
+    }
+
+    public void setPetSterilised (String isSterilised) {
+        mPetSterilisedSearch.setValue(isSterilised);
+    }
+
 }
