@@ -1,11 +1,17 @@
 package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
+import android.text.format.DateUtils;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,6 +26,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     public enum Event {
       DATE_REQUIRED,
+        EDIT_ATTEMPT_TODAY,
     }
 
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
@@ -111,6 +118,10 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         Boolean currentEdit = mEditMode.getValue();
         if (currentEdit != null) {
             if (!currentEdit) {
+                if (!isNew && isTodayReminder()) {
+                    mEventHandler.setValue(new Pair<>(Event.EDIT_ATTEMPT_TODAY, getApplication().getString(R.string.cannot_edit_today)));
+                    return;
+                }
                 mNotesSave = mNotes.getValue();
                 mDateSave = mDateSelected.getValue();
                 mSavedAnimalList = new LinkedList<>();
@@ -124,6 +135,18 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                 saveData();
             }
         }
+    }
+
+    private boolean isTodayReminder() {
+        String date = mDateSelected.getValue();
+        if (!UNKNOWN_DATE.equals(date)) {
+            try {
+                DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                Date dateOff = formatter.parse(date);
+                return DateUtils.isToday(dateOff.getTime());
+            } catch (ParseException e) {}
+        }
+        return false;
     }
 
     public void setDate(String date) {

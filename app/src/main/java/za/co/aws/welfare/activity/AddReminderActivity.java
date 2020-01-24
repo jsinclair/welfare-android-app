@@ -129,6 +129,9 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             case DATE_REQUIRED:
                 showAlert(getString(R.string.data_required), eventData.second);
                 break;
+            case EDIT_ATTEMPT_TODAY:
+                showAlert(getString(R.string.not_editable), eventData.second);
+                break;
         }
     }
 
