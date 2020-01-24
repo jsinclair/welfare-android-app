@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.AuthFailureError;
@@ -27,7 +26,6 @@ import java.util.Map;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
-import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
 import za.co.aws.welfare.utils.NetworkUtils;
@@ -37,8 +35,6 @@ import za.co.aws.welfare.utils.Utils;
 
 /** Controls the resident view/edit interface.*/
 public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFragment.PetSearcher {
-
-    //TODO: on return from this activity set intent to say whether you edited something?? the calling view then knows to redo the data call.
 
     /** The network statuses. */
     public enum NetworkStatus {
