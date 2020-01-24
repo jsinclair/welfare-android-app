@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,19 +19,28 @@ import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 
+/** Viewmodel for the add reminders activity. Handle backend calls and data changes. */
 public class RemindersViewModel extends AndroidViewModel implements SearchPetsFragment.PetSearcher {
 
+    // Place holder for the date.
     public static final String UNKNOWN_DATE = "Unknown";
 
+    // Once off events.
     public enum Event {
-      DATE_REQUIRED,
+        DATE_REQUIRED,
         EDIT_ATTEMPT_TODAY,
     }
 
+    // Used to indicate an event has triggered.
     private SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
+    // Stores date selected by the user.
     public MutableLiveData<String> mDateSelected;
+
+    // Stores notes for the event.
     public MutableLiveData<String> mNotes;
+
+    // Stores a list of animals associated with the reminder.
     public MutableLiveData<List<PetMinDetail>> mAnimalList;
 
     private Integer reminderID;
@@ -137,6 +145,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         }
     }
 
+    /** Return true if the reminder's date is that of todays. */
     private boolean isTodayReminder() {
         String date = mDateSelected.getValue();
         if (!UNKNOWN_DATE.equals(date)) {
@@ -158,7 +167,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         String date = mDateSelected.getValue();
         if (date == null || date.isEmpty() || UNKNOWN_DATE.equals(mDateSelected.getValue())) {
             mEventHandler.setValue(new Pair<Event, String>(Event.DATE_REQUIRED, getApplication().getString(R.string.date_required)));
-           return;
+            return;
         }
 //        String address = mAddress.getValue();
 //        String shackID = mShackID.getValue();

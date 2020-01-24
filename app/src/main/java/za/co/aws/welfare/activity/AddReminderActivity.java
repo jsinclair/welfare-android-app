@@ -246,7 +246,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
 //        if (mModel.getHasDownloadError().getValue() != null && mModel.getHasDownloadError().getValue() ) {
 //            mEditCancel.setVisible(false);
 //        } else {
-            mEditCancel.setVisible(true);
+        mEditCancel.setVisible(true);
 //        }
         return super.onCreateOptionsMenu(menu);
     }
