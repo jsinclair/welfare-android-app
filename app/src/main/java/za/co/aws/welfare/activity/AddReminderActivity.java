@@ -54,8 +54,13 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
     // The notes text input layout.
     private TextInputLayout mNotes;
 
+    // Viewmodel takes care of backend calls and data.
     private RemindersViewModel mModel;
+
+    // Used to add a pet to the reminder.
     private Button mAddPet;
+
+    // Lists pets that can then be added/removed from reminder.
     private ListView mPetsEditList;
 
     @Override
@@ -88,7 +93,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 if (RemindersViewModel.UNKNOWN_DATE.equals(date)) {
                     date = "";
                 }
-                ReminderDatePickerFragment dialog = ReminderDatePickerFragment.newInstance(date, "/");
+                ReminderDatePickerFragment dialog = ReminderDatePickerFragment.newInstance(date, "-");
                 dialog.show(getSupportFragmentManager(), DATE_TAG);
             }
         });
@@ -323,7 +328,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
     public void onDateChosen(int year, int month, int day) {
         String monthString = String.format("%02d", month);
         String dayString = String.format("%02d", day);
-        String date = year + "/" + monthString + "/" + dayString;
+        String date = year + "-" + monthString + "-" + dayString;
         mModel.setDate(date);
     }
 }

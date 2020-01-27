@@ -50,7 +50,8 @@
     <string name="conn_error_reminder_search">A connection error occurred while trying to retrieve reminder info. Please check your connection and try again.</string>
     <string name="unknown_error_reminder_search">An unknown error occurred while trying to retrieve reminder info. Please try again later.</string>
     <string name="search_reminders">Retrieving Reminders...</string>
-
+    <string name="conn_error_reminder">A connection error occurred while trying to retrieve reminder info. Please check your connection and try again.</string>
+    <string name="unknown_error_reminder">An unknown error occurred while trying to retrieve reminder info. Please try again later.</string>
 
     <!-- Strings related to the animals screen -->
     <string name="pet_search_err_view">Pet search had no results or an error occurred. Try again later.</string>

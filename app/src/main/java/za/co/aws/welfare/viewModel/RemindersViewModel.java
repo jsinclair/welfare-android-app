@@ -2,6 +2,7 @@ package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.util.Pair;
@@ -33,12 +34,15 @@ import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.fragment.SearchPetsFragment;
+import za.co.aws.welfare.utils.NetworkUtils;
 import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 import za.co.aws.welfare.utils.Utils;
 
 /** Viewmodel for the add reminders activity. Handle backend calls and data changes. */
 public class RemindersViewModel extends AndroidViewModel implements SearchPetsFragment.PetSearcher {
+
+    //TODO: Network and error handling for GET
 
     // Place holder for the date.
     public static final String UNKNOWN_DATE = "Unknown";
@@ -53,12 +57,14 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
         // Error on update
         UPDATE_ERROR,
+        RETRIEVAL_ERROR
     }
 
     // Once off events.
     public enum NetworkAction {
         IDLE,
         UPDATING,
+        RETRIEVING_DATA,
     }
 
     // Used to indicate an event has triggered.
@@ -147,10 +153,84 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         mEditMode.setValue(isNew);
         this.reminderID = reminderID;
         if (!isNew) {
-            //TODO: LOAD DATA FROM THE BACKEND loadData(reminderID);
+            loadData(reminderID);
         } else {
             // Start the date selector.
             mDateSelected.setValue(UNKNOWN_DATE);
+        }
+    }
+
+    /** If this is an edit and not a new, load the existing data from the backend. */
+    private void loadData(int resID) {
+        if(resID >= 0) {
+            reminderID = resID;
+            mNetworkHandler.setValue(NetworkAction.RETRIEVING_DATA);
+
+            Map<String, String> params = new HashMap<>();
+            params.put("reminder_id", Integer.toString(resID));
+
+            String baseURL = getApplication().getString(R.string.kBaseUrl) + "reminders/details";
+            String url = NetworkUtils.createURL(baseURL, params);
+
+            RequestQueueManager.getInstance().addToRequestQueue(new JsonObjectRequest(Request.Method.GET,
+                    url, new JSONObject(),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JSONObject data = response.optJSONObject("data");
+                                if (data != null) {
+                                    JSONObject res = data.getJSONObject("reminder_details");
+                                    int id = res.getInt("id");
+                                    String note = res.optString("note");
+                                    String date = res.optString("date");
+//
+                                    JSONArray animals = res.optJSONArray("animals");
+                                    List<PetMinDetail> animalList = new LinkedList<>();
+                                    if (animals != null && animals.length() != 0) {
+                                        for (int i= 0; i < animals.length(); i++) {
+                                            JSONObject aniEntry = animals.getJSONObject(i);
+                                            int aniID = aniEntry.optInt("id", -1);
+                                            String aniName = aniEntry.optString("name");
+                                            int sterilised = aniEntry.optInt("sterilised", -1);
+                                            animalList.add(new PetMinDetail(aniID, aniName, sterilised));
+                                        }
+                                    }
+                                    mAnimalList.setValue(animalList);
+                                    reminderID = id;
+                                    mNotes.setValue(note);
+                                    mDateSelected.setValue(date);
+//                                    mErrorState.setValue(false);
+                                }
+                            } catch (JSONException e) {
+//                                mErrorState.setValue(false);
+                                // there is still data available or
+                                // there is a data issue. So cannot reload.
+//                                mEventHandler.setValue(new Pair<>(ResidenceViewModel.Event.RETRIEVAL_ERROR, getApplication().getString(R.string.internal_error_res_search)));
+                            }
+//                            mNetworkHandler.setValue(ResidenceViewModel.NetworkStatus.IDLE);
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.conn_error_reminder)));
+                    } else {
+                        String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_reminder));
+                        mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, errorMSG));
+                    }
+//                    mErrorState.setValue(true); TODO
+                    mNetworkHandler.setValue(NetworkAction.IDLE);
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                    return headers;
+                }
+            }, getApplication());
         }
     }
 
