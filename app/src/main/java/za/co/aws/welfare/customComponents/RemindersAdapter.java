@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.dataObjects.ReminderData;
 
+/** Used when displaying reminders list. */
 public class RemindersAdapter extends ArrayAdapter<ReminderData> {
 
     /** Suggested as an optimisation. Object that holds view components. */

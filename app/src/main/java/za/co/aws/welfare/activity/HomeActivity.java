@@ -41,6 +41,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     public static final int PET = 89;
     public static final int RES = 88;
+    public static final int REMINDER = 90;
     private HomeViewModel mModel;
 
     @Override
@@ -130,6 +131,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     Intent addPetIntent = new Intent(this, PetActivity.class);
                     addPetIntent.putExtra("RequestNewEntry", true);
                     startActivity(addPetIntent);
+                    break;
+                case REMINDER:
+                    Intent reminderIntent = new Intent(this, AddReminderActivity.class);
+                    reminderIntent.putExtra("ReminderID", data.second);
+                    reminderIntent.putExtra("RequestNewEntry", false);
+                    startActivityForResult(reminderIntent, REMINDER);
                     break;
                 case ADD_REMINDER:
                     Intent addReminderIntent = new Intent(this, AddReminderActivity.class);
