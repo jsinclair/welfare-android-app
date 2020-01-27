@@ -131,6 +131,7 @@
     <string name="cannot_edit_today">Cannot edit a reminder set for today or earlier. Please create a new reminder instead.</string>
     <string name="not_editable">Not Editable</string>
     <string name="reminder_download_err">An error occurred trying to retrieve data for this reminder. Please try again.</string>
+    <string name="reminders_empty_view">No reminders at this time, or an error occurred. To get started, add a reminder using the clock button in the bottom right of the screen, else try and refresh the view.</string>
 
     <!--general-->
     <string name="deleting_pet_from_sys">Deleting pet from system...</string>

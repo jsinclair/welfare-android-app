@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -43,9 +44,9 @@ public class RemindersFragment extends Fragment {
         mModel.getReminders().observe(getViewLifecycleOwner(), new Observer<LinkedList<ReminderData>>() {
             @Override
             public void onChanged(LinkedList<ReminderData> reminderData) {
-//                LinearLayout emptyView = v.findViewById(R.id.empty_view);
+                LinearLayout emptyView = v.findViewById(R.id.empty_view);
                 if (reminderData != null && !reminderData.isEmpty()) {
-//                    emptyView.setVisibility(View.GONE); TODO
+                    emptyView.setVisibility(View.GONE);
                     results.setVisibility(View.VISIBLE);
                     results.setAdapter(new RemindersAdapter(getContext(), R.layout.content_reminder_entry, reminderData));
                     results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -55,7 +56,7 @@ public class RemindersFragment extends Fragment {
                         }
                     });
                 } else {
-//                    emptyView.setVisibility(View.VISIBLE); TODO
+                    emptyView.setVisibility(View.VISIBLE);
                     results.setVisibility(View.GONE);
                 }
             }
