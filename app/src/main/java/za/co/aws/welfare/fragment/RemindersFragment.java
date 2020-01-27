@@ -41,6 +41,13 @@ public class RemindersFragment extends Fragment {
 
         results = v.findViewById(R.id.reminders_list);
 
+        v.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mModel.reloadReminders();
+            }
+        });
+
         mModel.getReminders().observe(getViewLifecycleOwner(), new Observer<LinkedList<ReminderData>>() {
             @Override
             public void onChanged(LinkedList<ReminderData> reminderData) {
