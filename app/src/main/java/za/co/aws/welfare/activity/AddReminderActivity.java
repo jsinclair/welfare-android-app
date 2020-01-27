@@ -1,13 +1,18 @@
 package za.co.aws.welfare.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import androidx.databinding.DataBindingUtil;
@@ -16,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
@@ -31,7 +37,6 @@ import za.co.aws.welfare.fragment.SearchPetsFragment;
 import za.co.aws.welfare.fragment.YesNoDialogFragment;
 import za.co.aws.welfare.utils.Utils;
 import za.co.aws.welfare.viewModel.RemindersViewModel;
-import za.co.aws.welfare.viewModel.ResidenceViewModel;
 
 /** Allow the user to add / edit a reminder. */
 public class AddReminderActivity extends AppCompatActivity implements YesNoDialogFragment.YesNoDialogUser, ReminderDatePickerFragment.DatePickerUser {
@@ -47,6 +52,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
 
     // Used as tag for the alert dialog.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
+    private static final int PET_RESULT = 21;
 
     // Button to display date of reminder, as well as open the date picker.
     private Button mDatePicker;
@@ -62,6 +68,8 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
 
     // Lists pets that can then be added/removed from reminder.
     private ListView mPetsEditList;
+
+    private FlexboxLayout mAnimalDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +108,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
 
         mNotes = findViewById(R.id.notes_container);
 
+        mAnimalDisplay = findViewById(R.id.animal_nav_list);
         mAddPet = findViewById(R.id.add_pet_button);
         mAddPet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,24 +200,20 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         if (editable) {
             mPetsEditList.setVisibility(View.VISIBLE);
             mAddPet.setVisibility(View.VISIBLE);
-            //TODO
-//            mAnimalDisplay.setVisibility(View.GONE);
+            mAnimalDisplay.setVisibility(View.GONE);
         } else {
             mPetsEditList.setVisibility(View.GONE);
             mAddPet.setVisibility(View.GONE);
-
-            //TODO:
-//            mAnimalDisplay.setVisibility(View.VISIBLE);
+            mAnimalDisplay.setVisibility(View.VISIBLE);
         }
         invalidateOptionsMenu();
     }
 
     /** Generate the animal list and setup click listeners. */
     private void setupAnimalViews(List<PetMinDetail> list) {
-        //mAnimalDisplay.removeAllViews(); TODO
+        mAnimalDisplay.removeAllViews();
         for (PetMinDetail animal: list) {
-
-           /* TODO: Button aniButton = new Button(this);
+            Button aniButton = new Button(this);
             aniButton.setText(animal.getName());
             Bitmap steriIcon = null;
             BitmapDrawable n = null;
@@ -232,7 +237,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             aniButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(ResidenceActivity.this, PetActivity.class);
+                    Intent intent = new Intent(AddReminderActivity.this, PetActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("petID", ((PetMinDetail)view.getTag()).getID());
                     intent.putExtra("RequestNewEntry", false);
@@ -246,7 +251,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             int padding = getResources().getDimensionPixelSize(R.dimen.pet_gap);
             params.setMargins(padding, padding, padding, padding);
 
-            mAnimalDisplay.addView(aniButton, params); */
+            mAnimalDisplay.addView(aniButton, params);
         }
 
         mPetsEditList.setAdapter(new RemoveAnimalAdapter(this, R.layout.remove_animal_content, list, new View.OnClickListener() {
@@ -255,6 +260,17 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 requestRemovePet((PetMinDetail)view.getTag());
             }
         }));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == PET_RESULT && data != null) {
+            boolean updateRequired = data.getBooleanExtra(Utils.INTENT_UPDATE_REQUIRED, false);
+            if (updateRequired) {
+                mModel.reloadData();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // Confirm that the user wishes to remove selected pet.

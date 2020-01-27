@@ -33,6 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="@={ viewModel.mDateSelected }"
+                    android:layout_marginBottom="@dimen/general_padding"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -79,6 +80,18 @@
                     android:drawableLeft="@drawable/add_pet"
                     android:drawableStart="@drawable/add_pet"/>
             </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/animal_nav_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    app:flexWrap="wrap"/>
+            </ScrollView>
 
             <ListView
                 android:id="@+id/pets_edit_list"

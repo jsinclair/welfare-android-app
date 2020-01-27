@@ -160,6 +160,14 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         }
     }
 
+    /**
+     * Use this to reload the data if there was an error. Could also be used if there has been a
+     * change (in pets for example).
+     */
+    public void reloadData() {
+        loadData(reminderID);
+    }
+
     /** If this is an edit and not a new, load the existing data from the backend. */
     private void loadData(int resID) {
         if(resID >= 0) {
