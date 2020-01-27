@@ -276,9 +276,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REMINDER && data != null) {
             if (data.hasExtra(Utils.INTENT_REMINDER_ID)) {
-                int id = data.getIntExtra(Utils.INTENT_REMINDER_ID, -1);
-                if (id != -1) {
-                    mModel.removeReminderFromResults(id);
+                String action = data.getStringExtra(Utils.INTENT_ACTION);
+                switch (action) {
+                    case Utils.INTENT_ACTION_ADD:
+                        break;
+                    case Utils.INTENT_ACTION_DELETE:
+                        int id = data.getIntExtra(Utils.INTENT_REMINDER_ID, -1);
+                        if (id != -1) {
+                            mModel.removeReminderFromResults(id);
+                        }
+                        break;
+                    case Utils.INTENT_ACTION_EDIT:
+                        break;
                 }
             }
         }

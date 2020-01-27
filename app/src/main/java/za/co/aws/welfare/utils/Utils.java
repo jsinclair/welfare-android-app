@@ -27,8 +27,12 @@ public class Utils {
     // Used to return data from the residence activity to the search fragment.
     public static final String INTENT_RES_ID = "INTENT_RES_ID";
     public static final String INTENT_RES_DESC = "INTENT_RES_DESC";
-
     public static final String INTENT_REMINDER_ID = "INTENT_REMINDER_ID";
+
+    public static final String INTENT_ACTION = "INTENT_ACTION";
+    public static final String INTENT_ACTION_DELETE = "INTENT_ACTION_DELETE";
+    public static final String INTENT_ACTION_ADD = "INTENT_ACTION_ADD";
+    public static final String INTENT_ACTION_EDIT = "INTENT_ACTION_EDIT";
 
     // Used to return data from the pet activity to the search fragment.
     public static final String INTENT_PET_RETURN_NAME = "INTENT_PET_RETURN_NAME";
