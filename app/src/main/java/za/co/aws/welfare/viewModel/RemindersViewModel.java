@@ -2,7 +2,6 @@ package za.co.aws.welfare.viewModel;
 
 import android.app.Application;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.util.Pair;
@@ -24,6 +23,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -258,7 +258,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         Boolean currentEdit = mEditMode.getValue();
         if (currentEdit != null) {
             if (!currentEdit) {
-                if (!isNew && isTodayReminder()) {
+                if (!isNew && isOldReminder()) {
                     mEventHandler.setValue(new Pair<>(Event.EDIT_ATTEMPT_TODAY, getApplication().getString(R.string.cannot_edit_today)));
                     return;
                 }
@@ -278,13 +278,15 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     }
 
     /** Return true if the reminder's date is that of todays. */
-    private boolean isTodayReminder() {
+    private boolean isOldReminder() {
         String date = mDateSelected.getValue();
         if (!UNKNOWN_DATE.equals(date)) {
             try {
-                DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date dateOff = formatter.parse(date);
-                return DateUtils.isToday(dateOff.getTime());
+
+                Calendar cal = Calendar.getInstance();
+                return DateUtils.isToday(dateOff.getTime()) || dateOff.before(cal.getTime());
             } catch (ParseException e) {}
         }
         return false;

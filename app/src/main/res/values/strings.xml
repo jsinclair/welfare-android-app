@@ -124,7 +124,7 @@
     <string name="remove_pet_reminder_title">Remove pet from reminder?</string>
     <string name="remove_pet__reminder_message" formatted="true">Are you sure you want to remove %1$s from this reminder?</string>
     <string name="date_required">Date required to set reminder</string>
-    <string name="cannot_edit_today">Cannot edit a reminder set for today, as the reminder has already been sent. Please create a new reminder instead.</string>
+    <string name="cannot_edit_today">Cannot edit a reminder set for today or earlier. Please create a new reminder instead.</string>
     <string name="not_editable">Not Editable</string>
     <string name="reminder_download_err">An error occurred trying to retrieve data for this reminder. Please try again.</string>
 
