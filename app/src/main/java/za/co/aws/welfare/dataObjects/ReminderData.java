@@ -12,15 +12,15 @@ public class ReminderData {
         this.mAnimalNames = mAnimalNames;
     }
 
-    public int getmID() {
+    public int getID() {
         return mID;
     }
 
-    public String getmDate() {
+    public String getDate() {
         return mDate;
     }
 
-    public String getmAnimalNames() {
+    public String getAnimalNames() {
         return mAnimalNames;
     }
 }

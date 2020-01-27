@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -15,7 +17,10 @@ import androidx.lifecycle.ViewModelProviders;
 import java.util.LinkedList;
 
 import za.co.aws.welfare.R;
+import za.co.aws.welfare.customComponents.RemindersAdapter;
+import za.co.aws.welfare.customComponents.ResidenceSearchListAdapter;
 import za.co.aws.welfare.dataObjects.ReminderData;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 
 // Allow the user to view and add reminders.
@@ -42,8 +47,20 @@ public class RemindersFragment extends Fragment {
         mModel.getReminders().observe(getViewLifecycleOwner(), new Observer<LinkedList<ReminderData>>() {
             @Override
             public void onChanged(LinkedList<ReminderData> reminderData) {
-                if (reminderData != null) {
-                    Log.i("GOT REMINDERS", reminderData.toString());
+//                LinearLayout emptyView = v.findViewById(R.id.empty_view);
+                if (reminderData != null && !reminderData.isEmpty()) {
+//                    emptyView.setVisibility(View.GONE); TODO
+                    results.setVisibility(View.VISIBLE);
+                    results.setAdapter(new RemindersAdapter(getContext(), R.layout.content_reminder_entry, reminderData));
+                    results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                            mModel.triggerViewResident(((ResidenceSearchData) results.getAdapter().getItem(i)).getID()); TODO
+                        }
+                    });
+                } else {
+//                    emptyView.setVisibility(View.VISIBLE); TODO
+                    results.setVisibility(View.GONE);
                 }
             }
         });
