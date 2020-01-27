@@ -42,8 +42,6 @@ import za.co.aws.welfare.utils.Utils;
 /** Viewmodel for the add reminders activity. Handle backend calls and data changes. */
 public class RemindersViewModel extends AndroidViewModel implements SearchPetsFragment.PetSearcher {
 
-    //TODO: Network and error handling for GET
-
     // Place holder for the date.
     public static final String UNKNOWN_DATE = "Unknown";
 
@@ -57,8 +55,15 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
         // Error on update
         UPDATE_ERROR,
+
+        // Error while retrieving data.
         RETRIEVAL_ERROR,
-        DELETE_DONE, DELETE_ERROR
+
+        // When a delete is complete.
+        DELETE_DONE,
+
+        // Error during delete.
+        DELETE_ERROR,
     }
 
     // Once off events.
@@ -82,13 +87,16 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     // Stores a list of animals associated with the reminder.
     public MutableLiveData<List<PetMinDetail>> mAnimalList;
 
+    // Keeps track of whether we are in a permanent error state.
     public MutableLiveData<Boolean> mErrorState;
 
-
+    // ID of the reminder.
     private Integer reminderID;
+
+    // TRUE if brand new. Set to false after update.
     private boolean isNew;
-    private boolean fromSearch;
-    private boolean successfulEditOccurred;
+
+    // Keeps track of pet to be removed.
     private PetMinDetail mRemoveRequest;
 
     // These store the values to revert to if the user 'cancels' an edit.
@@ -104,7 +112,6 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         mDateSelected = new MutableLiveData<>();
         mEditMode = new MutableLiveData<>();
         mNetworkHandler = new MutableLiveData<>();
-        successfulEditOccurred = false;
         mEventHandler = new SingleLiveEvent<>();
         mErrorState = new MutableLiveData<>();
     }
@@ -158,7 +165,6 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
     public void setup(boolean isNew, int reminderID, boolean fromSearch) {
         this.isNew = isNew;
-        this.fromSearch = fromSearch;
         mEditMode.setValue(isNew);
         this.reminderID = reminderID;
         if (!isNew) {
@@ -272,8 +278,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                 }
                 mEditMode.setValue(true);
             } else {
-//                 Do save actions to backend.
-//                 set editable back to false once done
+                // Do save actions to backend. Set editable back to false once done.
                 saveData();
             }
         }
@@ -428,9 +433,6 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                             String msg = data.getString("message");
                             reminderID = data.getInt("reminder_id");
                             Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
-
-                            // If an edit managed to occur at all, we might need to reload the calling class.
-                            successfulEditOccurred = true;
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.reminder_update_unknown_err)));
                             return;
