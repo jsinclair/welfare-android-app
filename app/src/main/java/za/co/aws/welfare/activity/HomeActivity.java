@@ -274,6 +274,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     mModel.removeResFromResults(id);
                 }
             }
+        } else if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REMINDER && data != null) {
+            if (data.hasExtra(Utils.INTENT_REMINDER_ID)) {
+                int id = data.getIntExtra(Utils.INTENT_REMINDER_ID, -1);
+                if (id != -1) {
+                    mModel.removeReminderFromResults(id);
+                }
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

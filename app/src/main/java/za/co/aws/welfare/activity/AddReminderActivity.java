@@ -46,6 +46,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
 
     // Used as tag for the confirmation dialog to remove pet from reminder.
     private static final String REMOVE_PET_CONFIRM = "REMOVE_PET_CONFIRM";
+    private static final String REMOVE_THIS_REMINDER = "REMOVE_THIS_REMINDER";
 
     // Used as tag for the date picker.
     private static final String DATE_TAG = "DATE_TAG";
@@ -178,6 +179,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         }
     }
 
+
     /** Handle once off events.*/
     private void handleEvent(Pair<RemindersViewModel.Event, String> eventData) {
         switch (eventData.first) {
@@ -192,6 +194,15 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 break;
             case RETRIEVAL_ERROR:
                 showAlert(getString(R.string.fetch_error_title), eventData.second);
+                break;
+            case DELETE_DONE:
+                Intent outputDelete = new Intent();
+                outputDelete.putExtra(Utils.INTENT_REMINDER_ID, mModel.getReminderID());
+                setResult(RESULT_OK, outputDelete);
+                finish();
+                break;
+            case DELETE_ERROR:
+                showAlert(getString(R.string.delete_error), eventData.second);
                 break;
         }
     }
@@ -209,7 +220,10 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 Utils.updateProgress(fm, progressDialog, getString(R.string.updating_reminder_data));
                 break;
             case RETRIEVING_DATA:
-                Utils.updateProgress(fm, progressDialog, getString(R.string.updating_reminder_data));
+                Utils.updateProgress(fm, progressDialog, getString(R.string.retrieving_reminder_data));
+                break;
+            case DELETING_REMINDER:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.delete_reminder_data));
                 break;
         }
     }
@@ -350,15 +364,25 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 mModel.cancelEdit();
             }
         } else if (id == R.id.delete) {
-//   TODO         requestDeleteReminder();
+            requestDeleteReminder();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void requestDeleteReminder() {
+        DialogFragment dialog = YesNoDialogFragment.newInstance(getString(R.string.delete_reminder_title),
+                getString(R.string.delete_reminder_msg),
+                getString(R.string.delete),
+                getString(R.string.keep), REMOVE_THIS_REMINDER);
+        dialog.show(getSupportFragmentManager(), REMOVE_THIS_REMINDER);
     }
 
     @Override
     public void onDialogYesSelected(String tag) {
         if (REMOVE_PET_CONFIRM.equals(tag)) {
             mModel.removePet();
+        } else if (REMOVE_THIS_REMINDER.equals(tag)) {
+            mModel.permanentlyDelete();
         }
     }
 

@@ -40,6 +40,8 @@
     <string name="description">Description</string>
     <string name="reminders">Reminders</string>
     <string name="updating_reminder_data">Updating Reminder...</string>
+    <string name="retrieving_reminder_data">Retrieving Reminder Data...</string>
+    <string name="delete_reminder_data">Deleting Reminder Data...</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -84,8 +86,10 @@
     <string name="remove_pet_title">Remove pet from residence?</string>
     <string name="delete_pet_title">Permanently remove Pet?</string>
     <string name="delete_res_title">Permanently remove Residence?</string>
+    <string name="delete_reminder_title">Permanently remove Reminder?</string>
     <string name="delete_res_msg">Are you sure you want to permanently delete this residence off the system? This action can not be undone.</string>
     <string name="delete_pet_msg">Are you sure you want to permanently delete this pet off the system? This action can not be undone.</string>
+    <string name="delete_reminder_msg">Are you sure you want to permanently delete this reminder off the system? This action can not be undone.</string>
     <string name="remove_pet_message" formatted="true">Are you sure you want to remove %1$s from this residence?</string>
     <string name="remove_pet_yes">Remove Pet</string>
     <string name="remove_pet_no">Cancel</string>

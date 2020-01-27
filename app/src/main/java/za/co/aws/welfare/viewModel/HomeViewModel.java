@@ -477,4 +477,17 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
+    public void removeReminderFromResults(int id) {
+        LinkedList<ReminderData> vals = mRemindersResults.getValue();
+        if (vals != null) {
+            for (ReminderData data : vals) {
+                if (data.getID() == id) {
+                    vals.remove(data);
+                    break;
+                }
+            }
+            mRemindersResults.setValue(vals);
+        }
+    }
+
 }

@@ -28,6 +28,8 @@ public class Utils {
     public static final String INTENT_RES_ID = "INTENT_RES_ID";
     public static final String INTENT_RES_DESC = "INTENT_RES_DESC";
 
+    public static final String INTENT_REMINDER_ID = "INTENT_REMINDER_ID";
+
     // Used to return data from the pet activity to the search fragment.
     public static final String INTENT_PET_RETURN_NAME = "INTENT_PET_RETURN_NAME";
     public static final String INTENT_PET_RETURN_ID = "INTENT_PET_RETURN_ID";

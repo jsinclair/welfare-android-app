@@ -57,7 +57,8 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
         // Error on update
         UPDATE_ERROR,
-        RETRIEVAL_ERROR
+        RETRIEVAL_ERROR,
+        DELETE_DONE, DELETE_ERROR
     }
 
     // Once off events.
@@ -65,6 +66,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         IDLE,
         UPDATING,
         RETRIEVING_DATA,
+        DELETING_REMINDER
     }
 
     // Used to indicate an event has triggered.
@@ -277,6 +279,57 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         }
     }
 
+    /** Permanently delete this reminder from the backend. */
+    public void permanentlyDelete() {
+        if(reminderID != null && reminderID >= 0) {
+            mNetworkHandler.setValue(NetworkAction.DELETING_REMINDER);
+
+            JSONObject params = new JSONObject();
+            try {
+                params.put("reminder_id", Integer.toString(reminderID));
+            }  catch (JSONException e) {
+                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_internal_msg)));
+                mNetworkHandler.setValue(NetworkAction.IDLE);
+                return;
+            }
+
+            String baseURL = getApplication().getString(R.string.kBaseUrl) + "reminders/delete/";
+            RequestQueueManager.getInstance().addToRequestQueue(
+                    new JsonObjectRequest(Request.Method.POST, baseURL, params, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JSONObject data = response.getJSONObject("data");
+                                String msg = data.optString("message");
+                                Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
+                                mNetworkHandler.setValue(NetworkAction.IDLE);
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_DONE, msg));
+                            } catch (JSONException e) {
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_msg)));
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, getApplication().getString(R.string.delete_error_timeout_msg)));
+                            } else {
+                                String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.delete_error_msg));
+                                mEventHandler.setValue(new Pair<>(Event.DELETE_ERROR, errorMSG));
+                            }
+                            mNetworkHandler.setValue(NetworkAction.IDLE);
+                        }
+                    }){
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
+                            return headers;
+                        }
+                    }, getApplication());
+        }
+    }
+
     /** Return true if the reminder's date is that of todays. */
     private boolean isOldReminder() {
         String date = mDateSelected.getValue();
@@ -294,6 +347,10 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     public void setDate(String date) {
         mDateSelected.setValue(date);
+    }
+
+    public int getReminderID() {
+        return reminderID;
     }
 
     /** Attempt to send the update / to the backend. */
