@@ -52,6 +52,7 @@
     <string name="search_reminders">Retrieving Reminders...</string>
     <string name="conn_error_reminder">A connection error occurred while trying to retrieve reminder info. Please check your connection and try again.</string>
     <string name="unknown_error_reminder">An unknown error occurred while trying to retrieve reminder info. Please try again later.</string>
+    <string name="internal_error_reminder">An internal error occurred while trying to retrieve reminder info. Please try again later.</string>
 
     <!-- Strings related to the animals screen -->
     <string name="pet_search_err_view">Pet search had no results or an error occurred. Try again later.</string>
@@ -125,6 +126,7 @@
     <string name="date_required">Date required to set reminder</string>
     <string name="cannot_edit_today">Cannot edit a reminder set for today, as the reminder has already been sent. Please create a new reminder instead.</string>
     <string name="not_editable">Not Editable</string>
+    <string name="reminder_download_err">An error occurred trying to retrieve data for this reminder. Please try again.</string>
 
     <!--general-->
     <string name="deleting_pet_from_sys">Deleting pet from system...</string>

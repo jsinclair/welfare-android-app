@@ -80,6 +80,9 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     // Stores a list of animals associated with the reminder.
     public MutableLiveData<List<PetMinDetail>> mAnimalList;
 
+    public MutableLiveData<Boolean> mErrorState;
+
+
     private Integer reminderID;
     private boolean isNew;
     private boolean fromSearch;
@@ -101,6 +104,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         mNetworkHandler = new MutableLiveData<>();
         successfulEditOccurred = false;
         mEventHandler = new SingleLiveEvent<>();
+        mErrorState = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<PetMinDetail>> getAnimalList() {
@@ -124,6 +128,9 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         return mEventHandler;
     }
 
+    public MutableLiveData<Boolean> getHasDownloadError() {
+        return mErrorState;
+    }
 
     /** call this to add a pet to the residence. Will only be persisted on save. */
     public void onPetSelected(PetMinDetail petToAdd) {
@@ -208,15 +215,15 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                                     reminderID = id;
                                     mNotes.setValue(note);
                                     mDateSelected.setValue(date);
-//                                    mErrorState.setValue(false);
+                                    mErrorState.setValue(false);
                                 }
                             } catch (JSONException e) {
-//                                mErrorState.setValue(false);
+                                mErrorState.setValue(false);
                                 // there is still data available or
                                 // there is a data issue. So cannot reload.
-//                                mEventHandler.setValue(new Pair<>(ResidenceViewModel.Event.RETRIEVAL_ERROR, getApplication().getString(R.string.internal_error_res_search)));
+                                mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, getApplication().getString(R.string.internal_error_reminder)));
                             }
-//                            mNetworkHandler.setValue(ResidenceViewModel.NetworkStatus.IDLE);
+                            mNetworkHandler.setValue(NetworkAction.IDLE);
                         }
                     }, new Response.ErrorListener() {
 
@@ -228,7 +235,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                         String errorMSG = Utils.generateErrorMessage(error, getApplication().getString(R.string.unknown_error_reminder));
                         mEventHandler.setValue(new Pair<>(Event.RETRIEVAL_ERROR, errorMSG));
                     }
-//                    mErrorState.setValue(true); TODO
+                    mErrorState.setValue(true);
                     mNetworkHandler.setValue(NetworkAction.IDLE);
                 }
             }) {

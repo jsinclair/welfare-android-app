@@ -119,6 +119,13 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             }
         });
 
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mModel.reloadData();
+            }
+        });
+
         mModel.getAnimalList().observe(this, new Observer<List<PetMinDetail>>() {
             @Override
             public void onChanged(List<PetMinDetail> petMinDetails) {
@@ -151,6 +158,21 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             }
         });
 
+
+        mModel.getHasDownloadError().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean != null && aBoolean) {
+                    findViewById(R.id.error_view).setVisibility(View.VISIBLE);
+                    findViewById(R.id.data_container).setVisibility(View.GONE);
+                } else {
+                    findViewById(R.id.error_view).setVisibility(View.GONE);
+                    findViewById(R.id.data_container).setVisibility(View.VISIBLE);
+                }
+                invalidateOptionsMenu();
+            }
+        });
+
         if (savedInstanceState == null) {
             mModel.setup(isNew, reminderID, fromSearch);
         }
@@ -168,6 +190,9 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             case UPDATE_ERROR:
                 showAlert(getString(R.string.update_error_title), eventData.second);
                 break;
+            case RETRIEVAL_ERROR:
+                showAlert(getString(R.string.fetch_error_title), eventData.second);
+                break;
         }
     }
 
@@ -181,6 +206,9 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
                 }
                 break;
             case UPDATING:
+                Utils.updateProgress(fm, progressDialog, getString(R.string.updating_reminder_data));
+                break;
+            case RETRIEVING_DATA:
                 Utils.updateProgress(fm, progressDialog, getString(R.string.updating_reminder_data));
                 break;
         }
