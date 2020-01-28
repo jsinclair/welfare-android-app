@@ -263,25 +263,47 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (resultCode == AppCompatActivity.RESULT_OK && requestCode == PET && data != null) {
             if (data.hasExtra(Utils.INTENT_PET_RETURN_ID)) {
                 int id = data.getIntExtra(Utils.INTENT_PET_RETURN_ID, -1);
-                if (id != -1) {
-                   mModel.removePetFromResults(id);
+                if (data.hasExtra(Utils.INTENT_PET_RETURN_ID) && data.hasExtra(Utils.INTENT_ACTION)) {
+                    String action = data.getStringExtra(Utils.INTENT_ACTION);
+                    switch (action) {
+                        case Utils.INTENT_ACTION_ADD:
+                            break;
+                        case Utils.INTENT_ACTION_DELETE:
+                            if (id != -1) {
+                                mModel.removePetFromResults(id);
+                            }
+                            break;
+                        case Utils.INTENT_ACTION_EDIT:
+                            break;
+                    }
                 }
             }
         } else if (resultCode == AppCompatActivity.RESULT_OK && requestCode == RES && data != null) {
             if (data.hasExtra(Utils.INTENT_RES_ID)) {
                 int id = data.getIntExtra(Utils.INTENT_RES_ID, -1);
-                if (id != -1) {
-                    mModel.removeResFromResults(id);
+                if (data.hasExtra(Utils.INTENT_RES_ID) && data.hasExtra(Utils.INTENT_ACTION)) {
+                    String action = data.getStringExtra(Utils.INTENT_ACTION);
+                    switch (action) {
+                        case Utils.INTENT_ACTION_ADD:
+                            break;
+                        case Utils.INTENT_ACTION_DELETE:
+                            if (id != -1) {
+                                mModel.removeResFromResults(id);
+                            }
+                            break;
+                        case Utils.INTENT_ACTION_EDIT:
+                            break;
+                    }
                 }
             }
         } else if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REMINDER && data != null) {
-            if (data.hasExtra(Utils.INTENT_REMINDER_ID)) {
+            if (data.hasExtra(Utils.INTENT_REMINDER_ID) && data.hasExtra(Utils.INTENT_ACTION)) {
                 String action = data.getStringExtra(Utils.INTENT_ACTION);
+                int id = data.getIntExtra(Utils.INTENT_REMINDER_ID, -1);
                 switch (action) {
                     case Utils.INTENT_ACTION_ADD:
                         break;
                     case Utils.INTENT_ACTION_DELETE:
-                        int id = data.getIntExtra(Utils.INTENT_REMINDER_ID, -1);
                         if (id != -1) {
                             mModel.removeReminderFromResults(id);
                         }

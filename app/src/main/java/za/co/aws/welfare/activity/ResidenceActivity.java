@@ -221,6 +221,7 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
             case DELETE_DONE:
                 Intent outputDelete = new Intent();
                 outputDelete.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());
+                outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
                 setResult(RESULT_OK, outputDelete);
                 finish();
                 break;

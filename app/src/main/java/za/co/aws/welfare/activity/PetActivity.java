@@ -280,6 +280,7 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             case DELETE_DONE:
                 Intent outputDelete = new Intent();
                 outputDelete.putExtra(Utils.INTENT_PET_RETURN_ID, mModel.getPetID());
+                outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
                 setResult(RESULT_OK, outputDelete);
                 finish();
                 break;
