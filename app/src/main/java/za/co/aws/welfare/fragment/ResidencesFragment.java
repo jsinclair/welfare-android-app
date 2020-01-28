@@ -25,11 +25,16 @@ import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ResidencesBinding;
 import za.co.aws.welfare.viewModel.HomeViewModel;
 
+/** Displays search view and residence search. */
 public class ResidencesFragment extends Fragment {
 
+    // The container for all the search fields.
     private LinearLayout searchView;
+
+    // The button to expand the search fields.
     private FloatingActionButton expandButton;
-    private Button searchButton;
+
+    // The results of the search.
     private ListView results;
 
 
@@ -49,7 +54,7 @@ public class ResidencesFragment extends Fragment {
         results = v.findViewById(R.id.result_residences);
 
         searchView = v.findViewById(R.id.search_menu);
-        searchButton = v.findViewById(R.id.search_button);
+        Button searchButton = v.findViewById(R.id.search_button);
         expandButton = v.findViewById(R.id.expand_button);
         expandButton.setOnClickListener(new View.OnClickListener() {
             @Override
