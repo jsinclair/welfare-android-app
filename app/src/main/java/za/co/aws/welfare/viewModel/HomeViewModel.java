@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -425,6 +426,26 @@ public class HomeViewModel extends AndroidViewModel {
             return headers;
         }
         }, getApplication());
+    }
+
+    public void updateResidence(ResidenceSearchData residence) {
+        if (mResidenceSearchResults.getValue() != null) {
+            LinkedList<ResidenceSearchData> residenceList = mResidenceSearchResults.getValue();
+            int index = -1;
+            for (int i = 0; i < residenceList.size(); i++) {
+                if (residenceList.get(i).getID() == residence.getID()) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index >= 0) {
+                residenceList.remove(index);
+                residenceList.add(index, residence);
+            } else {
+                residenceList.add(residence);
+            }
+            mResidenceSearchResults.setValue(residenceList);
+        }
     }
 
     public void triggerViewResident(int id) {

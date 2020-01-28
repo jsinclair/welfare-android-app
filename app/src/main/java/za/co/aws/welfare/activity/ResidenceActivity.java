@@ -29,6 +29,7 @@ import java.util.List;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ActivityViewResidentBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
@@ -356,6 +357,49 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         if (mModel.editOccurred()) {
             Intent output = new Intent();
             output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
+            output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
+
+            int id = mModel.getResidenceID();
+            output.putExtra(Utils.INTENT_RES_ID, id);
+            
+            String shackID = mModel.mShackID.getValue();
+            String streetAddress = mModel.getAddress();
+            String lat = mModel.mLat.getValue();
+            String lon = mModel.mLon.getValue();
+
+            String animals = "";
+            String allSteri = "Unknown";
+            boolean allSteriBool = true;
+            boolean unknownSteriBool = false;
+            if (mModel.getAnimalList().getValue() != null) {
+                boolean first = true;
+                for (PetMinDetail pet : mModel.getAnimalList().getValue()) {
+                    if (!first) {
+                        animals +=", ";
+                    }
+                    animals += pet.getName();
+                    first = false;
+                    allSteriBool = allSteriBool && (pet.getSterilised() == Utils.STERILISED_YES);
+                    if (pet.getSterilised() == Utils.STERILISED_UNKNOWN) {
+                        unknownSteriBool = true;
+                    }
+                }
+            }
+
+            if (unknownSteriBool) {
+                allSteri = "Unknown";
+            } else if (allSteriBool) {
+                allSteri = "Yes";
+            } else {
+                allSteri = "No";
+            }
+
+            String name = mModel.mResidentName.getValue();
+            String residentID = mModel.mResidentID.getValue();
+            String tel = mModel.mResidentTel.getValue();
+
+            output.putExtra("residence", new ResidenceSearchData(id, shackID, streetAddress, name,
+                    residentID, tel, lat, lon, animals, allSteri));
             setResult(RESULT_OK, output);
         }
         super.onBackPressed();
