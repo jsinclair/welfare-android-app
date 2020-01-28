@@ -119,6 +119,7 @@ public class HomeViewModel extends AndroidViewModel {
     /** Use this for one-time events. */
     public SingleLiveEvent<Pair<Event, String>> mEventHandler;
     public SingleLiveEvent<Pair<Navigate, Integer>> mNavigationHandler;
+    private SingleLiveEvent<Integer> mScrollIndicator;
 
     public HomeViewModel(Application application) {
         super(application);
@@ -129,6 +130,7 @@ public class HomeViewModel extends AndroidViewModel {
         mResidentNameSearch = new MutableLiveData<>();
         mTelSearch = new MutableLiveData<>();
         mResidenceSearchResults = new MutableLiveData<>();
+        mScrollIndicator = new SingleLiveEvent<>();
 
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
@@ -151,6 +153,10 @@ public class HomeViewModel extends AndroidViewModel {
     }
     public LiveData<List<AnimalType>> getSpeciesAvailable() {
         return mSpeciesAvailable;
+    }
+
+    public LiveData<Integer> getIndexScroller() {
+        return mScrollIndicator;
     }
 
     /** Use this to respond to one time events. */
@@ -445,6 +451,7 @@ public class HomeViewModel extends AndroidViewModel {
                 residenceList.add(residence);
             }
             mResidenceSearchResults.setValue(residenceList);
+            mScrollIndicator.setValue(index);
         }
     }
 

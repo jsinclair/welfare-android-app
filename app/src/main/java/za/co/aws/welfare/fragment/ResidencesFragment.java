@@ -81,6 +81,21 @@ public class ResidencesFragment extends Fragment {
             }
         });
 
+        mModel.getIndexScroller().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(final Integer integer) {
+                if (integer != null) {
+                    results.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            results.smoothScrollToPosition(integer);
+                        }
+                    });
+
+                }
+            }
+        });
+
         //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
         mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
             @Override
