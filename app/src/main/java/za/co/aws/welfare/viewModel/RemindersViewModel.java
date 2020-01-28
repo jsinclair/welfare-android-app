@@ -105,6 +105,8 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
+    private boolean successfulEditOccurred;
+
     public RemindersViewModel(Application application) {
         super(application);
         mNotes = new MutableLiveData<>();
@@ -114,6 +116,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         mNetworkHandler = new MutableLiveData<>();
         mEventHandler = new SingleLiveEvent<>();
         mErrorState = new MutableLiveData<>();
+        successfulEditOccurred = false;
     }
 
     public MutableLiveData<List<PetMinDetail>> getAnimalList() {
@@ -181,6 +184,10 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
      */
     public void reloadData() {
         loadData(reminderID);
+    }
+
+    public boolean hasEditOccurred() {
+        return successfulEditOccurred;
     }
 
     /** If this is an edit and not a new, load the existing data from the backend. */
@@ -440,6 +447,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                         mEditMode.setValue(false);
                         isNew = false;
                         mNetworkHandler.setValue(NetworkAction.IDLE);
+                        successfulEditOccurred = true;
                     }
                 }, new Response.ErrorListener() {
                     @Override

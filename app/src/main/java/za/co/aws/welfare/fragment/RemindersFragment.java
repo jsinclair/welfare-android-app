@@ -48,6 +48,21 @@ public class RemindersFragment extends Fragment {
             }
         });
 
+        mModel.getIndexScroller().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(final Integer integer) {
+                if (integer != null) {
+                    results.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            results.smoothScrollToPosition(integer);
+                        }
+                    });
+
+                }
+            }
+        });
+
         mModel.getReminders().observe(getViewLifecycleOwner(), new Observer<LinkedList<ReminderData>>() {
             @Override
             public void onChanged(LinkedList<ReminderData> reminderData) {

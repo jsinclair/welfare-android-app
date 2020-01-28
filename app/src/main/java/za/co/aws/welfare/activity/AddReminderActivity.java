@@ -29,6 +29,8 @@ import java.util.List;
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.RemoveAnimalAdapter;
 import za.co.aws.welfare.dataObjects.PetMinDetail;
+import za.co.aws.welfare.dataObjects.ReminderData;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ActivityAddReminderBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
@@ -398,5 +400,35 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         String dayString = String.format("%02d", day);
         String date = year + "-" + monthString + "-" + dayString;
         mModel.setDate(date);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mModel.hasEditOccurred()) {
+            Intent output = new Intent();
+            output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
+            output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
+
+            int id = mModel.getReminderID();
+            output.putExtra(Utils.INTENT_REMINDER_ID, id);
+
+            String date = mModel.mDateSelected.getValue();
+
+            String animals = "";
+            if (mModel.getAnimalList().getValue() != null) {
+                boolean first = true;
+                for (PetMinDetail pet : mModel.getAnimalList().getValue()) {
+                    if (!first) {
+                        animals +=", ";
+                    }
+                    animals += pet.getName();
+                    first = false;
+                }
+            }
+
+            output.putExtra("reminders", new ReminderData(id, date, animals));
+            setResult(RESULT_OK, output);
+        }
+        super.onBackPressed();
     }
 }
