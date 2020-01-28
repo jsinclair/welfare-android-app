@@ -403,8 +403,9 @@ public class HomeViewModel extends AndroidViewModel {
                                     String name = entry.optString("name");
                                     String dob = entry.optString("approximate_dob");
                                     String gender = entry.optString("gender");
+                                    String displayAddress = entry.optString("display_address");
                                     int isSterilised = entry.optInt("sterilised", Utils.STERILISED_UNKNOWN);
-                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, gender, isSterilised));
+                                    results.add(new PetSearchData(id, animalType, animalTypeDesc, name, dob, gender, isSterilised, displayAddress));
                                 }
                             }
                         } catch (JSONException e) {

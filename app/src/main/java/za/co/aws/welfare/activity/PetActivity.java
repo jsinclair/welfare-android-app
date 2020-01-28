@@ -369,8 +369,10 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             String gender = mModel.mGender.getValue();
             int sterilised = mModel.getSterilised();
 
+            String address = mModel.mDisplayAddress.getValue();
+
             output.putExtra("pet", new PetSearchData(petID, animalTypeID, animalTypeDesc,
-                    petName, petDOB, gender, sterilised));
+                    petName, petDOB, gender, sterilised, address));
             setResult(RESULT_OK, output);
         }
         super.onBackPressed();

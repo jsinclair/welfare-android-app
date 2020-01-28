@@ -12,9 +12,10 @@ public class PetSearchData implements Parcelable {
     private String mPetName;
     private String mPetDOB;
     private String mGender;
+    private String mDisplayAddress;
     private int mSterilised;
 
-    public PetSearchData(int mID, int mAnimalTypeID, String mAnimalTypeDesc, String mPetName, String mPetDOB, String gender, int sterilised) {
+    public PetSearchData(int mID, int mAnimalTypeID, String mAnimalTypeDesc, String mPetName, String mPetDOB, String gender, int sterilised, String mDisplayAddress) {
         this.mID = mID;
         this.mAnimalTypeID = mAnimalTypeID;
         this.mAnimalTypeDesc = mAnimalTypeDesc;
@@ -22,6 +23,7 @@ public class PetSearchData implements Parcelable {
         this.mPetDOB = mPetDOB;
         this.mGender = gender;
         this.mSterilised = sterilised;
+        this.mDisplayAddress = mDisplayAddress;
     }
 
     public int getID() {
@@ -34,6 +36,10 @@ public class PetSearchData implements Parcelable {
 
     public String getPetName() {
         return mPetName;
+    }
+
+    public String getDisplayAddress() {
+        return mDisplayAddress;
     }
 
     public String getPetDOB() {
@@ -61,6 +67,7 @@ public class PetSearchData implements Parcelable {
         this.mPetDOB = in.readString();
         this.mGender = in.readString();
         this.mSterilised = in.readInt();
+        this.mDisplayAddress = in.readString();
     }
 
     @Override
@@ -72,6 +79,7 @@ public class PetSearchData implements Parcelable {
         dest.writeString(mPetDOB);
         dest.writeString(mGender);
         dest.writeInt(mSterilised);
+        dest.writeString(mDisplayAddress);
     }
 
     @Override
