@@ -106,6 +106,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
     private boolean successfulEditOccurred;
+    private boolean shouldAddToParent;
 
     public RemindersViewModel(Application application) {
         super(application);
@@ -117,6 +118,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         mEventHandler = new SingleLiveEvent<>();
         mErrorState = new MutableLiveData<>();
         successfulEditOccurred = false;
+        shouldAddToParent = false;
     }
 
     public MutableLiveData<List<PetMinDetail>> getAnimalList() {
@@ -188,6 +190,10 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
 
     public boolean hasEditOccurred() {
         return successfulEditOccurred;
+    }
+
+    public boolean shouldAddToParent() {
+        return shouldAddToParent;
     }
 
     /** If this is an edit and not a new, load the existing data from the backend. */
@@ -440,14 +446,17 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                             String msg = data.getString("message");
                             reminderID = data.getInt("reminder_id");
                             Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
+                            if (isNew) {
+                                shouldAddToParent = true;
+                            }
+                            isNew = false;
+                            successfulEditOccurred = true;
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.reminder_update_unknown_err)));
                             return;
                         }
                         mEditMode.setValue(false);
-                        isNew = false;
                         mNetworkHandler.setValue(NetworkAction.IDLE);
-                        successfulEditOccurred = true;
                     }
                 }, new Response.ErrorListener() {
                     @Override

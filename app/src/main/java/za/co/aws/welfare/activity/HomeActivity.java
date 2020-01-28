@@ -144,7 +144,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 case ADD_REMINDER:
                     Intent addReminderIntent = new Intent(this, AddReminderActivity.class);
                     addReminderIntent.putExtra("RequestNewEntry", true);
-                    startActivity(addReminderIntent);
+                    startActivityForResult(addReminderIntent, REMINDER);
                     break;
             }
         }
@@ -321,6 +321,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 int id = data.getIntExtra(Utils.INTENT_REMINDER_ID, -1);
                 switch (action) {
                     case Utils.INTENT_ACTION_ADD:
+                        if (data.hasExtra("reminders")) {
+                            ReminderData rem = data.getParcelableExtra("reminders");
+                            mModel.addReminder(rem);
+                        }
                         break;
                     case Utils.INTENT_ACTION_DELETE:
                         if (id != -1) {

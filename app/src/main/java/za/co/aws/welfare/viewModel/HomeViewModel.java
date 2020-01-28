@@ -531,6 +531,21 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
+    /** Given a reminder, remove the old one and replace it with this one. */
+    public void addReminder(ReminderData rem) {
+        if (mRemindersResults.getValue() != null) {
+            LinkedList<ReminderData> remList = mRemindersResults.getValue();
+            remList.add(rem);
+            mRemindersResults.setValue(remList);
+            mScrollIndicator.setValue(remList.size());
+        } else {
+            LinkedList<ReminderData> remList = new LinkedList<>();
+            remList.add(rem);
+            mRemindersResults.setValue(remList);
+        }
+    }
+
+
     public void triggerViewResident(int id) {
         mNavigationHandler.setValue(new Pair<>(Navigate.RESIDENCE, id));
     }
