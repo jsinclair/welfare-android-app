@@ -26,6 +26,9 @@ import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.DatePickerFragment;
+import za.co.aws.welfare.dataObjects.PetMinDetail;
+import za.co.aws.welfare.dataObjects.PetSearchData;
+import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ActivityPetBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
@@ -348,6 +351,26 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         if (mModel.editOccurred()) {
             Intent output = new Intent();
             output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
+            output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
+
+//            int id = mModel.getResidenceID();
+            int petID = mModel.getPetID();
+            output.putExtra(Utils.INTENT_PET_RETURN_ID, petID);
+
+            int animalTypeID = -1;
+            String animalTypeDesc = "";
+            if (mModel.getSpecies().getValue() != null) {
+                animalTypeID = mModel.getSpecies().getValue().getId();
+                animalTypeDesc = mModel.getSpecies().getValue().getDescription();
+            }
+
+            String petName = mModel.getPetName();
+            String petDOB = mModel.getDateEntered();
+            String gender = mModel.mGender.getValue();
+            int sterilised = mModel.getSterilised();
+
+            output.putExtra("pet", new PetSearchData(petID, animalTypeID, animalTypeDesc,
+                    petName, petDOB, gender, sterilised));
             setResult(RESULT_OK, output);
         }
         super.onBackPressed();

@@ -94,7 +94,6 @@ public class PetViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> mErrorState;
     public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
-    public MutableLiveData<AnimalType> mAnimalType;
     public MutableLiveData<String> mPetName;
     public MutableLiveData<String> mApproxDOB;
     public MutableLiveData<String> mNotes;
@@ -132,7 +131,6 @@ public class PetViewModel extends AndroidViewModel {
         mSpecies = new MutableLiveData<>();
         mEditMode = new MutableLiveData<>();
         mErrorState = new MutableLiveData<>();
-        mAnimalType = new MutableLiveData<>();
         mPetName = new MutableLiveData<>();
         mApproxDOB = new MutableLiveData<>();
         mNotes = new MutableLiveData<>();

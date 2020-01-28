@@ -25,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.application.WelfareApplication;
+import za.co.aws.welfare.dataObjects.PetSearchData;
 import za.co.aws.welfare.dataObjects.ReminderData;
 import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
@@ -276,6 +277,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             }
                             break;
                         case Utils.INTENT_ACTION_EDIT:
+                            if (data.hasExtra("pet")) {
+                                PetSearchData pet = data.getParcelableExtra("pet");
+                                mModel.updatePet(pet);
+                            }
                             break;
                     }
                 }

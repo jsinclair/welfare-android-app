@@ -54,6 +54,21 @@ public class AnimalsFragment extends Fragment {
         results = v.findViewById(R.id.result_pets);
         mSpecies = v.findViewById(R.id.species);
 
+        mModel.getIndexScroller().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(final Integer integer) {
+                if (integer != null) {
+                    results.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            results.smoothScrollToPosition(integer);
+                        }
+                    });
+
+                }
+            }
+        });
+
         mModel.getSpeciesAvailable().observe(getViewLifecycleOwner(), new Observer<List<AnimalType>>() {
             @Override
             public void onChanged(List<AnimalType> animalTypes) {
