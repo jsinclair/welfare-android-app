@@ -91,4 +91,20 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <LinearLayout android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_street_address"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/text_gap"
+            android:layout_marginRight="@dimen/text_gap"/>
+        <TextView
+            android:id="@+id/pet_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 </LinearLayout>

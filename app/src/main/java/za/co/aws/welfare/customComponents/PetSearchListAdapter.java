@@ -27,6 +27,7 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
         TextView gender;
         ImageView genderIcon;
         TextView sterilised;
+        TextView address;
         int ref;
     }
 
@@ -73,6 +74,7 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
             holder.species = convertView.findViewById(R.id.pet_species);
             holder.gender = convertView.findViewById(R.id.pet_gender);
             holder.sterilised = convertView.findViewById(R.id.pet_sterilised);
+            holder.address = convertView.findViewById(R.id.pet_address);
 
             convertView.setTag(holder);
         } else {
@@ -100,6 +102,8 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
             holder.sterilised.setTextColor(getContext().getResources().getColor(R.color.red));
         }
         holder.sterilised.setText(sterilisedString);
+
+        holder.address.setText(i.getDisplayAddress());
         return convertView;
     }
 
