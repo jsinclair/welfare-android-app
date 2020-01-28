@@ -503,6 +503,20 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
+    /** Given a reminder, remove the old one and replace it with this one. */
+    public void addPet(PetSearchData pet) {
+        if (mPetSearchResults.getValue() != null) {
+            LinkedList<PetSearchData> petList = mPetSearchResults.getValue();
+            petList.add(pet);
+            mPetSearchResults.setValue(petList);
+            mScrollIndicator.setValue(petList.size());
+        } else {
+            LinkedList<PetSearchData> petList = new LinkedList<>();
+            petList.add(pet);
+            mPetSearchResults.setValue(petList);
+        }
+    }
+
     public void triggerViewResident(int id) {
         mNavigationHandler.setValue(new Pair<>(Navigate.RESIDENCE, id));
     }

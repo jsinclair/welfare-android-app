@@ -351,9 +351,12 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
         if (mModel.editOccurred()) {
             Intent output = new Intent();
             output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
-            output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
+            if (mModel.shouldAddToParent()) {
+                output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_ADD);
+            } else {
+                output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
+            }
 
-//            int id = mModel.getResidenceID();
             int petID = mModel.getPetID();
             output.putExtra(Utils.INTENT_PET_RETURN_ID, petID);
 

@@ -133,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 case ADD_PET:
                     Intent addPetIntent = new Intent(this, PetActivity.class);
                     addPetIntent.putExtra("RequestNewEntry", true);
-                    startActivity(addPetIntent);
+                    startActivityForResult(addPetIntent, PET);
                     break;
                 case REMINDER:
                     Intent reminderIntent = new Intent(this, AddReminderActivity.class);
@@ -270,6 +270,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     String action = data.getStringExtra(Utils.INTENT_ACTION);
                     switch (action) {
                         case Utils.INTENT_ACTION_ADD:
+                            if (data.hasExtra("pet")) {
+                                PetSearchData pet = data.getParcelableExtra("pet");
+                                mModel.addPet(pet);
+                            }
                             break;
                         case Utils.INTENT_ACTION_DELETE:
                             if (id != -1) {

@@ -89,6 +89,9 @@ public class PetViewModel extends AndroidViewModel {
     private boolean isFromRes;
     private boolean mSuccessfulUpdate;
 
+    // This should only be true if a NEW pet has been added, which needs to be added to the parent search list.
+    private boolean mAddToParent;
+
     //If the display address and resID indicate that the pet is not assigned to an address, do not allow navigation.
     public MutableLiveData<Boolean> mAllowAddressNavigation;
     public MutableLiveData<Boolean> mErrorState;
@@ -146,6 +149,7 @@ public class PetViewModel extends AndroidViewModel {
         mEventHandler = new SingleLiveEvent<>();
 
         mResidenceSearchResults = new MutableLiveData<>();
+        mAddToParent = false;
     }
 
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
@@ -215,6 +219,10 @@ public class PetViewModel extends AndroidViewModel {
 
     public boolean editOccurred() {
         return mSuccessfulUpdate;
+    }
+
+    public boolean shouldAddToParent() {
+        return mAddToParent;
     }
 
     public void setSpecies(AnimalType ani) {
@@ -454,6 +462,9 @@ public class PetViewModel extends AndroidViewModel {
                             PetViewModel.this.petID = data.getInt("animal_id");
                             Toast.makeText(getApplication(), msg, Toast.LENGTH_LONG).show();
                             mSuccessfulUpdate = true;
+                            if (isNew) {
+                                mAddToParent = true;
+                            }
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.pet_update_unknown_err)));
                             mNetworkHandler.setValue(NetworkStatus.IDLE);
