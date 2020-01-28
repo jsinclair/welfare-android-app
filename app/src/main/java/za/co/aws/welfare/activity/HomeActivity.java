@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 case ADD_RESIDENCE:
                     Intent addIntent = new Intent(this, ResidenceActivity.class);
                     addIntent.putExtra("RequestNewEntry", true);
-                    startActivity(addIntent);
+                    startActivityForResult(addIntent, RES);
                     break;
                 case PET:
                     Intent petIntent = new Intent(this, PetActivity.class);
@@ -296,6 +296,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     String action = data.getStringExtra(Utils.INTENT_ACTION);
                     switch (action) {
                         case Utils.INTENT_ACTION_ADD:
+                            if (data.hasExtra("residence")) {
+                                ResidenceSearchData res = data.getParcelableExtra("residence");
+                                mModel.addResidence(res);
+                            }
                             break;
                         case Utils.INTENT_ACTION_DELETE:
                             if (id != -1) {

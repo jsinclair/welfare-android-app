@@ -517,6 +517,20 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
+    /** Given a reminder, remove the old one and replace it with this one. */
+    public void addResidence(ResidenceSearchData res) {
+        if (mResidenceSearchResults.getValue() != null) {
+            LinkedList<ResidenceSearchData> resList = mResidenceSearchResults.getValue();
+            resList.add(res);
+            mResidenceSearchResults.setValue(resList);
+            mScrollIndicator.setValue(resList.size());
+        } else {
+            LinkedList<ResidenceSearchData> resList = new LinkedList<>();
+            resList.add(res);
+            mResidenceSearchResults.setValue(resList);
+        }
+    }
+
     public void triggerViewResident(int id) {
         mNavigationHandler.setValue(new Pair<>(Navigate.RESIDENCE, id));
     }

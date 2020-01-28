@@ -357,7 +357,11 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
         if (mModel.editOccurred()) {
             Intent output = new Intent();
             output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
-            output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
+            if (mModel.shouldAddToParent()) {
+                output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_ADD);
+            } else {
+                output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
+            }
 
             int id = mModel.getResidenceID();
             output.putExtra(Utils.INTENT_RES_ID, id);

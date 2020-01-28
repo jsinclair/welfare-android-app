@@ -72,6 +72,9 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
     private boolean isNew;
     private boolean fromSearch;
     private boolean successfulEditOccurred;
+
+    // This should only be true if a NEW pet has been added, which needs to be added to the parent search list.
+    private boolean mAddToParent;
     private PetMinDetail mRemoveRequest;
 
     public MutableLiveData<Boolean> mErrorState;
@@ -113,6 +116,7 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
 
         mEventHandler = new SingleLiveEvent<>();
         successfulEditOccurred = false;
+        mAddToParent = false;
         //todo: saved instance!
     }
 
@@ -129,6 +133,10 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
 
     public boolean editOccurred() {
         return successfulEditOccurred;
+    }
+
+    public boolean shouldAddToParent() {
+        return mAddToParent;
     }
 
     /**
@@ -397,6 +405,10 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
 
                             // If an edit managed to occur at all, we might need to reload the calling class.
                             successfulEditOccurred = true;
+
+                            if (isNew) {
+                                mAddToParent = true;
+                            }
                         } catch (JSONException e) {
                             mEventHandler.setValue(new Pair<>(Event.UPDATE_ERROR, getApplication().getString(R.string.res_update_unknown_err)));
                             return;
