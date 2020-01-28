@@ -19,7 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +48,8 @@ public class HomeViewModel extends AndroidViewModel {
 
         // Waiting for pet search results.
         SEARCHING_PET,
+
+        // Waiting to receive reminders.
         GET_REMINDERS,
     }
 
@@ -66,6 +67,7 @@ public class HomeViewModel extends AndroidViewModel {
         // If an error occurred while searching on given pet data.
         SEARCH_PET_ERROR,
 
+        // Error if a reminder occurred.
         GET_REMINDER_ERROR,
     }
 
@@ -434,6 +436,7 @@ public class HomeViewModel extends AndroidViewModel {
         }, getApplication());
     }
 
+    /** Given a residence, remove the old one and replace it with this one. */
     public void updateResidence(ResidenceSearchData residence) {
         if (mResidenceSearchResults.getValue() != null) {
             LinkedList<ResidenceSearchData> residenceList = mResidenceSearchResults.getValue();
@@ -479,6 +482,7 @@ public class HomeViewModel extends AndroidViewModel {
         mNavigationHandler.setValue(new Pair<>(Navigate.REMINDER, id));
     }
 
+    // Remove a pet from the result list.
     public void removePetFromResults(int id) {
         LinkedList<PetSearchData> vals = mPetSearchResults.getValue();
         if (vals != null) {
@@ -492,6 +496,7 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
+    // Remove a residence from the result list.
     public void removeResFromResults(int id) {
         LinkedList<ResidenceSearchData> vals = mResidenceSearchResults.getValue();
         if (vals != null) {
@@ -505,6 +510,7 @@ public class HomeViewModel extends AndroidViewModel {
         }
     }
 
+    // Remove a reminder from the reminders list.
     public void removeReminderFromResults(int id) {
         LinkedList<ReminderData> vals = mRemindersResults.getValue();
         if (vals != null) {
