@@ -336,7 +336,7 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
 
             List<PetMinDetail> pets = mAnimalList.getValue();
             if (!((mSavedAnimalList == null || mSavedAnimalList.isEmpty()) && (pets == null || pets.isEmpty()))) {
-                if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) { //todo; check logic here
+                if ((pets == null && !mSavedAnimalList.isEmpty()) || (pets.size() != mSavedAnimalList.size())) {
                     hasChanged = true;
                 } else {
                     for (PetMinDetail pet : mSavedAnimalList) {

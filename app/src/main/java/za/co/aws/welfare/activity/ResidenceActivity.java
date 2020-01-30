@@ -209,33 +209,35 @@ public class ResidenceActivity extends AppCompatActivity implements YesNoDialogF
 
     /** Handle once off events.*/
     private void handleEvent(Pair<ResidenceViewModel.Event, String> eventData) {
-        switch (eventData.first) {
-            case RETRIEVAL_ERROR:
-                showAlert(getString(R.string.fetch_error_title), eventData.second);
-                break;
-            case UPDATE_ERROR:
-                showAlert(getString(R.string.update_error_title), eventData.second);
-                break;
-            case DATA_REQUIRED:
-                showAlert(getString(R.string.data_required), eventData.second);
-                break;
-            case DELETE_DONE:
-                Intent outputDelete = new Intent();
-                outputDelete.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());
-                outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
-                setResult(RESULT_OK, outputDelete);
-                finish();
-                break;
-            case DELETE_ERROR:
-                showAlert(getString(R.string.delete_error), eventData.second);
-                break;
-            case SPECIAL_ADD_DONE:
-                Intent output = new Intent();
-                output.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());
-                output.putExtra(Utils.INTENT_RES_DESC, mModel.getAddress());
-                setResult(RESULT_OK, output);
-                finish();
-                break;
+        if (eventData != null && eventData.first != null) {
+            switch (eventData.first) {
+                case RETRIEVAL_ERROR:
+                    showAlert(getString(R.string.fetch_error_title), eventData.second);
+                    break;
+                case UPDATE_ERROR:
+                    showAlert(getString(R.string.update_error_title), eventData.second);
+                    break;
+                case DATA_REQUIRED:
+                    showAlert(getString(R.string.data_required), eventData.second);
+                    break;
+                case DELETE_DONE:
+                    Intent outputDelete = new Intent();
+                    outputDelete.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());
+                    outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
+                    setResult(RESULT_OK, outputDelete);
+                    finish();
+                    break;
+                case DELETE_ERROR:
+                    showAlert(getString(R.string.delete_error), eventData.second);
+                    break;
+                case SPECIAL_ADD_DONE:
+                    Intent output = new Intent();
+                    output.putExtra(Utils.INTENT_RES_ID, mModel.getResidenceID());
+                    output.putExtra(Utils.INTENT_RES_DESC, mModel.getAddress());
+                    setResult(RESULT_OK, output);
+                    finish();
+                    break;
+            }
         }
     }
 

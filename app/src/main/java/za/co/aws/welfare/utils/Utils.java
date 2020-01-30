@@ -110,7 +110,7 @@ public class Utils {
             try {
                 JSONObject errorObject = new JSONObject(json);
                 JSONArray errorArray = errorObject.getJSONArray("errors");
-                StringBuilder returnMessage = new StringBuilder("");
+                StringBuilder returnMessage = new StringBuilder();
                 int end = errorArray.length();
                 for (int i = 0; i < end; i++) {
                     returnMessage.append(errorArray.getJSONObject(i).getString("title"));

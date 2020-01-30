@@ -211,7 +211,7 @@
                     android:visibility="gone"/>
             </LinearLayout>
 
-            <!--This list allows the user to navigate to differnt animals if NOT in edit-->
+            <!--This list allows the user to navigate to different animals if NOT in edit-->
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

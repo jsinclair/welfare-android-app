@@ -265,38 +265,39 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
 
     /** Handle once off events.*/
     private void handleEvent(Pair<PetViewModel.Event, String> eventData) {
-        switch (eventData.first) {
-            case RETRIEVAL_ERROR:
-                showAlert(getString(R.string.fetch_error_title), eventData.second);
-                break;
-            case UPDATE_ERROR:
-                showAlert(getString(R.string.fetch_error_title), eventData.second);
-                break;
-            case DATA_REQUIRED:
-                showAlert(getString(R.string.data_required), eventData.second);
-                break;
-            case SEARCH_RES_ERROR:
-                showAlert(getString(R.string.download_err), eventData.second);
-                break;
-            case DELETE_DONE:
-                Intent outputDelete = new Intent();
-                outputDelete.putExtra(Utils.INTENT_PET_RETURN_ID, mModel.getPetID());
-                outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
-                setResult(RESULT_OK, outputDelete);
-                finish();
-                break;
-            case DELETE_ERROR:
-                showAlert(getString(R.string.delete_error), eventData.second);
-                break;
-            case SPECIAL_ADD_DONE:
-                Intent output = new Intent();
-                output.putExtra(Utils.INTENT_PET_RETURN_STERILISED, mModel.getSterilised());
-                output.putExtra(Utils.INTENT_PET_RETURN_NAME, mModel.getPetName());
-                output.putExtra(Utils.INTENT_PET_RETURN_ID, mModel.getPetID());
-                setResult(RESULT_OK, output);
-                finish();
-                break;
-
+        if (eventData != null && eventData.first != null) {
+            switch (eventData.first) {
+                case RETRIEVAL_ERROR:
+                    showAlert(getString(R.string.fetch_error_title), eventData.second);
+                    break;
+                case UPDATE_ERROR:
+                    showAlert(getString(R.string.fetch_error_title), eventData.second);
+                    break;
+                case DATA_REQUIRED:
+                    showAlert(getString(R.string.data_required), eventData.second);
+                    break;
+                case SEARCH_RES_ERROR:
+                    showAlert(getString(R.string.download_err), eventData.second);
+                    break;
+                case DELETE_DONE:
+                    Intent outputDelete = new Intent();
+                    outputDelete.putExtra(Utils.INTENT_PET_RETURN_ID, mModel.getPetID());
+                    outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
+                    setResult(RESULT_OK, outputDelete);
+                    finish();
+                    break;
+                case DELETE_ERROR:
+                    showAlert(getString(R.string.delete_error), eventData.second);
+                    break;
+                case SPECIAL_ADD_DONE:
+                    Intent output = new Intent();
+                    output.putExtra(Utils.INTENT_PET_RETURN_STERILISED, mModel.getSterilised());
+                    output.putExtra(Utils.INTENT_PET_RETURN_NAME, mModel.getPetName());
+                    output.putExtra(Utils.INTENT_PET_RETURN_ID, mModel.getPetID());
+                    setResult(RESULT_OK, output);
+                    finish();
+                    break;
+            }
         }
     }
 

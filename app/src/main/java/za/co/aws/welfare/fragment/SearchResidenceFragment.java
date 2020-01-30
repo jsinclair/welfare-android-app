@@ -53,7 +53,7 @@ public class SearchResidenceFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setTitle("Search and Choose a residence");
