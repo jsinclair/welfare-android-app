@@ -8,10 +8,6 @@
     <string name="invalid_server_response">Invalid Server Response.</string>
     <string name="connection_error">A connection error occurred, please ensure a stable internet connection is available and try again.</string>
 
-    <!-- Notification strings -->
-    <string name="channel_id">WELFARE_CHANNEL</string>
-    <string name="channel_name">welfare_channel</string>
-    <string name="channel_description">The notification channel for the Welfare app.</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -20,9 +16,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="remember_me">Remember Me</string>
     <string name="signing_in">Signing in...</string>
     <string name="app_logo">Welfare Logo</string>
@@ -33,7 +27,6 @@
     <string name="user_name">User Name</string>
 
     <!-- Strings related to the home screen -->
-    <string name="welcome">Welcome!</string>
     <string name="sign_out">Sign Out</string>
     <string name="animals">Pets</string>
     <string name="residences">Residences</string>
@@ -63,7 +56,6 @@
     <string name="search_pets">Searching Pets...</string>
     <string name="updating_pet_data">Updating Pet...</string>
     <string name="retrieving_pet_data">Retrieving Pet...</string>
-    <string name="search_pet_name_res">Name:</string>
     <string name="search_pet_species_res">Species:</string>
     <string name="search_pet_dob_res">DOB:</string>
     <string name="search_pet_gender_res">Gender:</string>
@@ -101,16 +93,13 @@
     <string name="search_res_animals">Pets:</string>
     <string name="search_res_all_sterilised">All Sterilised:</string>
     <string name="search_residence">Searching Residence</string>
-    <string name="search_street_address">Street Address:</string>
     <string name="search_shack_id">Shack ID:</string>
     <string name="search_res_name">Resident Name</string>
     <string name="search_res_id">ID Number</string>
     <string name="search_res_tel">Resident Tel</string>
-    <string name="search_latitude">Lat:</string>
     <string name="search_resident_name">Resident:</string>
     <string name="search_resident_id">ID:</string>
     <string name="search_resident_tel">Tel:</string>
-    <string name="search_longitude">Long:</string>
     <string name="add_pet">Add Pet</string>
     <string name="address_shack_req">Please provide at least the address or the shack id.</string>
     <string name="res_update_internal_err">An internal error occurred while trying to update residence. Please try again.</string>
@@ -120,7 +109,6 @@
     <string name="res_update_conn_err">A connection error occurred while trying to update resident info. Please check your connection and try again.</string>
     <string name="conn_error_res_search">A connection error occurred while trying to retrieve Resident info. Please check your connection and try again.</string>
     <string name="internal_error_res_search">An internal error occurred while trying to retrieve Resident info. Some information might be missing or incorrect.</string>
-    <string name="res_search_data_required">Please provide at least one entry in the search fields to do a search.</string>
     <string name="unknown_error_res_search">An unknown error occurred while trying to retrieve Resident info. Please try again later.</string>
 
     <!-- Strings related to the reminders screen -->
@@ -136,7 +124,6 @@
 
     <!--general-->
     <string name="deleting_pet_from_sys">Deleting pet from system...</string>
-    <string name="delete_done">Delete Completed</string>
     <string name="delete_error">Delete Error</string>
     <string name="delete_error_msg">An error occurred while trying to delete. Please try again.</string>
     <string name="delete_error_internal_msg">An internal error occurred while trying to delete. Please try again.</string>
@@ -162,7 +149,6 @@
     <string name="nothing_to_see">Nothing to see here</string>
     <string name="retry">Retry</string>
     <string name="species">Species</string>
-    <string name="update_successful">Changes submitted successfully!</string>
 
     <string name="version">Version:</string>
 

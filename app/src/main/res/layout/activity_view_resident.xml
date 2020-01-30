@@ -6,227 +6,221 @@
             name="viewModel"
             type="za.co.aws.welfare.viewModel.ResidenceViewModel"/>
     </data>
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true">
+        <ScrollView
+            android:id="@+id/scroller"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/general_padding">
+                <LinearLayout
+                    android:id="@+id/error_view"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/empty"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="@dimen/small_padding"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="@string/nothing_to_see"
+                        android:layout_marginBottom="@dimen/small_padding"
+                        android:gravity="center" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/res_download_err"
+                        android:layout_marginBottom="@dimen/small_padding"
+                        android:gravity="center"/>
+                    <Button
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_button"
+                        android:textColor="@android:color/white"
+                        android:text="@string/retry"
+                        android:layout_gravity="center_horizontal"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/data_container"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/address_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_address"
+                        android:layout_marginBottom="@dimen/general_padding"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="5"
+                            android:textColor="@android:color/black"
+                            android:text="@={ viewModel.mAddress }"
+                            android:inputType="textMultiLine" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/shack_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_shack"
+                        android:layout_marginBottom="@dimen/general_padding"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/shack_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:text="@={ viewModel.mShackID }"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/resident_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_res_name"
+                        android:layout_marginBottom="@dimen/general_padding"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/res_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="5"
+                            android:textColor="@android:color/black"
+                            android:text="@={ viewModel.mResidentName }"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/resident_id_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_res_id"
+                        android:layout_marginBottom="@dimen/general_padding"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/res_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="5"
+                            android:textColor="@android:color/black"
+                            android:text="@={ viewModel.mResidentID }"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/resident_tel_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/search_res_tel"
+                        android:layout_marginBottom="@dimen/general_padding"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/res_tel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="5"
+                            android:textColor="@android:color/black"
+                            android:text="@={ viewModel.mResidentTel }"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/notes_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/notes"
+                        android:layout_marginBottom="@dimen/general_padding"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/notes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:text="@={ viewModel.mNotes }"
+                            android:inputType="textMultiLine" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
         <LinearLayout
             android:orientation="vertical"
+            android:id="@+id/ani_cont"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ScrollView
-                android:id="@+id/scroller"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/general_padding">
-                    <LinearLayout
-                        android:id="@+id/error_view"
-                        android:visibility="gone"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent">
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/empty"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginBottom="@dimen/small_padding"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textStyle="bold"
-                            android:text="@string/nothing_to_see"
-                            android:layout_marginBottom="@dimen/small_padding"
-                            android:gravity="center" />
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/res_download_err"
-                            android:layout_marginBottom="@dimen/small_padding"
-                            android:gravity="center"/>
-                        <Button
-                            android:id="@+id/button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_button"
-                            android:textColor="@android:color/white"
-                            android:text="@string/retry"
-                            android:layout_gravity="center_horizontal"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/data_container"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/address_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/search_address"
-                            android:layout_marginBottom="@dimen/general_padding"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/address"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:maxLines="5"
-                                android:textColor="@android:color/black"
-                                android:text="@={ viewModel.mAddress }"
-                                android:inputType="textMultiLine" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/shack_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/search_shack"
-                            android:layout_marginBottom="@dimen/general_padding"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/shack_id"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/black"
-                                android:text="@={ viewModel.mShackID }"
-                                android:inputType="text" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/resident_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/search_res_name"
-                            android:layout_marginBottom="@dimen/general_padding"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/res_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:maxLines="5"
-                                android:textColor="@android:color/black"
-                                android:text="@={ viewModel.mResidentName }"
-                                android:inputType="text" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/resident_id_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/search_res_id"
-                            android:layout_marginBottom="@dimen/general_padding"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/res_id"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:maxLines="5"
-                                android:textColor="@android:color/black"
-                                android:text="@={ viewModel.mResidentID }"
-                                android:inputType="number" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/resident_tel_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/search_res_tel"
-                            android:layout_marginBottom="@dimen/general_padding"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/res_tel"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:maxLines="5"
-                                android:textColor="@android:color/black"
-                                android:text="@={ viewModel.mResidentTel }"
-                                android:inputType="number" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/notes_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/notes"
-                            android:layout_marginBottom="@dimen/general_padding"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/notes"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/black"
-                                android:text="@={ viewModel.mNotes }"
-                                android:inputType="textMultiLine" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </ScrollView>
-
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/general_padding">
             <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/ani_cont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/general_padding">
-                <LinearLayout
-                    android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/colorWhite">
+                <TextView
+                    android:id="@+id/animals_title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@color/colorWhite">
-                    <TextView
-                        android:id="@+id/animals_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/search_res_animals"
-                        android:layout_weight="1"/>
+                    android:text="@string/search_res_animals"
+                    android:layout_weight="1"/>
 
-                    <Button
-                        android:id="@+id/add_pet_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/add_pet"
-                        android:drawableLeft="@drawable/add_pet"
-                        android:drawableStart="@drawable/add_pet"
-                        android:visibility="gone"/>
-                </LinearLayout>
-
-                <!--This list allows the user to navigate to different animals if NOT in edit-->
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <com.google.android.flexbox.FlexboxLayout
-                        android:id="@+id/animal_nav_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        app:flexWrap="wrap"/>
-                </ScrollView>
-
-                <ListView
-                    android:id="@+id/remove_animals_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="?attr/dividerHorizontal"
+                <Button
+                    android:id="@+id/add_pet_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_pet"
+                    android:drawableLeft="@drawable/add_pet"
+                    android:drawableStart="@drawable/add_pet"
                     android:visibility="gone"/>
             </LinearLayout>
-        </LinearLayout>
 
-    </RelativeLayout>
+            <!--This list allows the user to navigate to different animals if NOT in edit-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/animal_nav_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    app:flexWrap="wrap"/>
+            </ScrollView>
+
+            <ListView
+                android:id="@+id/remove_animals_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?attr/dividerHorizontal"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </LinearLayout>
 </layout>

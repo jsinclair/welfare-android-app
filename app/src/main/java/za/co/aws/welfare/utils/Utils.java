@@ -83,7 +83,7 @@ public class Utils {
     }
 
     /** Used to display dialogs when async, helps prevent crashes. */
-    public static void showDialogAllowingStateLoss(FragmentManager fragmentManager, DialogFragment dialogFragment, String tag) {
+    private static void showDialogAllowingStateLoss(FragmentManager fragmentManager, DialogFragment dialogFragment, String tag) {
         try {
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.add(dialogFragment, tag);
