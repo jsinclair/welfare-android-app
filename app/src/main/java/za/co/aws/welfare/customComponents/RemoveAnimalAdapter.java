@@ -24,9 +24,9 @@ public class RemoveAnimalAdapter extends ArrayAdapter<PetMinDetail> {
         int ref;
     }
 
-    private List<PetMinDetail> displayObjects;
+    private final List<PetMinDetail> displayObjects;
 
-    private View.OnClickListener deleteListener;
+    private final View.OnClickListener deleteListener;
 
     /** Constructor.
      *

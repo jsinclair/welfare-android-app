@@ -5,9 +5,9 @@ import android.os.Parcelable;
 
 public class ReminderData implements Parcelable {
 
-    private int mID;
-    private String mDate;
-    private String mAnimalNames;
+    private final int mID;
+    private final String mDate;
+    private final String mAnimalNames;
 
     public ReminderData(int mID, String mDate, String mAnimalNames) {
         this.mID = mID;

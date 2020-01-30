@@ -7,15 +7,15 @@ import android.os.Parcelable;
 /** A read only data object to contain results of a Residence search. */
 public class ResidenceSearchData implements Parcelable {
 
-    private int mID;
-    private String mShackID;
-    private String mStreetAddress;
-    private String mLat, mLon;
-    private String mAnimalNames;
-    private String mResidentName;
-    private String mResidentID;
-    private String mResidentTel;
-    private String mAnimalsSterilisedStat;
+    private final int mID;
+    private final String mShackID;
+    private final String mStreetAddress;
+    private final String mLat, mLon;
+    private final String mAnimalNames;
+    private final String mResidentName;
+    private final String mResidentID;
+    private final String mResidentTel;
+    private final String mAnimalsSterilisedStat;
 
     public ResidenceSearchData(int mID, String mShackID, String mStreetAddress, String name,
                                String id, String tel, String mLat, String mLon, String animalNames, String animalsSterilisedStat) {

@@ -54,19 +54,19 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     /** keeps track of the remember me option. */
-    public MutableLiveData<Boolean> mRememberMe;
+    public final MutableLiveData<Boolean> mRememberMe;
 
     /** Remember the user name. */
-    public MutableLiveData<String> mUsername;
+    public final MutableLiveData<String> mUsername;
 
     /** Remember the user password. */
-    public MutableLiveData<String> mPassword;
+    public final MutableLiveData<String> mPassword;
 
-    public MutableLiveData<String> mCurrentVersion;
+    public final MutableLiveData<String> mCurrentVersion;
 
     /** Handle the network status. */
-    private MutableLiveData<NetworkStatus> mNetworkHandler;
-    private SingleLiveEvent<Pair<Event, String>> mEventHandler;
+    private final MutableLiveData<NetworkStatus> mNetworkHandler;
+    private final SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     /** Constructor. */
     public LoginViewModel(Application application) {

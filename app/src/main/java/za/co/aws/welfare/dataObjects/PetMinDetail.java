@@ -6,9 +6,9 @@ package za.co.aws.welfare.dataObjects;
  */
 public class PetMinDetail {
 
-    private int mID;
-    private int mSterilised;
-    private String mName;
+    private final int mID;
+    private final int mSterilised;
+    private final String mName;
 
 
     public PetMinDetail(int mID, String mName, int sterilised) {

@@ -75,20 +75,20 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     }
 
     // Used to indicate an event has triggered.
-    private SingleLiveEvent<Pair<Event, String>> mEventHandler;
+    private final SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     // Stores date selected by the user.
-    public MutableLiveData<String> mDateSelected;
+    public final MutableLiveData<String> mDateSelected;
 
     // Stores notes for the event.
-    public MutableLiveData<String> mNotes;
-    public MutableLiveData<NetworkAction> mNetworkHandler;
+    public final MutableLiveData<String> mNotes;
+    private final MutableLiveData<NetworkAction> mNetworkHandler;
 
     // Stores a list of animals associated with the reminder.
-    public MutableLiveData<List<PetMinDetail>> mAnimalList;
+    private final MutableLiveData<List<PetMinDetail>> mAnimalList;
 
     // Keeps track of whether we are in a permanent error state.
-    public MutableLiveData<Boolean> mErrorState;
+    private final MutableLiveData<Boolean> mErrorState;
 
     // ID of the reminder.
     private Integer reminderID;
@@ -103,7 +103,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     private String mDateSave, mNotesSave;
     private List<PetMinDetail> mSavedAnimalList;
 
-    public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
+    private final MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
     private boolean successfulEditOccurred;
     private boolean shouldAddToParent;

@@ -86,42 +86,42 @@ public class HomeViewModel extends AndroidViewModel {
     /** Remember the last searched address entry. Allows us to show the last filter/result that
      * the user entered. SO for example, if they are doing a census in a particular road, they do not
      * have to redo the search (and spend more data) every time. */
-    public MutableLiveData<String> mResidenceAddressSearch;
+    public final MutableLiveData<String> mResidenceAddressSearch;
 
     /** Remember the last entry used for shack id. */ //todo: might change to only update on SEARCH pressed!
-    public MutableLiveData<String> mShackIDSearch;
-    public MutableLiveData<String> mResidentNameSearch;
-    public MutableLiveData<String> mTelSearch;
-    public MutableLiveData<String> mIDNumber;
+    public final MutableLiveData<String> mShackIDSearch;
+    public final MutableLiveData<String> mResidentNameSearch;
+    public final MutableLiveData<String> mTelSearch;
+    public final MutableLiveData<String> mIDNumber;
 
     /** Remember the last entry used for lat / lon. STILL TODO!*/
     public MutableLiveData<String> mLatLongSearch; //TODO!
 
     /** Holds the results of the last search done. */
-    public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
-    public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResults;
-    public MutableLiveData<LinkedList<ReminderData>> mRemindersResults;
+    public final MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
+    public final MutableLiveData<LinkedList<PetSearchData>> mPetSearchResults;
+    public final MutableLiveData<LinkedList<ReminderData>> mRemindersResults;
 
 
     //////PETS
-    public MutableLiveData<String> mPetNameSearch;
-    public MutableLiveData<String> mPetGenderSearch;
-    public MutableLiveData<String> mPetSterilisedSearch;
+    public final MutableLiveData<String> mPetNameSearch;
+    public final MutableLiveData<String> mPetGenderSearch;
+    public final MutableLiveData<String> mPetSterilisedSearch;
 
     // List of species available.
-    public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
+    public final MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
     // The selected species
-    public MutableLiveData<AnimalType> mSpeciesAvailableSearch;
+    public final MutableLiveData<AnimalType> mSpeciesAvailableSearch;
 
 
     /** Use this for indicating the network usage. Remember to always reset back to idle. */
-    public MutableLiveData<NetworkStatus> mNetworkHandler;
+    public final MutableLiveData<NetworkStatus> mNetworkHandler;
 
     /** Use this for one-time events. */
-    public SingleLiveEvent<Pair<Event, String>> mEventHandler;
-    public SingleLiveEvent<Pair<Navigate, Integer>> mNavigationHandler;
-    private SingleLiveEvent<Integer> mScrollIndicator;
+    public final SingleLiveEvent<Pair<Event, String>> mEventHandler;
+    public final SingleLiveEvent<Pair<Navigate, Integer>> mNavigationHandler;
+    private final SingleLiveEvent<Integer> mScrollIndicator;
 
     public HomeViewModel(Application application) {
         super(application);

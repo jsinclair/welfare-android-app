@@ -56,21 +56,21 @@ public class SearchPetsViewModel extends AndroidViewModel {
     public static final String STERILISED_NO = "0";
     public static final String STERILISED_ALL = "";
 
-    private MutableLiveData<NetworkStatus> mNetworkHandler;
-    private SingleLiveEvent<Pair<Event, String>> mEventHandler;
+    private final MutableLiveData<NetworkStatus> mNetworkHandler;
+    private final SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
-    public MutableLiveData<String> mPetNameSearch;
-    public MutableLiveData<String> mPetGenderSearch;
-    public MutableLiveData<String> mPetSterilisedSearch;
+    public final MutableLiveData<String> mPetNameSearch;
+    public final MutableLiveData<String> mPetGenderSearch;
+    public final MutableLiveData<String> mPetSterilisedSearch;
 
     // List of species available.
-    public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
+    private final MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
     // The selected species
-    public MutableLiveData<AnimalType> mSelectedSpecies;
+    public final MutableLiveData<AnimalType> mSelectedSpecies;
 
     // The result of the search.
-    public MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
+    private final MutableLiveData<LinkedList<PetSearchData>> mPetSearchResult;
 
     public SearchPetsViewModel(Application app) {
         super(app);

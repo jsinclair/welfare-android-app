@@ -25,7 +25,7 @@ public class RemindersAdapter extends ArrayAdapter<ReminderData> {
     }
 
     /** List of original objects.*/
-    private LinkedList<ReminderData> originalObjects;
+    private final LinkedList<ReminderData> originalObjects;
 
     /** Constructor.
      *

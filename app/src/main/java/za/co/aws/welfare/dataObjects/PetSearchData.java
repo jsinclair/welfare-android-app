@@ -6,14 +6,14 @@ import android.os.Parcelable;
 /** Used during a search for pets. */
 public class PetSearchData implements Parcelable {
 
-    private int mID;
-    private int mAnimalTypeID;
-    private String mAnimalTypeDesc;
-    private String mPetName;
-    private String mPetDOB;
-    private String mGender;
-    private String mDisplayAddress;
-    private int mSterilised;
+    private final int mID;
+    private final int mAnimalTypeID;
+    private final String mAnimalTypeDesc;
+    private final String mPetName;
+    private final String mPetDOB;
+    private final String mGender;
+    private final String mDisplayAddress;
+    private final int mSterilised;
 
     public PetSearchData(int mID, int mAnimalTypeID, String mAnimalTypeDesc, String mPetName, String mPetDOB, String gender, int sterilised, String mDisplayAddress) {
         this.mID = mID;

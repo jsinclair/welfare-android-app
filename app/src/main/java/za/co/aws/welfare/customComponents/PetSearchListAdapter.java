@@ -32,7 +32,7 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
     }
 
     /** List of original objects.*/
-    private LinkedList<PetSearchData> originalObjects;
+    private final LinkedList<PetSearchData> originalObjects;
 
     /** Constructor.
      *

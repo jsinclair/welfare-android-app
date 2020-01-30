@@ -93,26 +93,26 @@ public class PetViewModel extends AndroidViewModel {
     private boolean mAddToParent;
 
     //If the display address and resID indicate that the pet is not assigned to an address, do not allow navigation.
-    public MutableLiveData<Boolean> mAllowAddressNavigation;
-    public MutableLiveData<Boolean> mErrorState;
-    public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
+    public final MutableLiveData<Boolean> mAllowAddressNavigation;
+    public final MutableLiveData<Boolean> mErrorState;
+    public final MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
-    public MutableLiveData<String> mPetName;
-    public MutableLiveData<String> mApproxDOB;
-    public MutableLiveData<String> mNotes;
-    public MutableLiveData<String> mTreatments;
-    public MutableLiveData<String> mDisplayAddress;
-    public MutableLiveData<AnimalType> mSpecies;
+    public final MutableLiveData<String> mPetName;
+    public final MutableLiveData<String> mApproxDOB;
+    public final MutableLiveData<String> mNotes;
+    public final MutableLiveData<String> mTreatments;
+    public final MutableLiveData<String> mDisplayAddress;
+    public final MutableLiveData<AnimalType> mSpecies;
 
-    public MutableLiveData<String> mDescription;
-    public MutableLiveData<String> mGender;
-    public MutableLiveData<Integer> mSterilised;
+    public final MutableLiveData<String> mDescription;
+    public final MutableLiveData<String> mGender;
+    public final MutableLiveData<Integer> mSterilised;
 
-    private MutableLiveData<NetworkStatus> mNetworkHandler;
-    private SingleLiveEvent<Pair<Event, String>> mEventHandler;
+    private final MutableLiveData<NetworkStatus> mNetworkHandler;
+    private final SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     // List of species available.
-    public MutableLiveData<List<AnimalType>> mSpeciesAvailable;
+    public final MutableLiveData<List<AnimalType>> mSpeciesAvailable;
 
     private int mSaveResID;
     private Integer mSaveSterilised;
@@ -120,7 +120,7 @@ public class PetViewModel extends AndroidViewModel {
     private AnimalType mSavedAnimalType;
 
     ////////Residence search stuff here.
-    public MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
+    public final MutableLiveData<LinkedList<ResidenceSearchData>> mResidenceSearchResults;
     ////////
 
     public PetViewModel(Application app) {

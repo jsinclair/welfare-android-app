@@ -30,7 +30,7 @@ public class ResidenceSearchListAdapter extends ArrayAdapter<ResidenceSearchData
     }
 
     /** List of original objects.*/
-    private LinkedList<ResidenceSearchData> originalObjects;
+    private final LinkedList<ResidenceSearchData> originalObjects;
 
     /** Constructor.
      *

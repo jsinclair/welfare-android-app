@@ -77,22 +77,22 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
     private boolean mAddToParent;
     private PetMinDetail mRemoveRequest;
 
-    public MutableLiveData<Boolean> mErrorState;
+    public final MutableLiveData<Boolean> mErrorState;
 
-    public MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
+    public final MutableLiveData<Boolean> mEditMode; //Use this to enable and disable input.
 
-    public MutableLiveData<String> mAddress;
-    public MutableLiveData<String> mShackID;
-    public MutableLiveData<String> mLat;
-    public MutableLiveData<String> mLon;
-    public MutableLiveData<String> mNotes;
-    public MutableLiveData<String> mResidentName;
-    public MutableLiveData<String> mResidentID;
-    public MutableLiveData<String> mResidentTel;
-    public MutableLiveData<List<PetMinDetail>> mAnimalList;
+    public final MutableLiveData<String> mAddress;
+    public final MutableLiveData<String> mShackID;
+    public final MutableLiveData<String> mLat;
+    public final MutableLiveData<String> mLon;
+    public final MutableLiveData<String> mNotes;
+    public final MutableLiveData<String> mResidentName;
+    public final MutableLiveData<String> mResidentID;
+    public final MutableLiveData<String> mResidentTel;
+    public final MutableLiveData<List<PetMinDetail>> mAnimalList;
 
-    private MutableLiveData<NetworkStatus> mNetworkHandler;
-    private SingleLiveEvent<Pair<Event, String>> mEventHandler;
+    private final MutableLiveData<NetworkStatus> mNetworkHandler;
+    private final SingleLiveEvent<Pair<Event, String>> mEventHandler;
 
     // These store the values to revert to if the user 'cancels' an edit.
     private String mAddressSave, mShackIDSave, mLatSave, mLongSave, mNotesSave, mSaveName, mSaveIDNumber, mSaveTelNumber;
