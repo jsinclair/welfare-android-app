@@ -408,7 +408,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         if (mModel.hasEditOccurred()) {
             Intent output = new Intent();
             output.putExtra(Utils.INTENT_UPDATE_REQUIRED, true);
-            if (mModel.hasEditOccurred()) {
+            if (mModel.shouldAddToParent()) {
                 output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_ADD);
             } else {
                 output.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_EDIT);
