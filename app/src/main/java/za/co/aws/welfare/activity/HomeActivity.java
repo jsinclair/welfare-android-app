@@ -40,7 +40,6 @@ import za.co.aws.welfare.viewModel.HomeViewModel;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = "HomeActivity";
-    public static final String PROGRESS_DIALOG_TAG = "PROGRESS_DIALOG_TAG";
     public static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     public static final int PET = 89;
     public static final int RES = 88;
@@ -176,19 +175,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     /** Handle one time events triggered from the model. */
     private void handleEvent(Pair<HomeViewModel.Event, String> eventData) {
-        switch (eventData.first) {
-            case SEARCH_RES_ERROR:
-                showAlert(getString(R.string.download_err), eventData.second);
-                break;
-            case SEARCH_RES_DATA_REQ:
-                showAlert(getString(R.string.data_required), eventData.second);
-                break;
-            case SEARCH_PET_ERROR:
-                showAlert(getString(R.string.download_err), eventData.second);
-                break;
-            case GET_REMINDER_ERROR:
-                showAlert(getString(R.string.download_err), eventData.second);
-                break;
+        if (eventData != null && eventData.first != null) {
+            switch (eventData.first) {
+                case SEARCH_RES_ERROR:
+                    showAlert(getString(R.string.download_err), eventData.second);
+                    break;
+                case SEARCH_RES_DATA_REQ:
+                    showAlert(getString(R.string.data_required), eventData.second);
+                    break;
+                case SEARCH_PET_ERROR:
+                    showAlert(getString(R.string.download_err), eventData.second);
+                    break;
+                case GET_REMINDER_ERROR:
+                    showAlert(getString(R.string.download_err), eventData.second);
+                    break;
+            }
         }
     }
 

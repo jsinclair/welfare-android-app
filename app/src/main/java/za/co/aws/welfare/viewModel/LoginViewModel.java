@@ -12,7 +12,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -175,7 +174,7 @@ public class LoginViewModel extends AndroidViewModel {
                 }){
 
                     @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
+                    public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
                         headers.put("Accept", "application/json");
                         return headers;

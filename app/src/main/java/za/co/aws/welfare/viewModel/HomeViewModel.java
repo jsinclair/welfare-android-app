@@ -276,7 +276,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         })
         {@Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
+        public Map<String, String> getHeaders() {
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
             return headers;
@@ -339,7 +339,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         })
         {@Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
+        public Map<String, String> getHeaders() {
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
             return headers;
@@ -429,7 +429,7 @@ public class HomeViewModel extends AndroidViewModel {
             }
         })
         {@Override
-        public Map<String, String> getHeaders() throws AuthFailureError {
+        public Map<String, String> getHeaders() {
             HashMap<String, String> headers = new HashMap<>();
             headers.put("Authorization", "Bearer " + ((WelfareApplication)getApplication()).getToken());
             return headers;

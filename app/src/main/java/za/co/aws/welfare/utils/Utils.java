@@ -14,9 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
 
 public class Utils {

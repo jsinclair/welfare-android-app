@@ -26,9 +26,7 @@ import java.util.List;
 
 import za.co.aws.welfare.R;
 import za.co.aws.welfare.customComponents.DatePickerFragment;
-import za.co.aws.welfare.dataObjects.PetMinDetail;
 import za.co.aws.welfare.dataObjects.PetSearchData;
-import za.co.aws.welfare.dataObjects.ResidenceSearchData;
 import za.co.aws.welfare.databinding.ActivityPetBinding;
 import za.co.aws.welfare.fragment.AlertDialogFragment;
 import za.co.aws.welfare.fragment.ProgressDialogFragment;
@@ -378,11 +376,6 @@ public class PetActivity extends AppCompatActivity implements DatePickerFragment
             setResult(RESULT_OK, output);
         }
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

@@ -46,9 +46,6 @@ public class AlertDialogFragment extends DialogFragment {
         String title = getArguments().getString("title");
         String message = getArguments().getString("msg");
 
-//        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-//        setCancelable(false);
-//        getDialog().setCanceledOnTouchOutside(false);
         View v = inflater.inflate(R.layout.fragment_alert_dialog, container, false);
 
         if (getDialog() != null && getDialog().getWindow() != null) {

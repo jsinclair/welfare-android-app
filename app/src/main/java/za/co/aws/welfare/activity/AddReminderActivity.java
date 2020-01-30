@@ -176,36 +176,38 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
         });
 
         if (savedInstanceState == null) {
-            mModel.setup(isNew, reminderID, fromSearch);
+            mModel.setup(isNew, reminderID);
         }
     }
 
 
     /** Handle once off events.*/
     private void handleEvent(Pair<RemindersViewModel.Event, String> eventData) {
-        switch (eventData.first) {
-            case DATE_REQUIRED:
-                showAlert(getString(R.string.data_required), eventData.second);
-                break;
-            case EDIT_ATTEMPT_TODAY:
-                showAlert(getString(R.string.not_editable), eventData.second);
-                break;
-            case UPDATE_ERROR:
-                showAlert(getString(R.string.update_error_title), eventData.second);
-                break;
-            case RETRIEVAL_ERROR:
-                showAlert(getString(R.string.fetch_error_title), eventData.second);
-                break;
-            case DELETE_DONE:
-                Intent outputDelete = new Intent();
-                outputDelete.putExtra(Utils.INTENT_REMINDER_ID, mModel.getReminderID());
-                outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
-                setResult(RESULT_OK, outputDelete);
-                finish();
-                break;
-            case DELETE_ERROR:
-                showAlert(getString(R.string.delete_error), eventData.second);
-                break;
+        if (eventData != null && eventData.first != null) {
+            switch (eventData.first) {
+                case DATE_REQUIRED:
+                    showAlert(getString(R.string.data_required), eventData.second);
+                    break;
+                case EDIT_ATTEMPT_TODAY:
+                    showAlert(getString(R.string.not_editable), eventData.second);
+                    break;
+                case UPDATE_ERROR:
+                    showAlert(getString(R.string.update_error_title), eventData.second);
+                    break;
+                case RETRIEVAL_ERROR:
+                    showAlert(getString(R.string.fetch_error_title), eventData.second);
+                    break;
+                case DELETE_DONE:
+                    Intent outputDelete = new Intent();
+                    outputDelete.putExtra(Utils.INTENT_REMINDER_ID, mModel.getReminderID());
+                    outputDelete.putExtra(Utils.INTENT_ACTION, Utils.INTENT_ACTION_DELETE);
+                    setResult(RESULT_OK, outputDelete);
+                    finish();
+                    break;
+                case DELETE_ERROR:
+                    showAlert(getString(R.string.delete_error), eventData.second);
+                    break;
+            }
         }
     }
 

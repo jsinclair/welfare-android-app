@@ -168,7 +168,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
     }
 
     // Call this to modify the viewModel and activity for a NEW entry or an EDIT entry.
-    public void setup(boolean isNew, int reminderID, boolean fromSearch) {
+    public void setup(boolean isNew, int reminderID) {
         this.isNew = isNew;
         mEditMode.setValue(isNew);
         this.reminderID = reminderID;
@@ -261,7 +261,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                 }
             }) {
                 @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
+                public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
                     return headers;
@@ -339,7 +339,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                         }
                     }){
                         @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
+                        public Map<String, String> getHeaders() {
                             HashMap<String, String> headers = new HashMap<>();
                             headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
                             return headers;
@@ -471,7 +471,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
                     }
                 }){
                     @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
+                    public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
                         headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
                         return headers;

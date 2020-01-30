@@ -223,7 +223,7 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
                 }
             }) {
                 @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
+                public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
                     return headers;
@@ -318,7 +318,7 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
 
         // Ensure the user provides some form of address.
         if ((address == null || address.isEmpty()) && (shackID == null || shackID.isEmpty())) {
-            mEventHandler.setValue(new Pair<Event, String>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
+            mEventHandler.setValue(new Pair<>(Event.DATA_REQUIRED, getApplication().getString(R.string.address_shack_req)));
             return;
         }
 
@@ -433,7 +433,7 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
                     }
                 }){
                     @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
+                    public Map<String, String> getHeaders() {
                         HashMap<String, String> headers = new HashMap<>();
                         headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
                         return headers;
@@ -517,7 +517,7 @@ public class ResidenceViewModel extends AndroidViewModel implements SearchPetsFr
                         }
                     }){
                         @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
+                        public Map<String, String> getHeaders() {
                             HashMap<String, String> headers = new HashMap<>();
                             headers.put("Authorization", "Bearer " + ((WelfareApplication) getApplication()).getToken());
                             return headers;
