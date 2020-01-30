@@ -101,7 +101,6 @@ public class ResidencesFragment extends Fragment {
             }
         });
 
-        //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
         mModel.getResidentResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<ResidenceSearchData>>() {
             @Override
             public void onChanged(final LinkedList<ResidenceSearchData> residenceSearchData) {

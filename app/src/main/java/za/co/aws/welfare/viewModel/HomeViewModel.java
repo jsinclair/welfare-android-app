@@ -84,7 +84,7 @@ public class HomeViewModel extends AndroidViewModel {
     public static final String STERILISED_ALL = "STERILISED_ALL";
 
     /** Remember the last searched address entry. Allows us to show the last filter/result that
-     * the user entered. SO for example, if they are doing a census in a particular road, the dont
+     * the user entered. SO for example, if they are doing a census in a particular road, they do not
      * have to redo the search (and spend more data) every time. */
     public MutableLiveData<String> mResidenceAddressSearch;
 
@@ -572,43 +572,43 @@ public class HomeViewModel extends AndroidViewModel {
 
     // Remove a pet from the result list.
     public void removePetFromResults(int id) {
-        LinkedList<PetSearchData> vals = mPetSearchResults.getValue();
-        if (vals != null) {
-            for (PetSearchData data : vals) {
+        LinkedList<PetSearchData> pets = mPetSearchResults.getValue();
+        if (pets != null) {
+            for (PetSearchData data : pets) {
                 if (data.getID() == id) {
-                    vals.remove(data);
+                    pets.remove(data);
                     break;
                 }
             }
-            mPetSearchResults.setValue(vals);
+            mPetSearchResults.setValue(pets);
         }
     }
 
     // Remove a residence from the result list.
     public void removeResFromResults(int id) {
-        LinkedList<ResidenceSearchData> vals = mResidenceSearchResults.getValue();
-        if (vals != null) {
-            for (ResidenceSearchData data : vals) {
+        LinkedList<ResidenceSearchData> residences = mResidenceSearchResults.getValue();
+        if (residences != null) {
+            for (ResidenceSearchData data : residences) {
                 if (data.getID() == id) {
-                    vals.remove(data);
+                    residences.remove(data);
                     break;
                 }
             }
-            mResidenceSearchResults.setValue(vals);
+            mResidenceSearchResults.setValue(residences);
         }
     }
 
     // Remove a reminder from the reminders list.
     public void removeReminderFromResults(int id) {
-        LinkedList<ReminderData> vals = mRemindersResults.getValue();
-        if (vals != null) {
-            for (ReminderData data : vals) {
+        LinkedList<ReminderData> reminders = mRemindersResults.getValue();
+        if (reminders != null) {
+            for (ReminderData data : reminders) {
                 if (data.getID() == id) {
-                    vals.remove(data);
+                    reminders.remove(data);
                     break;
                 }
             }
-            mRemindersResults.setValue(vals);
+            mRemindersResults.setValue(reminders);
         }
     }
 

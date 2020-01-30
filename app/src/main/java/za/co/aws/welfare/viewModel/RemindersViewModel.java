@@ -39,7 +39,7 @@ import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 import za.co.aws.welfare.utils.Utils;
 
-/** Viewmodel for the add reminders activity. Handle backend calls and data changes. */
+/** View model for the add reminders activity. Handle backend calls and data changes. */
 public class RemindersViewModel extends AndroidViewModel implements SearchPetsFragment.PetSearcher {
 
     // Place holder for the date.
@@ -129,7 +129,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         return mDateSelected;
     }
 
-    public MutableLiveData<NetworkAction> getmNetworkHandler() {
+    public MutableLiveData<NetworkAction> getNetworkHandler() {
         return mNetworkHandler;
     }
 
@@ -348,7 +348,7 @@ public class RemindersViewModel extends AndroidViewModel implements SearchPetsFr
         }
     }
 
-    /** Return true if the reminder's date is that of todays. */
+    /** Return true if the reminder's date is today or earlier. */
     private boolean isOldReminder() {
         String date = mDateSelected.getValue();
         if (!UNKNOWN_DATE.equals(date)) {

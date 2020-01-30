@@ -116,7 +116,7 @@ public class PetViewModel extends AndroidViewModel {
 
     private int mSaveResID;
     private Integer mSaveSterilised;
-    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatements, mSaveAddressDesc, mSaveDescription, mSaveGender;
+    private String mSaveName, mSaveDOB, mSaveNotes, mSaveTreatments, mSaveAddressDesc, mSaveDescription, mSaveGender;
     private AnimalType mSavedAnimalType;
 
     ////////Residence search stuff here.
@@ -265,7 +265,7 @@ public class PetViewModel extends AndroidViewModel {
                                     String dob = pet.optString("approximate_dob");
                                     String notes = pet.optString("notes");
                                     String treatments = pet.optString("treatments");
-                                    String displayAddresss = pet.optString("display_address");
+                                    String displayAddress = pet.optString("display_address");
 
                                     String gender = pet.optString("gender");
                                     int sterilised = pet.optInt("sterilised", STERILISED_UNKNOWN);
@@ -285,7 +285,7 @@ public class PetViewModel extends AndroidViewModel {
                                     mApproxDOB.setValue(dob);
                                     mNotes.setValue(notes);
                                     mTreatments.setValue(treatments);
-                                    mDisplayAddress.setValue(displayAddresss);
+                                    mDisplayAddress.setValue(displayAddress);
                                     mAllowAddressNavigation.setValue(residenceID >= 0);
                                     if (!GENDER_MALE.equals(gender) && !GENDER_FEMALE.equals(gender)) {
                                         gender = GENDER_UNKNOWN;
@@ -341,7 +341,7 @@ public class PetViewModel extends AndroidViewModel {
                 mSaveName = mPetName.getValue();
                 mSaveDOB = mApproxDOB.getValue();
                 mSaveNotes = mNotes.getValue();
-                mSaveTreatements = mTreatments.getValue();
+                mSaveTreatments = mTreatments.getValue();
                 mSaveAddressDesc = mDisplayAddress.getValue();
                 mSavedAnimalType = mSpecies.getValue();
                 mEditMode.setValue(true);
@@ -362,7 +362,7 @@ public class PetViewModel extends AndroidViewModel {
         mPetName.setValue(mSaveName);
         mApproxDOB.setValue(mSaveDOB);
         mNotes.setValue(mSaveNotes);
-        mTreatments.setValue(mSaveTreatements);
+        mTreatments.setValue(mSaveTreatments);
         mSpecies.setValue(mSavedAnimalType);
 
         mSterilised.setValue(mSaveSterilised);
@@ -401,7 +401,7 @@ public class PetViewModel extends AndroidViewModel {
                     || (notes !=null && !notes.equals(mSaveNotes))
                     || (resID != mSaveResID))
                     || (mSavedAnimalType == null || mSavedAnimalType.getId() != animalType)
-                    || (treatments != null && !treatments.equals(mSaveTreatements));
+                    || (treatments != null && !treatments.equals(mSaveTreatments));
 
             if (hasChanged) {
                 doUpdate(petID, resID, animalType, name, gender, sterilised, desc, dob, notes, treatments);

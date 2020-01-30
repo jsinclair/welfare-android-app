@@ -128,7 +128,6 @@ public class AnimalsFragment extends Fragment {
             }
         });
 
-        //TODO: check tht this is the corect way to observe from a fragment (to avoid memory leaks)
         mModel.getPetSearchResults().observe(getViewLifecycleOwner(), new Observer<LinkedList<PetSearchData>>() {
             @Override
             public void onChanged(final LinkedList<PetSearchData> petSearchData) {

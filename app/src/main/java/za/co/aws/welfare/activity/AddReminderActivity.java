@@ -62,7 +62,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
     // The notes text input layout.
     private TextInputLayout mNotes;
 
-    // Viewmodel takes care of backend calls and data.
+    // View model takes care of backend calls and data.
     private RemindersViewModel mModel;
 
     // Used to add a pet to the reminder.
@@ -151,7 +151,7 @@ public class AddReminderActivity extends AppCompatActivity implements YesNoDialo
             }
         });
 
-        mModel.getmNetworkHandler().observe(this, new Observer<RemindersViewModel.NetworkAction>() {
+        mModel.getNetworkHandler().observe(this, new Observer<RemindersViewModel.NetworkAction>() {
             @Override
             public void onChanged(RemindersViewModel.NetworkAction networkAction) {
                 if (networkAction != null) {

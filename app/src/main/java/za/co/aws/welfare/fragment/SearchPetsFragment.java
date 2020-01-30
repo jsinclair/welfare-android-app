@@ -72,7 +72,7 @@ public class SearchPetsFragment extends DialogFragment {
     // The interface to send the result to.
     private PetSearcher mPetSearcher;
 
-    // The viewmodel of this fragment.
+    // The view model of this fragment.
     private SearchPetsViewModel mModel;
 
     // Code used to obtain result from adding new pet.

@@ -46,7 +46,7 @@ public class PetSearchData implements Parcelable {
         return mPetDOB;
     }
 
-    public String getmAnimalTypeDesc() {
+    public String getAnimalTypeDesc() {
         return mAnimalTypeDesc;
     }
 

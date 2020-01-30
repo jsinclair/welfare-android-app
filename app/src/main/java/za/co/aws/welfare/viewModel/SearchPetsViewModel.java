@@ -33,8 +33,7 @@ import za.co.aws.welfare.utils.RequestQueueManager;
 import za.co.aws.welfare.utils.SingleLiveEvent;
 import za.co.aws.welfare.utils.Utils;
 
-/** Viewmodel for the pet search view. Takes care of the searching of pets from the backend.
- * TODO: REplace Animals fragment with a copy of this!!!! 1. Move to a fragment. 2. Use fragment in dialog?*/
+/** View model for the pet search view. Takes care of the searching of pets from the backend.*/
 public class SearchPetsViewModel extends AndroidViewModel {
 
     /** The network statuses. */

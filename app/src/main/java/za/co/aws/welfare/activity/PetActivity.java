@@ -41,8 +41,6 @@ import za.co.aws.welfare.viewModel.PetViewModel;
 /** Allow the user to view and edit a pet. */
 public class PetActivity extends AppCompatActivity implements DatePickerFragment.DatePickerUser, YesNoDialogFragment.YesNoDialogUser {
 
-    //TODO: hide delet on a new
-
     // Used for the alert dialog to inform user of errors.
     private static final String ALERT_DIALOG_TAG = "ALERT_DIALOG_TAG";
     private static final String REMOVE_THIS_PET = "REMOVE_THIS_PET";

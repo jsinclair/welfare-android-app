@@ -170,7 +170,6 @@ public class WelfareApplication extends Application {
 
     // Accessors and mutators for utility lists
     public List<AnimalType> getAnimalTypes(boolean addAny) {
-        //TODO: COuld cause nullpointer
         ArrayList<AnimalType> returnList = new ArrayList<>(mAnimalTypes);
         if (addAny) {
             AnimalType unknown = new AnimalType(-1, getString(R.string.any));

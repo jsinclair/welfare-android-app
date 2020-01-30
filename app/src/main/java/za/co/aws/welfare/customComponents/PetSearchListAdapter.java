@@ -83,7 +83,7 @@ public class PetSearchListAdapter extends ArrayAdapter<PetSearchData> implements
         holder.ref = position;
         holder.name.setText(i.getPetName());
         holder.dob.setText(i.getPetDOB());
-        holder.species.setText(i.getmAnimalTypeDesc());
+        holder.species.setText(i.getAnimalTypeDesc());
         holder.gender.setText(i.getGender());
         if (Utils.GENDER_MALE.equals(i.getGender())) {
             holder.genderIcon.setImageResource(R.drawable.gender_male);
